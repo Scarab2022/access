@@ -1,3 +1,18 @@
+# Access
+
+## Dev Database
+
+- npx prisma db push --force-reset && npx prisma db seed
+- npx prisma migrate dev
+- npx prisma migrate reset
+- npx prisma migrate dev --create-only
+
+## Docker Postgres
+
+- docker exec -it access-postgres-1 bash
+- psql -U postgres
+- select * from "User";
+
 # Remix Blues Stack
 
 ![The Remix Blues Stack](https://repository-images.githubusercontent.com/461012689/37d5bd8b-fa9c-4ab0-893c-f0a199d5012d)
