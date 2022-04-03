@@ -21,6 +21,9 @@
 - tailwind.config.js plugins: require('@tailwindcss/typography')
 - npm install @headlessui/react
 - npm install @heroicons/react
+- npm install lodash
+- npm install -D @types/lodash
+- npm install zod
 
 # Remix Blues Stack
 
