@@ -15,8 +15,10 @@
 
 ## Development Setup Notes
 
-- npm install -D @tailwindcss/forms # also edit tailwind.config.js
-- npm install -D @tailwindcss/typography # also edit tailwind.config.js
+- npm install -D @tailwindcss/forms
+- tailwind.config.js plugins: require('@tailwindcss/forms')
+- npm install -D @tailwindcss/typography 
+- tailwind.config.js plugins: require('@tailwindcss/typography')
 
 # Remix Blues Stack
 
