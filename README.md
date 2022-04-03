@@ -1,8 +1,23 @@
 # Access
 
+## Setup
+
+- node >= 14
+- git clone https://github.com/mw10013/access.git
+- .env file in root. See .env.example
+- npm install
+- npm run docker
+- npx prisma db push --force-reset
+- npx prisma db seed
+- npm run build # first time
+- npm run dev
+- localhost:3000
+- rachel@remix.run/racheliscool
+
 ## Dev Database
 
-- npx prisma db push --force-reset && npx prisma db seed
+- npx prisma db push --force-reset
+- npx prisma db seed
 - npx prisma migrate dev
 - npx prisma migrate reset
 - npx prisma migrate dev --create-only
@@ -11,13 +26,13 @@
 
 - docker exec -it access-postgres-1 bash
 - psql -U postgres
-- select * from "User";
+- select \* from "User";
 
 ## Development Setup Notes
 
 - npm install -D @tailwindcss/forms
 - tailwind.config.js plugins: require('@tailwindcss/forms')
-- npm install -D @tailwindcss/typography 
+- npm install -D @tailwindcss/typography
 - tailwind.config.js plugins: require('@tailwindcss/typography')
 - npm install @headlessui/react
 - npm install @heroicons/react
