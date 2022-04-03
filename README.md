@@ -13,6 +13,11 @@
 - psql -U postgres
 - select * from "User";
 
+## Development Setup Notes
+
+- npm install -D @tailwindcss/forms # also edit tailwind.config.js
+- npm install -D @tailwindcss/typography # also edit tailwind.config.js
+
 # Remix Blues Stack
 
 ![The Remix Blues Stack](https://repository-images.githubusercontent.com/461012689/37d5bd8b-fa9c-4ab0-893c-f0a199d5012d)
