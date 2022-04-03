@@ -19,6 +19,8 @@
 - tailwind.config.js plugins: require('@tailwindcss/forms')
 - npm install -D @tailwindcss/typography 
 - tailwind.config.js plugins: require('@tailwindcss/typography')
+- npm install @headlessui/react
+- npm install @heroicons/react
 
 # Remix Blues Stack
 
