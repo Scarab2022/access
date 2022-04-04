@@ -41,6 +41,79 @@ async function seed() {
     },
   });
 
+  const masterAccessUser = await prisma.accessUser.create({
+    data: {
+      name: "Master",
+      description: "Access to everything",
+      code: "999",
+      userId: user.id,
+    },
+  });
+
+  const guest1AccessUser = await prisma.accessUser.create({
+    data: {
+      name: "Guest1",
+      description: "Access to everything",
+      code: "111",
+      userId: user.id,
+    },
+  });
+
+  const guest2AccessUser = await prisma.accessUser.create({
+    data: {
+      name: "Guest2",
+      description: "Access to everything",
+      code: "222",
+      userId: user.id,
+    },
+  });
+
+  await prisma.accessHub.create({
+    data: {
+      name: "Brooklyn BnB",
+      userId: user.id,
+      accessPoints: {
+        create: [
+          {
+            name: "Front Door",
+            position: 1,
+            accessUsers: {
+              connect: [
+                { id: masterAccessUser.id },
+                { id: guest1AccessUser.id },
+                { id: guest2AccessUser.id },
+              ],
+            },
+          },
+          {
+            name: "First Floor",
+            position: 2,
+            accessUsers: {
+              connect: [
+                { id: masterAccessUser.id },
+                { id: guest1AccessUser.id },
+              ],
+            },
+          },
+          {
+            name: "Second Floor",
+            position: 3,
+            accessUsers: {
+              connect: [
+                { id: masterAccessUser.id },
+                { id: guest1AccessUser.id },
+              ],
+            },
+          },
+          {
+            name: "Unused",
+            position: 4,
+          },
+        ],
+      },
+    },
+  });
+
   console.log(`Database has been seeded. 🌱`);
 }
 

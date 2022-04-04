@@ -3,6 +3,8 @@ import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useFetcher, useLocation } from "@remix-run/react";
 import type { AccessHub } from "@prisma/client";
 import { Prisma } from "@prisma/client";
+import { prisma } from "~/db.server";
+
 // import { db } from "~/utils/db.server";
 // import { requireUserSession } from "~/utils/session.server";
 import {
@@ -15,6 +17,7 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
+import { requireUserId } from "~/session.server";
 
 export const handle = {
   breadcrumb: "Dashboard",
@@ -33,28 +36,29 @@ type LoaderData = {
   }>[];
 };
 
-// export const loader: LoaderFunction = async ({
-//   request,
-// }): Promise<LoaderData> => {
-//   const { userId } = await requireUserSession(request, "customer");
-//   const accessPoints = await db.accessPoint.findMany({
-//     where: {
-//       accessHub: {
-//         userId: userId,
-//       },
-//     },
-//     include: {
-//       accessUsers: true,
-//       accessHub: {
-//         include: {
-//           user: true,
-//         },
-//       },
-//     },
-//     orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
-//   });
-//   return { accessPoints };
-// };
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
+  //   const { userId } = await requireUserSession(request, "customer");
+  const userId = await requireUserId(request);
+  const accessPoints = await prisma.accessPoint.findMany({
+    where: {
+      accessHub: {
+        userId: userId,
+      },
+    },
+    include: {
+      accessUsers: true,
+      accessHub: {
+        include: {
+          user: true,
+        },
+      },
+    },
+    orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
+  });
+  return { accessPoints };
+};
 
 function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
   if (heartbeatAt) {
@@ -70,7 +74,9 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 }
 
 export default function RouteComponent() {
-  return <div>Dashboard</div>;
+  const { accessPoints } = useLoaderData<LoaderData>();
+
+  return <div><pre>{JSON.stringify({accessPoints}, null, 2)}</pre></div>;
 }
 
 // export default function () {
