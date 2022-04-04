@@ -1,12 +1,8 @@
 import * as React from "react";
-import type { LoaderFunction } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useFetcher, useLocation } from "@remix-run/react";
-import type { AccessHub } from "@prisma/client";
-import { Prisma } from "@prisma/client";
+import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
-
-// import { db } from "~/utils/db.server";
-// import { requireUserSession } from "~/utils/session.server";
 import {
   Main,
   Header,
@@ -24,24 +20,11 @@ export const handle = {
 };
 
 type LoaderData = {
-  accessPoints: Prisma.AccessPointGetPayload<{
-    include: {
-      accessUsers: true;
-      accessHub: {
-        include: {
-          user: true;
-        };
-      };
-    };
-  }>[];
+  accessPoints: Awaited<ReturnType<typeof getLoaderData>>;
 };
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<LoaderData> => {
-  //   const { userId } = await requireUserSession(request, "customer");
-  const userId = await requireUserId(request);
-  const accessPoints = await prisma.accessPoint.findMany({
+function getLoaderData({ userId }: { userId: User["id"] }) {
+  return prisma.accessPoint.findMany({
     where: {
       accessHub: {
         userId: userId,
@@ -57,7 +40,12 @@ export const loader: LoaderFunction = async ({
     },
     orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
   });
-  return { accessPoints };
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const userId = await requireUserId(request);
+  const accessPoints = await getLoaderData({ userId });
+  return json<LoaderData>({ accessPoints });
 };
 
 function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
@@ -75,68 +63,63 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 
 export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
+  const poll = useFetcher<LoaderData>();
+  const [isPolling, setIsPolling] = React.useState(true);
+  const location = useLocation();
 
-  return <div><pre>{JSON.stringify({accessPoints}, null, 2)}</pre></div>;
+  React.useEffect(() => {
+    if (isPolling) {
+      const intervalId = setInterval(() => poll.load(location.pathname), 5000);
+      return () => clearInterval(intervalId);
+    }
+  }, [location, isPolling, poll]);
+
+  return (
+    <>
+      <Header
+        title="Dashboard"
+        side={
+          <div className="relative flex items-start">
+            <div className="flex h-5 items-center">
+              <input
+                id="poll"
+                aria-describedby="comments-description"
+                name="poll"
+                type="checkbox"
+                checked={isPolling}
+                onChange={() => setIsPolling(!isPolling)}
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+            </div>
+            <div className="ml-3 text-sm">
+              <label htmlFor="poll" className="font-medium text-gray-700">
+                Poll
+              </label>
+            </div>
+          </div>
+        }
+      />
+      <Main>
+        <Table
+          headers={
+            <>
+              <Th>Hub</Th>
+              <Th>Name</Th>
+              <Th>Connection</Th>
+              <ThSr>View</ThSr>
+            </>
+          }
+        >
+          {(poll.data?.accessPoints ?? accessPoints).map((i) => (
+            <tr key={i.id}>
+              <Td>{i.accessHub.name}</Td>
+              <TdProminent>{i.name}</TdProminent>
+              <Td>{connectionStatus(i.accessHub.heartbeatAt)}</Td>
+              <TdLink to={`../points/${i.id}`}>View</TdLink>
+            </tr>
+          ))}
+        </Table>
+      </Main>
+    </>
+  );
 }
-
-// export default function () {
-//   const { accessPoints } = useLoaderData<LoaderData>();
-//   const poll = useFetcher<LoaderData>();
-//   const [isPolling, setIsPolling] = React.useState(true);
-//   const location = useLocation();
-
-//   React.useEffect(() => {
-//     if (isPolling) {
-//       const intervalId = setInterval(() => poll.load(location.pathname), 5000);
-//       return () => clearInterval(intervalId);
-//     }
-//   }, [location, isPolling]);
-//   return (
-//     <>
-//       <Header
-//         title="Dashboard"
-//         side={
-//           <div className="relative flex items-start">
-//             <div className="flex h-5 items-center">
-//               <input
-//                 id="poll"
-//                 aria-describedby="comments-description"
-//                 name="poll"
-//                 type="checkbox"
-//                 checked={isPolling}
-//                 onChange={() => setIsPolling(!isPolling)}
-//                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-//               />
-//             </div>
-//             <div className="ml-3 text-sm">
-//               <label htmlFor="poll" className="font-medium text-gray-700">
-//                 Poll
-//               </label>
-//             </div>
-//           </div>
-//         }
-//       />
-//       <Main>
-//         <Table
-//           headers={
-//             <>
-//               <Th>Hub</Th>
-//               <Th>Name</Th>
-//               <Th>Connection</Th>
-//               <ThSr>View</ThSr>
-//             </>
-//           }
-//         >
-//           {(poll.data?.accessPoints ?? accessPoints).map((i) => (
-//             <tr key={i.id}>
-//               <Td>{i.accessHub.name}</Td>
-//               <TdProminent>{i.name}</TdProminent>
-//               <Td>{connectionStatus(i.accessHub.heartbeatAt)}</Td>
-//               <TdLink to={`../points/${i.id}`}>View</TdLink>
-//             </tr>
-//           ))}
-//         </Table>
-//       </Main>
-//     </>
-//   );
-// }
