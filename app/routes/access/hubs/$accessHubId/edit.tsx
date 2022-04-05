@@ -5,9 +5,9 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
-import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import { getAccessHub } from "~/models/accessHub.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import {
@@ -23,30 +23,13 @@ export const handle = {
 };
 
 type LoaderData = {
-  accessHub: Awaited<ReturnType<typeof getLoaderData>>;
+  accessHub: Awaited<ReturnType<typeof getAccessHub>>;
 };
-
-function getLoaderData({
-  id,
-  userId,
-}: Pick<AccessHub, "id"> & {
-  userId: User["id"];
-}) {
-  return prisma.accessHub.findFirst({
-    where: { id, user: { id: userId } },
-    include: {
-      accessPoints: {
-        orderBy: { position: "asc" },
-      },
-    },
-    rejectOnNotFound: true,
-  });
-}
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
   invariant(params.accessHubId, "accessHubId not found");
-  const accessHub = await getLoaderData({
+  const accessHub = await getAccessHub({
     id: Number(params.accessHubId),
     userId,
   });
@@ -78,10 +61,9 @@ export const action: ActionFunction = async ({
     return { formErrors: parseResult.error.formErrors, fieldValues };
   }
 
-  await prisma.accessHub.findFirst({
-    where: { id: Number(params.accessHubId), user: { id: userId } },
-    rejectOnNotFound: true,
-  });
+  // TODO: Ensure user owns access hub before updating.  Put in transaction?
+  // AccessHubWhereUniqueInput in update does not include userId.
+  getAccessHub({ id: Number(params.accessHubId), userId });
   const { name, description } = parseResult.data;
   await prisma.accessHub.update({
     where: { id: Number(params.accessHubId) },

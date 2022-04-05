@@ -1,10 +1,11 @@
-import { AccessHub, User } from "@prisma/client";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Card, Header, Main, Table, Th } from "~/components/lib";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+import type { AccessHub } from "~/models/accessHub.server";
+import { getAccessHub } from "~/models/accessHub.server";
 
 export const handle = {
   breadcrumb: "Activity",
@@ -14,18 +15,6 @@ type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHub>>;
   accessEvents: Awaited<ReturnType<typeof getAccessEvents>>;
 };
-
-function getAccessHub({
-  id,
-  userId,
-}: Pick<AccessHub, "id"> & {
-  userId: User["id"];
-}) {
-  return prisma.accessHub.findFirst({
-    where: { id, user: { id: userId } },
-    rejectOnNotFound: true,
-  });
-}
 
 function getAccessEvents({ id }: Pick<AccessHub, "id">) {
   return prisma.accessEvent.findMany({
@@ -49,7 +38,9 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     id: Number(params.accessHubId),
     userId,
   });
-  const accessEvents = await getAccessEvents({id: Number(params.accessHubId)})
+  const accessEvents = await getAccessEvents({
+    id: Number(params.accessHubId),
+  });
   return json<LoaderData>({ accessHub, accessEvents });
 };
 
