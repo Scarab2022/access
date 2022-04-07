@@ -6,7 +6,6 @@ import {
   useSubmit,
   useFormAction,
 } from "@remix-run/react";
-import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -31,7 +30,6 @@ import {
   DlCardDtDd,
   Card,
 } from "~/components/lib";
-import { AccessPoint, User } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 

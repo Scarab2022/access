@@ -15,11 +15,6 @@ export const handle = {
 };
 
 type LoaderData = {
-  // accessPoint: Prisma.AccessPointGetPayload<{
-  //   include: { accessUsers: true };
-  // }>;
-  // accessUsers: Prisma.AccessUserGetPayload<{}>[];
-  accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
   accessUsers: Awaited<ReturnType<typeof getAccessUsers>>;
 };
 
@@ -39,37 +34,28 @@ function getAccessUsers({
   });
 }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({
+  request,
+  params: { accessPointId },
+}): Promise<LoaderData> => {
   const userId = await requireUserId(request);
-  invariant(params.accessPointId, "accessPointId not found");
+  invariant(accessPointId, "accessPointId not found");
 
   const accessPoint = await getAccessPointWithHubAndUsers({
-    id: Number(params.accessPointId),
+    id: Number(accessPointId),
     userId,
   });
-  // const accessPoint = await db.accessPoint.findFirst({
-  //   where: {
-  //     id: Number(accessPointId),
-  //     accessHub: { user: { id: userId } },
-  //   },
-  //   include: { accessUsers: true },
-  //   rejectOnNotFound: true,
-  // });
   const notIn = accessPoint.accessUsers.map((el) => el.id);
-  // const accessUsers = await prisma.accessUser.findMany({
-  //   where: {
-  //     id: { notIn },
-  //     deletedAt: new Date(0),
-  //     user: { id: userId },
-  //   },
-  // });
-  const accessUsers = getAccessUsers({ notIn, userId });
-  return { accessPoint, accessUsers };
+  const accessUsers = await getAccessUsers({ notIn, userId });
+  return { accessUsers };
 };
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action: ActionFunction = async ({
+  request,
+  params: { accessPointId },
+}) => {
   const userId = await requireUserId(request);
-  invariant(params.accessPointId, "accessPointId not found");
+  invariant(accessPointId, "accessPointId not found");
 
   const formData = await request.formData();
   // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.
@@ -82,15 +68,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
   }
   if (ids.length > 0) {
-    // const accessPoint = await db.accessPoint.findFirst({
-    //   where: {
-    //     id: Number(accessPointId),
-    //     accessHub: { user: { id: userId } },
-    //   },
-    //   rejectOnNotFound: true,
-    // });
     const accessPoint = await getAccessPoint({
-      id: Number(params.accessPointId),
+      id: Number(accessPointId),
       userId,
     });
 
@@ -100,7 +79,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       data: { accessUsers: { connect: ids.map((id) => ({ id })) } },
     });
   }
-  return redirect(`/access/points/${params.accessPointid}`);
+  return redirect(`/access/points/${accessPointId}`);
 };
 
 export default function RouteComponent() {
