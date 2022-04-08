@@ -93,17 +93,6 @@ export async function updateAccessUser({
   return getAccessUser({ id, userId });
 }
 
-// .accessUser.update({
-//     where: { id: accessUser.id },
-//     data: {
-//       name,
-//       description,
-//       code,
-//       activateCodeAt: activateCodeAtHidden,
-//       expireCodeAt: expireCodeAtHidden,
-//     },
-//   });
-
 // Access events maintain references to deleted access users.
 export async function markAccessUserAsDeleted({
   id,
@@ -128,19 +117,6 @@ export async function markAccessUserAsDeleted({
     },
   });
 }
-
-// // Access events maintain references to deleted access users.
-// export function markAccessUserAsDeleted({ id }: Pick<AccessUser, "id">) {
-//   return prisma.accessUser.update({
-//     where: { id },
-//     data: {
-//       deletedAt: new Date(),
-//       accessPoints: {
-//         set: [],
-//       },
-//     },
-//   });
-// }
 
 export async function addPointsToAccessUser({
   id,
@@ -173,10 +149,3 @@ export async function removePointFromAccessUser({
     },
   });
 }
-
-// await prisma.accessUser.update({
-//     where: { id: Number(accessUserId) },
-//     data: {
-//       accessPoints: { disconnect: { id: Number(accessPointId) } },
-//     },
-//   });

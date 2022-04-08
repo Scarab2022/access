@@ -2,9 +2,8 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Card, Header, Main, Table, Th } from "~/components/lib";
-import { requireUserId } from "~/session.server";
+import { getAccessEvents } from "~/models/accessEvent.server";
 import { getAccessHub } from "~/models/accessHub.server";
-import { getAccessEvents } from "~/models/accessEvent.server"
 
 export const handle = {
   breadcrumb: "Activity",
@@ -15,31 +14,32 @@ type LoaderData = {
   accessEvents: Awaited<ReturnType<typeof getAccessEvents>>;
 };
 
-// function getAccessEvents({ id }: Pick<AccessHub, "id">) {
-//   return prisma.accessEvent.findMany({
-//     where: {
-//       accessPoint: {
-//         accessHub: { id },
-//       },
-//     },
-//     orderBy: { at: "desc" },
-//     include: {
-//       accessUser: true,
-//       accessPoint: true,
-//     },
-//   });
-// }
-
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const userId = await requireUserId(request);
-  invariant(params.accessHubId, "accessHubId not found");
+export const loader: LoaderFunction = async ({
+  params: { customerId, accessHubId },
+}) => {
+  invariant(customerId, "customerId not found");
+  invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({
-    id: Number(params.accessHubId),
-    userId,
+    id: Number(accessHubId),
+    userId: customerId,
   });
   const accessEvents = await getAccessEvents({
-    accessHubId: Number(params.accessHubId),
+    accessHubId: Number(accessHubId),
   });
+
+  // const accessEvents = await db.accessEvent.findMany({
+  //   where: {
+  //     accessPoint: {
+  //       accessHub: { id: accessHub.id },
+  //     },
+  //   },
+  //   orderBy: { at: "desc" },
+  //   include: {
+  //     accessUser: true,
+  //     accessPoint: true,
+  //   },
+  // });
+
   return json<LoaderData>({ accessHub, accessEvents });
 };
 
