@@ -1,6 +1,5 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Prisma } from "@prisma/client";
 import { requireUserId } from "~/session.server";
 import { Header, Main, SettingsForm } from "~/components/lib";
 import { addPointsToAccessUser, getAccessUserWithPoints } from "~/models/accessUser.server";
