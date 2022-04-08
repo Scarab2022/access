@@ -4,18 +4,21 @@ import { prisma } from "~/db.server";
 import { getAccessPoint } from "~/models/accessPoint.server";
 import { requireUserId } from "~/session.server";
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action: ActionFunction = async ({
+  request,
+  params: { accessPointId, accessUserId },
+}) => {
   const userId = await requireUserId(request);
-  invariant(params.accessPointId, "accessPointId not found");
-  invariant(params.accessUserId, "accessUserId not found");
+  invariant(accessPointId, "accessPointId not found");
+  invariant(accessUserId, "accessUserId not found");
   const accessPoint = await getAccessPoint({
-    id: Number(params.accessPointId),
+    id: Number(accessPointId),
     userId,
   });
   await prisma.accessPoint.update({
     where: { id: accessPoint.id },
     data: {
-      accessUsers: { disconnect: { id: Number(params.accessUserId) } },
+      accessUsers: { disconnect: { id: Number(accessUserId) } },
     },
   });
   return redirect(`/access/points/${accessPoint.id}`);

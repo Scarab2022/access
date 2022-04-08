@@ -9,7 +9,6 @@ import {
 import { requireUserId } from "~/session.server";
 import { Menu, Transition } from "@headlessui/react";
 import {
-  CheckIcon,
   ChevronDownIcon,
   LinkIcon,
   LocationMarkerIcon,
@@ -37,42 +36,17 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-// type LoaderData = {
-//   accessPoint: Prisma.AccessPointGetPayload<{
-//     include: {
-//       accessUsers: true;
-//       accessHub: true;
-//     };
-//   }>;
-// };
-
-// export const loader: LoaderFunction = async ({
-//   request,
-//   params: { accessPointId },
-// }): Promise<LoaderData> => {
-//   const { userId } = await requireUserSession(request, "customer");
-//   const accessPoint = await db.accessPoint.findFirst({
-//     where: {
-//       id: Number(accessPointId),
-//       accessHub: { user: { id: userId } },
-//     },
-//     include: {
-//       accessUsers: { orderBy: { name: "asc" } },
-//       accessHub: true,
-//     },
-//     rejectOnNotFound: true,
-//   });
-//   return { accessPoint };
-// };
-
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
-  invariant(params.accessPointId, "accessPointId not found")
-  const accessPoint = await getAccessPointWithHubAndUsers({ id: Number(params.accessPointId), userId });
+  invariant(params.accessPointId, "accessPointId not found");
+  const accessPoint = await getAccessPointWithHubAndUsers({
+    id: Number(params.accessPointId),
+    userId,
+  });
   return json<LoaderData>({ accessPoint });
 };
 
@@ -101,15 +75,6 @@ export default function RouteComponent() {
         side={
           <>
             <span className="hidden sm:block">
-              <Button variant="white" onClick={() => navigate("raw")}>
-                <CheckIcon
-                  className="-ml-1 mr-2 h-5 w-5 text-gray-500"
-                  aria-hidden="true"
-                />
-                Raw
-              </Button>
-            </span>
-            <span className="ml-3 hidden sm:block">
               <Button variant="white" onClick={() => navigate("activity")}>
                 <LinkIcon
                   className="-ml-1 mr-2 h-5 w-5 text-gray-500"

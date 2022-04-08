@@ -14,30 +14,6 @@ import {
   ThSr,
 } from "~/components/lib";
 
-// type LoaderData = {
-//   accessPoints: Prisma.AccessPointGetPayload<{
-//     include: {
-//       accessUsers: true;
-//       accessHub: true;
-//     };
-//   }>[];
-// };
-
-// export const loader: LoaderFunction = async ({
-//   request,
-// }): Promise<LoaderData> => {
-//   const { userId } = await requireUserSession(request, "customer");
-//   const accessPoints = await db.accessPoint.findMany({
-//     where: { accessHub: { user: { id: userId } } },
-//     orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
-//     include: {
-//       accessUsers: { orderBy: { name: "asc" } },
-//       accessHub: true,
-//     },
-//   });
-//   return { accessPoints };
-// };
-
 type LoaderData = {
   accessPoints: Awaited<ReturnType<typeof getLoaderData>>;
 };

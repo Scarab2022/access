@@ -34,3 +34,17 @@ export function getAccessPointWithHubAndUsers({
     rejectOnNotFound: true,
   });
 }
+
+export function getAccessPointsNotIn({
+  notIn,
+  userId,
+}: {
+  notIn: AccessPoint["id"][];
+  userId: User["id"];
+}) {
+  return prisma.accessPoint.findMany({
+    where: { id: { notIn }, accessHub: { user: { id: userId } } },
+    orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
+    include: { accessHub: true },
+  });
+}

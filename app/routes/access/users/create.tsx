@@ -1,46 +1,26 @@
-import {
-  ActionFunction,
-  json,
-  LoaderFunction,
-  redirect,
-} from "@remix-run/node";
-import { useActionData, useLoaderData } from "@remix-run/react";
-import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
-import { getAccessHub } from "~/models/accessHub.server";
-import type { ZodError } from "zod";
-import { z } from "zod";
+import { ActionFunction, redirect } from "@remix-run/node";
+import { useActionData } from "@remix-run/react";
+import { z, ZodError } from "zod";
 import {
   Header,
   Main,
   SettingsForm,
   SettingsFormField,
 } from "~/components/lib";
-import invariant from "tiny-invariant";
+import { createAccessUser } from "~/models/accessUser.server";
+import { requireUserId } from "~/session.server";
 
 export const handle = {
-  breadcrumb: "Edit",
+  breadcrumb: "Create",
 };
 
-type LoaderData = {
-  accessHub: Awaited<ReturnType<typeof getAccessHub>>;
-};
-
-export const loader: LoaderFunction = async ({ request, params }) => {
-  const userId = await requireUserId(request);
-  invariant(params.accessHubId, "accessHubId not found");
-  const accessHub = await getAccessHub({
-    id: Number(params.accessHubId),
-    userId,
-  });
-  return json<LoaderData>({ accessHub });
-};
-
-const FieldValues = z.object({
-  name: z.string().min(1).max(50),
-  description: z.string().max(100),
-});
-// type FieldValues = z.infer<typeof FieldValues>;
+const FieldValues = z
+  .object({
+    name: z.string().min(1).max(50),
+    description: z.string().max(100),
+    code: z.string().min(1).max(50),
+  })
+  .strict();
 
 type ActionData = {
   formErrors?: ZodError["formErrors"];
@@ -49,32 +29,24 @@ type ActionData = {
 
 export const action: ActionFunction = async ({
   request,
-  params,
 }): Promise<Response | ActionData> => {
   const userId = await requireUserId(request);
-  invariant(params.accessHubId, "accessHubId not found");
 
   // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
+  // console.log({ fieldValues, parseResult });
   if (!parseResult.success) {
     return { formErrors: parseResult.error.formErrors, fieldValues };
   }
 
-  // TODO: Ensure user owns access hub before updating.  Put in transaction?
-  // AccessHubWhereUniqueInput in update does not include userId.
-  getAccessHub({ id: Number(params.accessHubId), userId });
-  const { name, description } = parseResult.data;
-  await prisma.accessHub.update({
-    where: { id: Number(params.accessHubId) },
-    data: { name, description },
-  });
+  const { name, description, code } = parseResult.data;
+  const accessUser = await createAccessUser({ name, description, code, userId })
 
-  return redirect(`/access/hubs/${params.accessHubId}`);
+  return redirect(`/access/users/${accessUser.id}`);
 };
 
 export default function RouteComponent() {
-  const { accessHub } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
   return (
     <>
@@ -83,7 +55,8 @@ export default function RouteComponent() {
         <SettingsForm
           replace
           method="post"
-          title="Access Hub Settings"
+          title="Create Access User"
+          submitText="Create"
           formErrors={actionData?.formErrors?.formErrors}
         >
           <SettingsFormField
@@ -96,9 +69,7 @@ export default function RouteComponent() {
               name="name"
               id="name"
               defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.name
-                  : accessHub.name
+                actionData?.fieldValues ? actionData.fieldValues.name : ""
               }
             />
           </SettingsFormField>
@@ -114,7 +85,21 @@ export default function RouteComponent() {
               defaultValue={
                 actionData?.fieldValues
                   ? actionData.fieldValues.description
-                  : accessHub.description
+                  : ""
+              }
+            />
+          </SettingsFormField>
+          <SettingsFormField
+            id="code"
+            label="Code"
+            errors={actionData?.formErrors?.fieldErrors?.code}
+          >
+            <input
+              type="text"
+              name="code"
+              id="code"
+              defaultValue={
+                actionData?.fieldValues ? actionData.fieldValues.code : ""
               }
             />
           </SettingsFormField>
