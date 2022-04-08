@@ -1,4 +1,4 @@
-import { ActionFunction, redirect } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { z, ZodError } from "zod";
 import {
@@ -27,21 +27,26 @@ type ActionData = {
   fieldValues?: any;
 };
 
-export const action: ActionFunction = async ({
-  request,
-}): Promise<Response | ActionData> => {
+export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
 
   // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
-  // console.log({ fieldValues, parseResult });
   if (!parseResult.success) {
-    return { formErrors: parseResult.error.formErrors, fieldValues };
+    return json<ActionData>({
+      formErrors: parseResult.error.formErrors,
+      fieldValues,
+    });
   }
 
   const { name, description, code } = parseResult.data;
-  const accessUser = await createAccessUser({ name, description, code, userId })
+  const accessUser = await createAccessUser({
+    name,
+    description,
+    code,
+    userId,
+  });
 
   return redirect(`/access/users/${accessUser.id}`);
 };

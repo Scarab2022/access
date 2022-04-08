@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { requireUserId } from "~/session.server";
 import { Header, Main, SettingsForm } from "~/components/lib";
 import { addPointsToAccessUser, getAccessUserWithPoints } from "~/models/accessUser.server";
-import { invariant } from "react-router/lib/router";
+import invariant from "tiny-invariant";
 import { getAccessPointsNotIn } from "~/models/accessPoint.server";
 
 export const handle = {
@@ -12,12 +12,7 @@ export const handle = {
 };
 
 type LoaderData = {
-  // accessUser: Prisma.AccessUserGetPayload<{
-  //   include: { accessPoints: true };
-  // }>;
-  accessPoints: Prisma.AccessPointGetPayload<{
-    include: { accessHub: true };
-  }>[];
+  accessPoints: Awaited<ReturnType<typeof getAccessPointsNotIn>>;
 };
 
 export const loader: LoaderFunction = async ({
@@ -25,21 +20,12 @@ export const loader: LoaderFunction = async ({
   params: { accessUserId },
 }) => {
   const userId = await requireUserId(request);
-  // const accessUser = await db.accessUser.findFirst({
-  //   where: { id: Number(id), user: { id: userId } },
-  //   include: { accessPoints: true },
-  //   rejectOnNotFound: true,
-  // });
+  invariant(accessUserId, "accessUserId not found")
   const accessUser = await getAccessUserWithPoints({
     id: Number(accessUserId),
     userId,
   });
   const notIn = accessUser.accessPoints.map((el) => el.id);
-  // const accessPoints = await db.accessPoint.findMany({
-  //   where: { id: { notIn }, accessHub: { user: { id: userId } } },
-  //   orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
-  //   include: { accessHub: true },
-  // });
   const accessPoints = await getAccessPointsNotIn({notIn, userId})
   return json<LoaderData>({ accessPoints });
 };
@@ -64,15 +50,6 @@ export const action: ActionFunction = async ({
   if (accessPointIds.length > 0) {
     // TODO: validate ids of access points belong to user.
     await addPointsToAccessUser({id: Number(accessUserId), userId, accessPointIds})
-    // const accessUser = await db.accessUser.findFirst({
-    //   where: { id: Number(accessUserId), user: { id: userId } },
-    //   rejectOnNotFound: true,
-    // });
-
-    // await db.accessUser.update({
-    //   where: { id: accessUser.id },
-    //   data: { accessPoints: { connect: ids.map((id) => ({ id })) } },
-    // });
   }
   return redirect(`/access/users/${accessUserId}`);
 };

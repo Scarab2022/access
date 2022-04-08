@@ -31,11 +31,11 @@ type LoaderData = { accessUser: Awaited<ReturnType<typeof getAccessUser>> };
 export const loader: LoaderFunction = async ({
   request,
   params: { accessUserId },
-}): Promise<LoaderData> => {
+}) => {
   const userId = await requireUserId(request);
   invariant(accessUserId, "accessUserId not found");
   const accessUser = await getAccessUser({ id: Number(accessUserId), userId });
-  return { accessUser };
+  return json<LoaderData>({ accessUser });
 };
 
 const FieldValues = z
@@ -108,16 +108,6 @@ export const action: ActionFunction = async ({
     userId,
   });
 
-  // await db.accessUser.update({
-  //   where: { id: accessUser.id },
-  //   data: {
-  //     name,
-  //     description,
-  //     code,
-  //     activateCodeAt: activateCodeAtHidden,
-  //     expireCodeAt: expireCodeAtHidden,
-  //   },
-  // });
   return redirect(`/access/users/${accessUserId}`);
 };
 

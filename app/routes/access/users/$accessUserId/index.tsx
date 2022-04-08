@@ -21,7 +21,7 @@ import {
   ThSr,
 } from "~/components/lib";
 import { PencilIcon } from "@heroicons/react/solid";
-import { invariant } from "react-router/lib/router";
+import invariant from "tiny-invariant";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
 
 type LoaderData = {
@@ -34,20 +34,6 @@ export const loader: LoaderFunction = async ({
 }) => {
   const userId = await requireUserId(request);
   invariant(accessUserId, "accessUserId not found");
-  // const accessUser = await db.accessUser.findFirst({
-  //   where: {
-  //     id: Number(accessUserId),
-  //     deletedAt: new Date(0),
-  //     user: { id: userId },
-  //   },
-  //   include: {
-  //     accessPoints: {
-  //       orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
-  //       include: { accessHub: true },
-  //     },
-  //   },
-  //   rejectOnNotFound: true,
-  // });
   const accessUser = await getAccessUserWithPoints({
     id: Number(accessUserId),
     userId,
@@ -120,7 +106,7 @@ export default function RouteComponent() {
           />
         </DlCard>
         <Card
-          title="Accessible Points"
+          title="Access Points"
           side={<Button onClick={() => navigate("points/add")}>Add</Button>}
         >
           <Table
