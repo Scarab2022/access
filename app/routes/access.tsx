@@ -6,6 +6,8 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
 import avatarHref from "~/assets/avatar.jpg";
+import { LoaderFunction } from "@remix-run/node";
+import { requireRole } from "~/session.server";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -18,6 +20,11 @@ export const handle = {
       <span className="sr-only">Home</span>
     </Link>
   ),
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  await requireRole(request, "customer");
+  return null;
 };
 
 const user = {
