@@ -16,6 +16,7 @@
 
 ## Dev Database
 
+- npx prisma db push --force-reset && npx prisma db seed
 - npx prisma db push --force-reset
 - npx prisma db seed
 - npx prisma migrate dev
