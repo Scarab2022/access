@@ -26,16 +26,6 @@ export const loader: LoaderFunction = async ({
 }) => {
   invariant(customerId, "customerId not found");
   invariant(accessPointId, "accessPointId not found");
-  // const accessPoint = await db.accessPoint.findFirst({
-  //   where: {
-  //     id: Number(accessPointId),
-  //     accessHub: { user: { id: Number(customerId) } },
-  //   },
-  //   include: {
-  //     accessUsers: { orderBy: { name: "asc" } },
-  //   },
-  //   rejectOnNotFound: true,
-  // });
   const accessPoint = await getAccessPointWithHubAndUsers({
     id: Number(accessPointId),
     userId: customerId,

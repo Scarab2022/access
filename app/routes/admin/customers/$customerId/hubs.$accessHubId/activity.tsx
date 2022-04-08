@@ -26,20 +26,6 @@ export const loader: LoaderFunction = async ({
   const accessEvents = await getAccessEvents({
     accessHubId: Number(accessHubId),
   });
-
-  // const accessEvents = await db.accessEvent.findMany({
-  //   where: {
-  //     accessPoint: {
-  //       accessHub: { id: accessHub.id },
-  //     },
-  //   },
-  //   orderBy: { at: "desc" },
-  //   include: {
-  //     accessUser: true,
-  //     accessPoint: true,
-  //   },
-  // });
-
   return json<LoaderData>({ accessHub, accessEvents });
 };
 

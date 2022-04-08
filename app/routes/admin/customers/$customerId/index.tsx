@@ -22,12 +22,6 @@ import invariant from "tiny-invariant";
 
 type LoaderData = {
   customer: Awaited<ReturnType<typeof getCustomer>>;
-  // customer: Prisma.UserGetPayload<{
-  //   include: {
-  //     accessUsers: true;
-  //     accessHubs: true;
-  //   };
-  // }>;
 };
 
 function getCustomer(id: User["id"]) {
@@ -49,19 +43,6 @@ export const loader: LoaderFunction = async ({
   params: { customerId },
 }) => {
   invariant(customerId, 'customerId not found')
-  // const customer = await db.user.findFirst({
-  //   where: {
-  //     id: Number(customerId),
-  //   },
-  //   include: {
-  //     accessUsers: {
-  //       where: { deletedAt: new Date(0) },
-  //       orderBy: { name: "asc" },
-  //     },
-  //     accessHubs: { orderBy: { name: "asc" } },
-  //   },
-  //   rejectOnNotFound: true,
-  // });
   const customer = await getCustomer(customerId);
   return json<LoaderData>({ customer });
 };

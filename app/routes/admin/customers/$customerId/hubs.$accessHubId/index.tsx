@@ -19,11 +19,6 @@ import { prisma } from "~/db.server";
 
 type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHub>>;
-  // accessHub: Prisma.AccessHubGetPayload<{
-  //   include: {
-  //     accessPoints: true;
-  //   };
-  // }>;
 };
 
 function getAccessHub(id: AccessHub["id"], customerId: User["id"]) {
@@ -45,16 +40,6 @@ export const loader: LoaderFunction = async ({
 }) => {
   invariant(customerId, "customerId not found");
   invariant(accessHubId, "accessHubId not found");
-  // const accessHub = await db.accessHub.findFirst({
-  //   where: {
-  //     id: Number(customerId),
-  //     user: { id: Number(customerId) },
-  //   },
-  //   include: {
-  //     accessPoints: { orderBy: { position: "asc" } },
-  //   },
-  //   rejectOnNotFound: true,
-  // });
   const accessHub = await getAccessHub(Number(accessHubId), customerId);
   return json<LoaderData>({ accessHub });
 };
