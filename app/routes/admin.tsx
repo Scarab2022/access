@@ -35,7 +35,6 @@ const user = {
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
-  // { name: "Sign out", href: "#" },
 ];
 
 const navigation = [
@@ -133,10 +132,10 @@ function Layout({ children }: { children: React.ReactNode }) {
                             )}
                           </Menu.Item>
                         ))}
-                        <Menu.Item key="signOut">
+                        <Menu.Item key="logout">
                           {({ active }) => (
                             <a
-                              href="#"
+                              href="."
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -144,12 +143,12 @@ function Layout({ children }: { children: React.ReactNode }) {
                               onClick={(e) => {
                                 e.preventDefault();
                                 submit(null, {
-                                  action: "/signout",
+                                  action: "/logout",
                                   method: "post",
                                 });
                               }}
                             >
-                              Sign out
+                              Log out
                             </a>
                           )}
                         </Menu.Item>
@@ -227,19 +226,19 @@ function Layout({ children }: { children: React.ReactNode }) {
                       {item.name}
                     </Disclosure.Button>
                   ))}
-                  <Disclosure.Button key="signOut" as={Fragment}>
+                  <Disclosure.Button key="logout" as={Fragment}>
                     <a
-                      href="#"
+                      href="."
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                       onClick={(e) => {
                         e.preventDefault();
                         submit(null, {
-                          action: "/signout",
+                          action: "/logout",
                           method: "post",
                         });
                       }}
                     >
-                      Sign out
+                      Log out
                     </a>
                   </Disclosure.Button>
                 </div>
