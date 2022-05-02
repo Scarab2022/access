@@ -2,7 +2,7 @@ import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
 import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
 import avatarHref from "~/assets/avatar.jpg";
@@ -90,14 +90,6 @@ function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                  <button
-                    type="button"
-                    className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
@@ -138,7 +130,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                         <Menu.Item key="signOut">
                           {({ active }) => (
                             <a
-                              href="#"
+                              href="."
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
@@ -210,13 +202,6 @@ function Layout({ children }: { children: React.ReactNode }) {
                       {user.email}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
                 </div>
                 <div className="mt-3 space-y-1">
                   {userNavigation.map((item) => (
@@ -231,7 +216,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                   ))}
                   <Disclosure.Button key="signOut" as={Fragment}>
                     <a
-                      href="#"
+                      href="."
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                       onClick={(e) => {
                         e.preventDefault();
