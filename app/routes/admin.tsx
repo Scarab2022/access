@@ -4,7 +4,6 @@ import {
   NavLink,
   Outlet,
   useSubmit,
-  useLoaderData,
 } from "@remix-run/react";
 import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
 import { Fragment } from "react";
@@ -13,7 +12,8 @@ import { UserIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
 import { requireRole } from "~/session.server";
-import { json, LoaderFunction } from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
+import { useUser } from "~/utils";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -28,13 +28,9 @@ export const handle = {
   ),
 };
 
-type LoaderData = {
-  user: Awaited<ReturnType<typeof requireRole>>;
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await requireRole(request, "admin");
-  return json<LoaderData>({ user });
+  await requireRole(request, "admin");
+  return null;
 };
 
 const navigation = [
@@ -43,7 +39,7 @@ const navigation = [
 ];
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { user } = useLoaderData<LoaderData>();
+  const user = useUser();
   const submit = useSubmit();
   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   // With page heading and stacked list
