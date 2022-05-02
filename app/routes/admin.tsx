@@ -1,4 +1,11 @@
-import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
+import {
+  Link,
+  useMatches,
+  NavLink,
+  Outlet,
+  useSubmit,
+  useLoaderData,
+} from "@remix-run/react";
 import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -6,7 +13,7 @@ import { UserIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
 import { requireRole } from "~/session.server";
-import { LoaderFunction } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -21,19 +28,14 @@ export const handle = {
   ),
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  await requireRole(request, "admin");
-  return null;
+type LoaderData = {
+  user: Awaited<ReturnType<typeof requireRole>>;
 };
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await requireRole(request, "admin");
+  return json<LoaderData>({ user });
 };
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-];
 
 const navigation = [
   { name: "Dashboard", to: "dashboard" },
@@ -41,6 +43,7 @@ const navigation = [
 ];
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const { user } = useLoaderData<LoaderData>();
   const submit = useSubmit();
   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   // With page heading and stacked list
@@ -84,9 +87,12 @@ function Layout({ children }: { children: React.ReactNode }) {
                     ))}
                   </div>
                 </div>
-                <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                <div className="hidden sm:flex sm:items-center sm:gap-2">
                   {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
+                  <div className="text-sm font-medium text-gray-500">
+                    {user.email}
+                  </div>
+                  <Menu as="div" className="relative">
                     <div>
                       <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <span className="sr-only">Open user menu</span>
@@ -103,21 +109,6 @@ function Layout({ children }: { children: React.ReactNode }) {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {userNavigation.map((item) => (
-                          <Menu.Item key={item.name}>
-                            {({ active }) => (
-                              <a
-                                href={item.href}
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                {item.name}
-                              </a>
-                            )}
-                          </Menu.Item>
-                        ))}
                         <Menu.Item key="logout">
                           {({ active }) => (
                             <a
@@ -141,6 +132,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                       </Menu.Items>
                     </Transition>
                   </Menu>
+                  
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   {/* Mobile menu button */}
@@ -182,25 +174,12 @@ function Layout({ children }: { children: React.ReactNode }) {
                     <UserIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
-                      {user.name}
-                    </div>
                     <div className="text-sm font-medium text-gray-500">
                       {user.email}
                     </div>
                   </div>
                 </div>
                 <div className="mt-3 space-y-1">
-                  {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
                   <Disclosure.Button key="logout" as={Fragment}>
                     <a
                       href="."

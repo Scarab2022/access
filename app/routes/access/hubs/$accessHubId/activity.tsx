@@ -15,21 +15,6 @@ type LoaderData = {
   accessEvents: Awaited<ReturnType<typeof getAccessEvents>>;
 };
 
-// function getAccessEvents({ id }: Pick<AccessHub, "id">) {
-//   return prisma.accessEvent.findMany({
-//     where: {
-//       accessPoint: {
-//         accessHub: { id },
-//       },
-//     },
-//     orderBy: { at: "desc" },
-//     include: {
-//       accessUser: true,
-//       accessPoint: true,
-//     },
-//   });
-// }
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
   invariant(params.accessHubId, "accessHubId not found");
