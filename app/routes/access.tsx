@@ -2,10 +2,9 @@ import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
 import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { MenuIcon, XIcon, UserIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
-import avatarHref from "~/assets/avatar.jpg";
 import { LoaderFunction } from "@remix-run/node";
 import { requireRole } from "~/session.server";
 
@@ -30,12 +29,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
-  imageUrl: avatarHref,
 };
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
-  // { name: "Sign out", href: "#" },
 ];
 
 const navigation = [
@@ -95,11 +92,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                     <div>
                       <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
-                        />
+                        <UserIcon className="h-6 w-6" aria-hidden="true" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -188,11 +181,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               <div className="border-t border-gray-200 pt-4 pb-3">
                 <div className="flex items-center px-4">
                   <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
+                    <UserIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">
