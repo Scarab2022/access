@@ -17,7 +17,16 @@ export default function Index() {
           </h1>
           <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
             {user ? (
-              "user"
+              <Link
+                to={
+                  user.role === "admin"
+                    ? "/admin/dashboard"
+                    : "/access/dashboard"
+                }
+                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
+              >
+                Enter
+              </Link>
             ) : (
               <>
                 <div className="rounded-md shadow">
