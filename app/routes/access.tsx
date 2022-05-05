@@ -7,6 +7,7 @@ import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
 import { LoaderFunction } from "@remix-run/node";
 import { requireRole } from "~/session.server";
+import { useUser } from "~/utils";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -26,10 +27,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   return null;
 };
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-};
 const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
@@ -43,6 +40,7 @@ const navigation = [
 ];
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const user = useUser();
   const submit = useSubmit();
   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   // With page heading and stacked list
@@ -59,12 +57,12 @@ function Layout({ children }: { children: React.ReactNode }) {
                     <img
                       className="block h-8 w-auto lg:hidden"
                       src={logoHref}
-                      alt="Workflow"
+                      alt="Access"
                     />
                     <img
                       className="hidden h-8 w-auto lg:block"
                       src={logoHref}
-                      alt="Workflow"
+                      alt="Access"
                     />
                   </div>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
@@ -183,13 +181,8 @@ function Layout({ children }: { children: React.ReactNode }) {
                   <div className="flex-shrink-0">
                     <UserIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium text-gray-800">
-                      {user.name}
-                    </div>
-                    <div className="text-sm font-medium text-gray-500">
+                  <div className="ml-3 text-sm font-medium text-gray-500">
                       {user.email}
-                    </div>
                   </div>
                 </div>
                 <div className="mt-3 space-y-1">
