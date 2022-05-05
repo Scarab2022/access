@@ -66,7 +66,11 @@ export const action: ActionFunction = async ({ request }) => {
     userId: user.id,
     remember: remember === "on" ? true : false,
     redirectTo:
-      typeof redirectTo === "string" ? redirectTo : "/access/dashboard",
+      typeof redirectTo === "string" && redirectTo !== ""
+        ? redirectTo
+        : user.role === "admin"
+        ? "/admin/dashboard"
+        : "/access/dashboard",
   });
 };
 
@@ -78,7 +82,8 @@ export const meta: MetaFunction = () => {
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/access/dashboard";
+  // const redirectTo = searchParams.get("redirectTo") || "/access/dashboard";
+  const redirectTo = searchParams.get("redirectTo") || "";
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -171,18 +176,21 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            <div className="text-center text-sm text-gray-500">
-              Don't have an account?{" "}
-              <Link
-                className="text-blue-500 underline"
-                to={{
-                  pathname: "/join",
-                  search: searchParams.toString(),
-                }}
-              >
-                Sign up
-              </Link>
-            </div>
+            <Link to="/forgot" className="text-sm text-blue-500 underline">
+              Forgot password?
+            </Link>
+          </div>
+          <div className="text-center text-sm text-gray-500">
+            Don't have an account?{" "}
+            <Link
+              className="text-blue-500 underline"
+              to={{
+                pathname: "/join",
+                search: searchParams.toString(),
+              }}
+            >
+              Sign up
+            </Link>
           </div>
         </Form>
       </div>
