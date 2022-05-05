@@ -1,10 +1,12 @@
 import type { Password, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
-
+import * as crypto from "crypto";
 import { prisma } from "~/db.server";
 
-export type { User } from "@prisma/client";
-export type Role = 'customer' | 'admin';
+export type { User, Password } from "@prisma/client";
+export type Role = "customer" | "admin";
+
+const BCRYPT_ROUNDS = 10;
 
 export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
@@ -14,8 +16,16 @@ export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
 
-export async function createUser(email: User["email"], password: string, role: Role) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+function hashPassword(password: string) {
+  return bcrypt.hash(password, BCRYPT_ROUNDS);
+}
+
+export async function createUser(
+  email: User["email"],
+  password: string,
+  role: Role
+) {
+  const hashedPassword = await hashPassword(password);
 
   return prisma.user.create({
     data: {
@@ -63,3 +73,52 @@ export async function verifyLogin(
   return userWithoutPassword;
 }
 
+export async function resetPassword({
+  email,
+  token,
+  password,
+}: {
+  email: User["email"];
+  token: string;
+  password: string;
+}) {
+  const userWithPassword = await prisma.user.findUnique({
+    where: { email },
+    include: {
+      password: true,
+    },
+  });
+  if (
+    !userWithPassword ||
+    !userWithPassword.password ||
+    !userWithPassword.password.resetPasswordExpireAt ||
+    userWithPassword.password.resetPasswordExpireAt.getTime() < Date.now() ||
+    !userWithPassword.password.resetPasswordHash ||
+    !(await bcrypt.compare(token, userWithPassword.password.resetPasswordHash))
+  ) {
+    throw new Error("Invalid or expired password reset");
+  }
+
+  const hashedPassword = await hashPassword(password);
+  return prisma.user.update({
+    where: { email },
+    data: {
+      password: {
+        update: { hash: hashedPassword },
+      },
+    },
+  });
+}
+
+export async function generatePasswordResetTokenAndHash() {
+  const token = crypto.randomBytes(32).toString("hex");
+  const hash = await bcrypt.hash(token, BCRYPT_ROUNDS);
+  return { token, hash };
+}
+
+export async function comparePasswordResetTokenAndHash(
+  token: string,
+  hash: string
+) {
+  return await bcrypt.compare(token, hash);
+}
