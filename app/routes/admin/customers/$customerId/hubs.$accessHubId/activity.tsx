@@ -20,11 +20,11 @@ export const loader: LoaderFunction = async ({
   invariant(customerId, "customerId not found");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({
-    id: Number(accessHubId),
+    id: accessHubId,
     userId: customerId,
   });
   const accessEvents = await getAccessEvents({
-    accessHubId: Number(accessHubId),
+    accessHubId,
   });
   return json<LoaderData>({ accessHub, accessEvents });
 };

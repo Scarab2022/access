@@ -61,7 +61,7 @@ model AccessUser {
 }
 
 model AccessHub {
-  id                Int @id @default(autoincrement())
+  id                String @id @default(cuid())
   name              String @default("Hub")
   description       String @default("") 
   heartbeatAt       DateTime?
@@ -76,7 +76,7 @@ model AccessPoint {
   description       String    @default("")
   accessUsers       AccessUser[]
   accessHub         AccessHub @relation(fields: [accessHubId], references: [id])
-  accessHubId       Int 
+  accessHubId       String 
   position          Int
   accessEvents      AccessEvent[]
 
