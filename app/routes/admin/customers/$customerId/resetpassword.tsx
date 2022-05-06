@@ -4,10 +4,7 @@ import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Card, Header, Main } from "~/components/lib";
 import { prisma } from "~/db.server";
-// import {
-//   generatePasswordResetTokenAndHash,
-//   requireUserSession,
-// } from "~/utils/session.server";
+import { setUpResetPassword } from "~/models/user.server";
 
 export const handle = {
   breadcrumb: "Reset Password",
@@ -42,25 +39,26 @@ export const action: ActionFunction = async ({
   request,
   params: { customerId },
 }): Promise<ActionData> => {
-  // const { token, hash } = await generatePasswordResetTokenAndHash();
-  const token = "token";
-  const resetPasswordExpireAt = new Date(Date.now() + 1000 * 60 * 60 * 6);
-  // const customer = await db.user.update({
-  //   data: {
-  //     resetPasswordHash: hash,
-  //     resetPasswordExpireAt,
-  //   },
-  //   where: { id: Number(customerId) },
-  // });
-
+  invariant(customerId, "customerId not found");
+  const { user, token } = await setUpResetPassword({
+    id: customerId,
+    resetPasswordExpireAt: new Date(Date.now() + 1000 * 60 * 60 * 6),
+  });
   const url = new URL(request.url);
   url.pathname = "/resetpassword";
   const urlSearchParams = new URLSearchParams({
-    // email: customer.email,
+    email: user.email,
     token,
   });
   url.search = urlSearchParams.toString();
-  return { resetPasswordHref: url.toString(), resetPasswordExpireAt };
+  invariant(
+    user.password?.resetPasswordExpireAt,
+    "resetPasswordExpireAt not found"
+  );
+  return {
+    resetPasswordHref: url.toString(),
+    resetPasswordExpireAt: user.password.resetPasswordExpireAt,
+  };
 };
 
 export default function RouteComponent() {

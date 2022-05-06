@@ -110,15 +110,27 @@ export async function resetPassword({
   });
 }
 
-export async function generatePasswordResetTokenAndHash() {
+export async function setUpResetPassword({
+  id,
+  resetPasswordExpireAt,
+}: {
+  id: User["id"];
+  resetPasswordExpireAt: Date;
+}) {
   const token = crypto.randomBytes(32).toString("hex");
   const hash = await bcrypt.hash(token, BCRYPT_ROUNDS);
-  return { token, hash };
-}
-
-export async function comparePasswordResetTokenAndHash(
-  token: string,
-  hash: string
-) {
-  return await bcrypt.compare(token, hash);
+  const user = await prisma.user.update({
+    data: {
+      password: {
+        update: { resetPasswordHash: hash, resetPasswordExpireAt },
+      },
+    },
+    include: {
+      password: {
+        select: { resetPasswordHash: true, resetPasswordExpireAt: true },
+      },
+    },
+    where: { id },
+  });
+  return { user, token };
 }
