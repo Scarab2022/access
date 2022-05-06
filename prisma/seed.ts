@@ -84,6 +84,7 @@ async function seed() {
 
   await prisma.accessHub.create({
     data: {
+      id: "cl2uwi6uv0030ybthbkls5w0i",
       name: "Brooklyn BnB",
       userId: user.id,
       accessPoints: {

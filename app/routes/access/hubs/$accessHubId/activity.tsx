@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 import { Card, Header, Main, Table, Th } from "~/components/lib";
 import { requireUserId } from "~/session.server";
 import { getAccessHub } from "~/models/accessHub.server";
-import { getAccessEvents } from "~/models/accessEvent.server"
+import { getAccessEvents } from "~/models/accessEvent.server";
 
 export const handle = {
   breadcrumb: "Activity",
@@ -15,16 +15,17 @@ type LoaderData = {
   accessEvents: Awaited<ReturnType<typeof getAccessEvents>>;
 };
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({
+  request,
+  params: { accessHubId },
+}) => {
   const userId = await requireUserId(request);
-  invariant(params.accessHubId, "accessHubId not found");
+  invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({
-    id: Number(params.accessHubId),
+    id: accessHubId,
     userId,
   });
-  const accessEvents = await getAccessEvents({
-    accessHubId: Number(params.accessHubId),
-  });
+  const accessEvents = await getAccessEvents({ accessHubId });
   return json<LoaderData>({ accessHub, accessEvents });
 };
 

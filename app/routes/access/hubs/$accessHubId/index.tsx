@@ -8,7 +8,6 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link, useNavigate } from "@remix-run/react";
-import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
 import {
   Button,
@@ -21,35 +20,24 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
-import { AccessHub, User } from "@prisma/client";
 import invariant from "tiny-invariant";
+import { getAccessHubWithPoints } from "~/models/accessHub.server";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type LoaderData = {
-  accessHub: Awaited<ReturnType<typeof getLoaderData>>;
+  accessHub: Awaited<ReturnType<typeof getAccessHubWithPoints>>;
 };
-
-function getLoaderData({ id, userId }: Pick<AccessHub, "id"> & {
-  userId: User["id"];
-}) {
-  return prisma.accessHub.findFirst({
-    where: { id, user: { id: userId } },
-    include: {
-      accessPoints: {
-        orderBy: { position: "asc" },
-      },
-    },
-    rejectOnNotFound: true,
-  });
-}
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = await requireUserId(request);
-  invariant(params.accessHubId, "accessHubId not found")
-  const accessHub = await getLoaderData({ id: Number(params.accessHubId), userId });
+  invariant(params.accessHubId, "accessHubId not found");
+  const accessHub = await getAccessHubWithPoints({
+    id: params.accessHubId,
+    userId,
+  });
   return json<LoaderData>({ accessHub });
 };
 
