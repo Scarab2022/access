@@ -1,7 +1,7 @@
 import { ActionFunction, json } from "@remix-run/node";
 import * as _ from "lodash";
 import { z } from "zod";
-import { Prisma } from "@prisma/client";
+import { AccessHub, Prisma } from "@prisma/client";
 import { prisma } from "~/db.server";
 
 const accessHubSelect = Prisma.validator<Prisma.AccessHubArgs>()({
@@ -25,7 +25,7 @@ const accessHubSelect = Prisma.validator<Prisma.AccessHubArgs>()({
   },
 });
 
-const accessUserSelect = (accessHubId: number) => {
+const accessUserSelect = (accessHubId: AccessHub["id"]) => {
   return Prisma.validator<Prisma.AccessUserArgs>()({
     select: {
       id: true,
@@ -47,7 +47,7 @@ type AccessUser = Prisma.AccessUserGetPayload<
 const HeartbeatRequestData = z.object({
   accessHub: z
     .object({
-      id: z.number().int(),
+      id: z.string(),
       cloudLastAccessEventAt: z // JSON date
         .string()
         .min(1)
@@ -80,14 +80,14 @@ const HeartbeatRequestData = z.object({
 
 type HeartbeatResponseData = {
   accessHub: {
-    id: number;
+    id: AccessHub["id"];
     cloudLastAccessEventAt: string; // JSON date
     accessUsers: AccessUser[];
   };
 };
 
 // Returns new Date(0) if no access events.
-async function lastAccessEventAt(accessHubId: number) {
+async function lastAccessEventAt(accessHubId: AccessHub["id"]) {
   const lastAccessEvent = await prisma.accessEvent.findFirst({
     where: {
       accessPoint: { accessHub: { id: accessHubId } },
