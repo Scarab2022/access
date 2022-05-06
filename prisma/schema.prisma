@@ -61,12 +61,12 @@ model AccessUser {
 }
 
 model AccessHub {
-  id                Int            @id @default(autoincrement())
-  name              String         @default("Hub")
-  description       String         @default("") 
+  id                Int @id @default(autoincrement())
+  name              String @default("Hub")
+  description       String @default("") 
   heartbeatAt       DateTime?
   accessPoints      AccessPoint[] 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user              User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId            String
 }
 
