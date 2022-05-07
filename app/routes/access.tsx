@@ -52,19 +52,10 @@ function Layout({ children }: { children: React.ReactNode }) {
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 justify-between">
-                <div className="flex">
-                  <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-8 w-auto lg:hidden"
-                      src={logoHref}
-                      alt="Access"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src={logoHref}
-                      alt="Access"
-                    />
-                  </div>
+                <div className="flex items-center">
+                  <Link to="/" className="flex-shrink-0">
+                    <img className="h-8 w-auto" src={logoHref} alt="Access" />
+                  </Link>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                     {navigation.map((item) => (
                       <NavLink
@@ -182,7 +173,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                     <UserIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
                   <div className="ml-3 text-sm font-medium text-gray-500">
-                      {user.email}
+                    {user.email}
                   </div>
                 </div>
                 <div className="mt-3 space-y-1">
