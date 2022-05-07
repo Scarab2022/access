@@ -1,10 +1,4 @@
-import {
-  Link,
-  useMatches,
-  NavLink,
-  Outlet,
-  useSubmit,
-} from "@remix-run/react";
+import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
 import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -51,19 +45,10 @@ function Layout({ children }: { children: React.ReactNode }) {
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 justify-between">
-                <div className="flex">
-                  <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-8 w-auto lg:hidden"
-                      src={logoHref}
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src={logoHref}
-                      alt="Workflow"
-                    />
-                  </div>
+                <div className="flex items-center">
+                  <Link to="/" className="flex-shrink-0">
+                    <img className="h-8 w-auto" src={logoHref} alt="Access" />
+                  </Link>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                     {navigation.map((item) => (
                       <NavLink
@@ -128,7 +113,6 @@ function Layout({ children }: { children: React.ReactNode }) {
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                  
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   {/* Mobile menu button */}

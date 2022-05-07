@@ -176,12 +176,12 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            <Link
+            {/* <Link
               to="/resetpassword"
               className="text-sm text-blue-500 underline"
             >
               Forgot password?
-            </Link>
+            </Link> */}
           </div>
           <div className="text-center text-sm text-gray-500">
             Don't have an account?{" "}
