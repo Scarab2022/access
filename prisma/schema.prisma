@@ -68,6 +68,14 @@ model AccessHub {
   accessPoints      AccessPoint[] 
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId            String
+  apiToken          ApiToken? 
+}
+
+model ApiToken {
+  token             String @default("")
+
+  accessHub         AccessHub @relation(fields: [accessHubId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  accessHubId       String @unique
 }
 
 model AccessPoint {

@@ -6,6 +6,9 @@ import { prisma } from "~/db.server";
 const accessHubSelect = Prisma.validator<Prisma.AccessHubArgs>()({
   select: {
     id: true,
+    apiToken: {
+      select: { token: true },
+    },
     accessPoints: {
       select: {
         id: true,
@@ -46,7 +49,8 @@ type AccessUser = Prisma.AccessUserGetPayload<
 const HeartbeatRequestData = z.object({
   accessHub: z
     .object({
-      id: z.string(),
+      id: z.string().min(1),
+      apiToken: z.string().min(1),
       cloudLastAccessEventAt: z // JSON date
         .string()
         .min(1)
@@ -75,7 +79,6 @@ const HeartbeatRequestData = z.object({
     })
     .strict(),
 });
-// type HeartbeatRequestData = z.infer<typeof HeartbeatRequestData>;
 
 type HeartbeatResponseData = {
   accessHub: {
@@ -117,6 +120,14 @@ export const action: ActionFunction = async ({ request }) => {
     return new Response(`Access hub ${data.accessHub.id} not found.`, {
       status: 404,
     });
+  }
+
+  if (
+    !accessHub.apiToken?.token ||
+    accessHub.apiToken.token.length === 0 ||
+    accessHub.apiToken.token !== parseResult.data.accessHub.apiToken
+  ) {
+    return new Response("Invalid api token", { status: 401 });
   }
 
   const { cloudLastAccessEventAt, accessEvents } = parseResult.data.accessHub;

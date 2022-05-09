@@ -87,6 +87,12 @@ async function seed() {
       id: "cl2uwi6uv0030ybthbkls5w0i",
       name: "Brooklyn BnB",
       userId: user.id,
+      apiToken: {
+        create: {
+          token:
+            "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e331",
+        },
+      },
       accessPoints: {
         create: [
           {

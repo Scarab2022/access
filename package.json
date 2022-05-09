@@ -35,7 +35,7 @@
     "/public/build"
   ],
   "dependencies": {
-    "@headlessui/react": "^1.5.0",
+    "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
     "@prisma/client": "^3.13.0",
     "@remix-run/express": "^1.3.4",
