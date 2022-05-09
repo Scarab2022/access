@@ -95,6 +95,34 @@ function MySwitch({
   );
 }
 
+MySwitch.Group = ({
+  as = "div",
+  className,
+  ...props
+}: Parameters<typeof Switch.Group>[0]) => {
+  return (
+    <Switch.Group
+      {...props}
+      as={as}
+      className={className ? className : "flex items-center"}
+    />
+  );
+};
+
+MySwitch.Label = ({
+  as = "span",
+  className,
+  ...props
+}: Parameters<typeof Switch.Label>[0]) => {
+  return (
+    <Switch.Label
+      {...props}
+      as={as}
+      className={classNames(className, "text-sm font-medium text-gray-900")}
+    />
+  );
+};
+
 export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
@@ -113,15 +141,10 @@ export default function RouteComponent() {
       <Header
         title="Dashboard"
         side={
-          <Switch.Group as="div" className="flex items-center">
+          <MySwitch.Group>
             <MySwitch checked={isPolling} onChange={setIsPolling} />
-            <Switch.Label
-              as="span"
-              className="ml-3 text-sm font-medium text-gray-900"
-            >
-              Poll
-            </Switch.Label>
-          </Switch.Group>
+            <MySwitch.Label className="ml-3">Poll</MySwitch.Label>
+          </MySwitch.Group>
         }
       />
       <Main>

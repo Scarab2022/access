@@ -1,7 +1,13 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { FormProps, RemixLinkProps } from "@remix-run/react/components";
 import React from "react";
-import { Form, Link, useCatch, useMatches, useNavigate } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useCatch,
+  useMatches,
+  useNavigate,
+} from "@remix-run/react";
 
 function classNames(...classes: Array<string | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -76,7 +82,7 @@ export function Breadcrumbs() {
   const matches = useMatches();
   return (
     <nav className="flex" aria-label="Breadcrumb">
-      <ol role="list" className="flex items-center space-x-4">
+      <ol className="flex items-center space-x-4">
         {matches
           .filter((match) => match.handle && match.handle.breadcrumb)
           .map((match, index) => (
