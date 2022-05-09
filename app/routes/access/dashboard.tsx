@@ -14,6 +14,8 @@ import {
   ThSr,
 } from "~/components/lib";
 import { requireUserId } from "~/session.server";
+import { Switch } from "@headlessui/react";
+import { classNames } from "~/utils";
 
 export const handle = {
   breadcrumb: "Dashboard",
@@ -61,6 +63,38 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
   return "Dead";
 }
 
+function MySwitch({
+  className,
+  checked,
+  children,
+  ...props
+}: Parameters<typeof Switch>[0]) {
+  return (
+    <Switch
+      {...props}
+      checked={checked}
+      className={classNames(
+        className,
+        checked ? "bg-indigo-600" : "bg-gray-200",
+        "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      )}
+      children={
+        children ? (
+          children
+        ) : (
+          <span
+            aria-hidden="true"
+            className={classNames(
+              checked ? "translate-x-5" : "translate-x-0",
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+            )}
+          />
+        )
+      }
+    />
+  );
+}
+
 export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
@@ -79,24 +113,15 @@ export default function RouteComponent() {
       <Header
         title="Dashboard"
         side={
-          <div className="relative flex items-start">
-            <div className="flex h-5 items-center">
-              <input
-                id="poll"
-                aria-describedby="comments-description"
-                name="poll"
-                type="checkbox"
-                checked={isPolling}
-                onChange={() => setIsPolling(!isPolling)}
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-              />
-            </div>
-            <div className="ml-3 text-sm">
-              <label htmlFor="poll" className="font-medium text-gray-700">
-                Poll
-              </label>
-            </div>
-          </div>
+          <Switch.Group as="div" className="flex items-center">
+            <MySwitch checked={isPolling} onChange={setIsPolling} />
+            <Switch.Label
+              as="span"
+              className="ml-3 text-sm font-medium text-gray-900"
+            >
+              Poll
+            </Switch.Label>
+          </Switch.Group>
         }
       />
       <Main>
