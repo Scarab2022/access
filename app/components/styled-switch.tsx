@@ -33,11 +33,11 @@ function StyledSwitch({
   );
 }
 
-StyledSwitch.Group = ({
+StyledSwitch.Group = function Group({
   as = "div",
   className,
   ...props
-}: Parameters<typeof Switch.Group>[0]) => {
+}: Parameters<typeof Switch.Group>[0]) {
   return (
     <Switch.Group
       {...props}
@@ -46,13 +46,12 @@ StyledSwitch.Group = ({
     />
   );
 };
-StyledSwitch.Group.displayName = "StyledSwitch.Group";
 
-StyledSwitch.Label = ({
+StyledSwitch.Label = function Label({
   as = "span",
   className,
   ...props
-}: Parameters<typeof Switch.Label>[0]) => {
+}: Parameters<typeof Switch.Label>[0]) {
   return (
     <Switch.Label
       {...props}
