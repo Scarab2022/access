@@ -94,7 +94,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       {/* z-10 so it stacks above any controls in the page */}
-                      <Menu.Items className="z-10- absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
