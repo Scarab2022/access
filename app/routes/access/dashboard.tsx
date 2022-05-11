@@ -14,8 +14,6 @@ import {
   ThSr,
 } from "~/components/lib";
 import { requireUserId } from "~/session.server";
-import { Switch } from "@headlessui/react";
-import { classNames } from "~/utils";
 import { StyledSwitch } from "~/components/styled-switch";
 
 export const handle = {
