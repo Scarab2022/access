@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import {
   Button,
   Main,
@@ -54,7 +54,7 @@ function codeActivateExpireStatus(
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<LoaderData> => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   const accessUsers = await getAccessUsers({ userId });
   return { accessUsers };
 };

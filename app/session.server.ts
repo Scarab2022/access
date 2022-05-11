@@ -62,12 +62,11 @@ export async function requireUser(request: Request) {
   throw await logout(request);
 }
 
-export async function requireRole(request: Request, role: Role) {
+export async function requireUserIdForRole(request: Request, role: Role) {
   const user = await requireUser(request);
-  if (user.role !== role) {
-    throw new Response("Unauthorized", { status: 401 });
-  }
-  return user;
+  if (user.role === role) return user.id;
+
+  throw await logout(request);
 }
 
 export async function createUserSession({
@@ -96,6 +95,7 @@ export async function createUserSession({
 
 export async function logout(request: Request) {
   const session = await getSession(request);
+  console.log("logout");
   return redirect("/", {
     headers: {
       "Set-Cookie": await sessionStorage.destroySession(session),

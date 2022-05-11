@@ -2,7 +2,7 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import {
   Header,
   Main,
@@ -28,7 +28,7 @@ function getLoaderData({ userId }: { userId: User["id"] }) {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   const accessHubs = await getLoaderData({ userId });
   return json<LoaderData>({ accessHubs });
 };

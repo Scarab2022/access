@@ -5,8 +5,6 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { UserIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
-import { requireRole } from "~/session.server";
-import { LoaderFunction } from "@remix-run/node";
 import { useUser } from "~/utils";
 
 function classNames(...classes: string[]) {
@@ -20,11 +18,6 @@ export const handle = {
       <span className="sr-only">Home</span>
     </Link>
   ),
-};
-
-export const loader: LoaderFunction = async ({ request }) => {
-  await requireRole(request, "admin");
-  return null;
 };
 
 const navigation = [

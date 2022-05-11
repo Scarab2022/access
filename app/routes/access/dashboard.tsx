@@ -13,7 +13,7 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { StyledSwitch } from "~/components/styled-switch";
 
 export const handle = {
@@ -44,7 +44,7 @@ function getLoaderData({ userId }: { userId: User["id"] }) {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   const accessPoints = await getLoaderData({ userId });
   return json<LoaderData>({ accessPoints });
 };
