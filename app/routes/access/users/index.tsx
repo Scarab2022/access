@@ -13,6 +13,7 @@ import {
   ThSr,
 } from "~/components/lib";
 import { getAccessUsers } from "~/models/accessUser.server";
+import { classNames } from "~/utils";
 
 type LoaderData = {
   accessUsers: Awaited<ReturnType<typeof getAccessUsers>>;
@@ -30,7 +31,7 @@ function codeActivateExpireStatus(
     : null;
   const now = Date.now();
 
-  const codeStatus =
+  const codeStatus: "PENDING" | "ACTIVE" | "EXPIRED" =
     expireCodeAt && now > expireCodeAt.getTime()
       ? "EXPIRED"
       : activateCodeAt && now < activateCodeAt.getTime()
@@ -51,6 +52,12 @@ function codeActivateExpireStatus(
   return { codeStatus, activateExpireStatus };
 }
 
+const codeStatusColors = {
+  PENDING: "bg-yellow-100 text-yellow-800",
+  ACTIVE: "bg-green-100 text-green-800",
+  EXPIRED: "bg-red-100 text-red-800",
+} as const;
+
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<LoaderData> => {
@@ -69,6 +76,34 @@ export default function RouteComponent() {
         side={<Button onClick={() => navigate("create")}>Create</Button>}
       />
       <Main>
+        {/* https://tailwindui.com/components/application-ui/lists/grid-lists */}
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {accessUsers.map((i) => {
+            const { codeStatus, activateExpireStatus } =
+              codeActivateExpireStatus(i);
+            return (
+              <li
+                key={i.id}
+                className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+              >
+                <div className="flex w-full items-center justify-between space-x-6 p-6">
+                  <h3 className="flex-1 truncate text-sm font-medium text-gray-900">
+                    {i.name}
+                  </h3>
+                  <div
+                    className={classNames(
+                      codeStatusColors[codeStatus],
+                      "flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium"
+                    )}
+                  >
+                    {codeStatus}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+
         <Table
           headers={
             <>
