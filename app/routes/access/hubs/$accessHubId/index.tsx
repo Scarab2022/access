@@ -8,7 +8,7 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link, useNavigate } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import {
   Button,
   Main,
@@ -32,7 +32,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(params.accessHubId, "accessHubId not found");
   const accessHub = await getAccessHubWithPoints({
     id: params.accessHubId,

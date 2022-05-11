@@ -2,7 +2,7 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Card, Header, Main, Table, Th } from "~/components/lib";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { getAccessHub } from "~/models/accessHub.server";
 import { getAccessEvents } from "~/models/accessEvent.server";
 
@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessHubId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({
     id: accessHubId,

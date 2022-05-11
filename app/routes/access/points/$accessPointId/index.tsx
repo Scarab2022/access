@@ -6,7 +6,7 @@ import {
   useSubmit,
   useFormAction,
 } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
@@ -41,7 +41,7 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(params.accessPointId, "accessPointId not found");
   const accessPoint = await getAccessPointWithHubAndUsers({
     id: Number(params.accessPointId),

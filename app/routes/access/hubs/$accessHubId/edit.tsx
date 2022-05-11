@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { getAccessHub } from "~/models/accessHub.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
@@ -30,7 +30,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessHubId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({
     id: accessHubId,
@@ -53,7 +53,7 @@ export const action: ActionFunction = async ({
   request,
   params: { accessHubId },
 }): Promise<Response | ActionData> => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessHubId, "accessHubId not found");
 
   // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.

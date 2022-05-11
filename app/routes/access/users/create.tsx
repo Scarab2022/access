@@ -8,7 +8,7 @@ import {
   SettingsFormField,
 } from "~/components/lib";
 import { createAccessUser } from "~/models/accessUser.server";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 
 export const handle = {
   breadcrumb: "Create",
@@ -28,7 +28,7 @@ type ActionData = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
 
   // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.
   const fieldValues = Object.fromEntries(await request.formData());

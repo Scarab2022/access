@@ -5,7 +5,7 @@ import {
   useSubmit,
   useFormAction,
 } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import {
   Button,
   Card,
@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessUserId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessUserId, "accessUserId not found");
   const accessUser = await getAccessUserWithPoints({
     id: Number(accessUserId),

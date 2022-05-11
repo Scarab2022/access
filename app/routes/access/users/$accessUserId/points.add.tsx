@@ -1,6 +1,6 @@
 import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { Header, Main, SettingsForm } from "~/components/lib";
 import { addPointsToAccessUser, getAccessUserWithPoints } from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessUserId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessUserId, "accessUserId not found")
   const accessUser = await getAccessUserWithPoints({
     id: Number(accessUserId),
@@ -33,7 +33,7 @@ export const action: ActionFunction = async ({
   request,
   params: { accessUserId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessUserId, "accessUserId not found");
 
   const formData = await request.formData();

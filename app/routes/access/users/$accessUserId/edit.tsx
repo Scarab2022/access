@@ -5,7 +5,7 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import {
@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessUserId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessUserId, "accessUserId not found");
   const accessUser = await getAccessUser({ id: Number(accessUserId), userId });
   return json<LoaderData>({ accessUser });
@@ -79,7 +79,7 @@ export const action: ActionFunction = async ({
   request,
   params: { accessUserId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessUserId, "accessUserId not found");
   if (request.method === "DELETE") {
     await markAccessUserAsDeleted({ id: Number(accessUserId), userId });

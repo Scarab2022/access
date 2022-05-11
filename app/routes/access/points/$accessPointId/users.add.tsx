@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
-import { requireUserId } from "~/session.server";
+import { requireUserIdForRole } from "~/session.server";
 import { Header, Main, SettingsForm } from "~/components/lib";
 import {
   getAccessPoint,
@@ -38,7 +38,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { accessPointId },
 }): Promise<LoaderData> => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessPointId, "accessPointId not found");
 
   const accessPoint = await getAccessPointWithHubAndUsers({
@@ -54,7 +54,7 @@ export const action: ActionFunction = async ({
   request,
   params: { accessPointId },
 }) => {
-  const userId = await requireUserId(request);
+  const userId = await requireUserIdForRole(request, "customer");
   invariant(accessPointId, "accessPointId not found");
 
   const formData = await request.formData();
