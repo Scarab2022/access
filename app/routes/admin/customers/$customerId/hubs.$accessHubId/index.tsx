@@ -16,6 +16,7 @@ import {
   ThSr,
 } from "~/components/lib";
 import { prisma } from "~/db.server";
+import { requireUserIdForRole } from "~/session.server";
 
 type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHub>>;
@@ -38,6 +39,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { customerId, accessHubId },
 }) => {
+  await requireUserIdForRole(request, "admin");
   invariant(customerId, "customerId not found");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub(accessHubId, customerId);

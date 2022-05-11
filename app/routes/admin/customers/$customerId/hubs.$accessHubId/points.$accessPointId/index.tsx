@@ -15,6 +15,7 @@ import {
   ThSr,
 } from "~/components/lib";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
+import { requireUserIdForRole } from "~/session.server";
 
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
@@ -24,6 +25,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { customerId, accessPointId },
 }) => {
+  await requireUserIdForRole(request, "admin");
   invariant(customerId, "customerId not found");
   invariant(accessPointId, "accessPointId not found");
   const accessPoint = await getAccessPointWithHubAndUsers({

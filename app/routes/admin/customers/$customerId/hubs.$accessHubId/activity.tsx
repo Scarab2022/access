@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 import { Card, Header, Main, Table, Th } from "~/components/lib";
 import { getAccessEvents } from "~/models/accessEvent.server";
 import { getAccessHub } from "~/models/accessHub.server";
+import { requireUserIdForRole } from "~/session.server";
 
 export const handle = {
   breadcrumb: "Activity",
@@ -15,8 +16,10 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({
+  request,
   params: { customerId, accessHubId },
 }) => {
+  await requireUserIdForRole(request, "admin");
   invariant(customerId, "customerId not found");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({

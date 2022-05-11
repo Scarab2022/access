@@ -19,6 +19,7 @@ import {
 import { prisma } from "~/db.server";
 import type { User } from "@prisma/client";
 import invariant from "tiny-invariant";
+import { requireUserIdForRole } from "~/session.server";
 
 type LoaderData = {
   customer: Awaited<ReturnType<typeof getCustomer>>;
@@ -42,6 +43,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { customerId },
 }) => {
+  await requireUserIdForRole(request, "admin");
   invariant(customerId, 'customerId not found')
   const customer = await getCustomer(customerId);
   return json<LoaderData>({ customer });

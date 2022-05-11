@@ -11,6 +11,7 @@ import {
 import { json, LoaderFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { useLoaderData } from "@remix-run/react";
+import { requireUserIdForRole } from "~/session.server";
 
 type LoaderData = {
   customers: Awaited<ReturnType<typeof getCustomers>>;
@@ -24,7 +25,7 @@ function getCustomers() {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  // Admin route requires admin role.
+  await requireUserIdForRole(request, "admin");
   const customers = await getCustomers();
   return json<LoaderData>({ customers });
 };

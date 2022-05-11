@@ -5,6 +5,7 @@ import { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { json, LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
+import { requireUserIdForRole } from "~/session.server";
 
 export const handle = {
   breadcrumb: "Raw",
@@ -38,6 +39,7 @@ export const loader: LoaderFunction = async ({
   request,
   params: { customerId, accessHubId },
 }) => {
+  await requireUserIdForRole(request, "admin");
   invariant(customerId, "customerId not found");
   invariant(accessHubId, "accessHubId not found");
   const accessHub = await getAccessHub({

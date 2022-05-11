@@ -13,17 +13,23 @@ import {
   ThSr,
 } from "~/components/lib";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
+import { requireUserIdForRole } from "~/session.server";
 
 type LoaderData = {
-  accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>
+  accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>;
 };
 
 export const loader: LoaderFunction = async ({
+  request,
   params: { customerId, accessUserId },
 }) => {
-  invariant(customerId, "customerId not found")
-  invariant(accessUserId, "accessUserId not found")
-  const accessUser = await getAccessUserWithPoints({id: Number(accessUserId), userId: customerId})
+  await requireUserIdForRole(request, "admin");
+  invariant(customerId, "customerId not found");
+  invariant(accessUserId, "accessUserId not found");
+  const accessUser = await getAccessUserWithPoints({
+    id: Number(accessUserId),
+    userId: customerId,
+  });
   return json<LoaderData>({ accessUser });
 };
 
