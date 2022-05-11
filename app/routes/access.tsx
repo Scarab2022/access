@@ -5,11 +5,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon, UserIcon } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
 import logoHref from "~/assets/logo.svg";
-import { useUser } from "~/utils";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames, useUser } from "~/utils";
 
 export const handle = {
   breadcrumb: (match: ReturnType<typeof useMatches>[number]) => (

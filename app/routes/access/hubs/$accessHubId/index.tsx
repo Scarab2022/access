@@ -22,10 +22,7 @@ import {
 } from "~/components/lib";
 import invariant from "tiny-invariant";
 import { getAccessHubWithPoints } from "~/models/accessHub.server";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "~/utils";
 
 type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHubWithPoints>>;

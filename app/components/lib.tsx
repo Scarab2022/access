@@ -8,10 +8,7 @@ import {
   useMatches,
   useNavigate,
 } from "@remix-run/react";
-
-function classNames(...classes: Array<string | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "~/utils";
 
 export function Header({
   title,
