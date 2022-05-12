@@ -1,17 +1,6 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useFormAction, useLoaderData, useSubmit } from "@remix-run/react";
-import {
-  Button,
-  Card,
-  Header,
-  Main,
-  Table as DeprecatedTable,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Button, Header } from "~/components/lib";
 import { prisma } from "~/db.server";
 import type { User } from "@prisma/client";
 import invariant from "tiny-invariant";
@@ -98,61 +87,58 @@ export default function RouteComponent() {
         }
       />
       <main className="space-y-6 ">
-        <Card title="Access Hubs">
-          <DeprecatedTable
-            decor="edge"
-            headers={
-              <>
-                <Th>Name</Th>
-                <Th>ID</Th>
-                <Th>Description</Th>
-                <Th>Heartbeat At</Th>
-                <ThSr>View</ThSr>
-              </>
-            }
-          >
-            {customer.accessHubs.map((i) => (
-              <tr key={i.id}>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.id}</Td>
-                <Td>{i.description}</Td>
-                <Td>
-                  {i.heartbeatAt && new Date(i.heartbeatAt).toLocaleString()}
-                </Td>
-                <TdLink to={`hubs/${i.id}`}>View</TdLink>
-              </tr>
-            ))}
-          </DeprecatedTable>
-        </Card>
+        <h1 className="text-xl font-semibold text-gray-900">Access Hubs</h1>
+        <Table
+          headers={
+            <>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>ID</Table.Th>
+              <Table.Th>Description</Table.Th>
+              <Table.Th>Heartbeat At</Table.Th>
+              <Table.ThSr>View</Table.ThSr>
+            </>
+          }
+        >
+          {customer.accessHubs.map((i) => (
+            <tr key={i.id}>
+              <Table.TdProminent>{i.name}</Table.TdProminent>
+              <Table.Td>{i.id}</Table.Td>
+              <Table.Td>{i.description}</Table.Td>
+              <Table.Td>
+                {i.heartbeatAt && new Date(i.heartbeatAt).toLocaleString()}
+              </Table.Td>
+              <Table.TdLink to={`hubs/${i.id}`}>View</Table.TdLink>
+            </tr>
+          ))}
+        </Table>
         <h1 className="text-xl font-semibold text-gray-900">Access Users</h1>
-          <Table
-            decor="edge"
-            headers={
-              <>
-                <Th>Name</Th>
-                <Th>ID</Th>
-                <Th>Code</Th>
-                <Th>Code Status</Th>
-                <Th>Activate Expire Status</Th>
-                <ThSr>View</ThSr>
-              </>
-            }
-          >
-            {customer.accessUsers.map((i) => {
-              const { codeStatus, activateExpireStatus } =
-                codeActivateExpireStatus(i);
-              return (
-                <tr key={i.id}>
-                  <TdProminent>{i.name}</TdProminent>
-                  <Td>{i.id}</Td>
-                  <Td>{i.code}</Td>
-                  <Td>{codeStatus}</Td>
-                  <Td>{activateExpireStatus}</Td>
-                  <TdLink to={`users/${i.id}`}>View</TdLink>
-                </tr>
-              );
-            })}
-          </Table>
+        <Table
+          headers={
+            <>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>ID</Table.Th>
+              <Table.Th>Code</Table.Th>
+              <Table.Th>Code Status</Table.Th>
+              <Table.Th>Activate Expire Status</Table.Th>
+              <Table.ThSr>View</Table.ThSr>
+            </>
+          }
+        >
+          {customer.accessUsers.map((i) => {
+            const { codeStatus, activateExpireStatus } =
+              codeActivateExpireStatus(i);
+            return (
+              <tr key={i.id}>
+                <Table.TdProminent>{i.name}</Table.TdProminent>
+                <Table.Td>{i.id}</Table.Td>
+                <Table.Td>{i.code}</Table.Td>
+                <Table.Td>{codeStatus}</Table.Td>
+                <Table.Td>{activateExpireStatus}</Table.Td>
+                <Table.TdLink to={`users/${i.id}`}>View</Table.TdLink>
+              </tr>
+            );
+          })}
+        </Table>
       </main>
     </>
   );
