@@ -177,10 +177,10 @@ function Layout({ children }: { children: React.ReactNode }) {
 
 export default function RouteComponent() {
   return (
-    // No px-4 since mobile needs tables going to the edge.
-    // No sm:px-6 lg:px-8. Let header and main specify
+    // Deprecated: No px-4 since mobile needs tables going to the edge.
+    // Deprecated: No sm:px-6 lg:px-8. Let header and main specify
     <Layout>
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
         <Outlet />
       </div>
     </Layout>

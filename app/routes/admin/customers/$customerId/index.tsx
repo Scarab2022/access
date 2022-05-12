@@ -1,15 +1,11 @@
 import { json, LoaderFunction } from "@remix-run/node";
-import {
-  useFormAction,
-  useLoaderData,
-  useSubmit,
-} from "@remix-run/react";
+import { useFormAction, useLoaderData, useSubmit } from "@remix-run/react";
 import {
   Button,
   Card,
   Header,
   Main,
-  Table,
+  Table as DeprecatedTable,
   Td,
   TdLink,
   TdProminent,
@@ -20,6 +16,7 @@ import { prisma } from "~/db.server";
 import type { User } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { requireUserIdForRole } from "~/session.server";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   customer: Awaited<ReturnType<typeof getCustomer>>;
@@ -36,7 +33,7 @@ function getCustomer(id: User["id"]) {
       accessHubs: { orderBy: { name: "asc" } },
     },
     rejectOnNotFound: true,
-  })
+  });
 }
 
 export const loader: LoaderFunction = async ({
@@ -44,7 +41,7 @@ export const loader: LoaderFunction = async ({
   params: { customerId },
 }) => {
   await requireUserIdForRole(request, "admin");
-  invariant(customerId, 'customerId not found')
+  invariant(customerId, "customerId not found");
   const customer = await getCustomer(customerId);
   return json<LoaderData>({ customer });
 };
@@ -100,9 +97,9 @@ export default function RouteComponent() {
           </Button>
         }
       />
-      <Main>
+      <main className="space-y-6 ">
         <Card title="Access Hubs">
-          <Table
+          <DeprecatedTable
             decor="edge"
             headers={
               <>
@@ -125,9 +122,9 @@ export default function RouteComponent() {
                 <TdLink to={`hubs/${i.id}`}>View</TdLink>
               </tr>
             ))}
-          </Table>
+          </DeprecatedTable>
         </Card>
-        <Card title="Access Users">
+        <h1 className="text-xl font-semibold text-gray-900">Access Users</h1>
           <Table
             decor="edge"
             headers={
@@ -156,8 +153,7 @@ export default function RouteComponent() {
               );
             })}
           </Table>
-        </Card>
-      </Main>
+      </main>
     </>
   );
 }
