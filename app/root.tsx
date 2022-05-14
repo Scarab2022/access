@@ -37,8 +37,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function App() {
+  // With page heading and stacked list
+  // https://tailwindui.com/components/application-ui/page-examples/detail-screens
+  // <html class="h-full bg-white">
+  // <body class="h-full">
+
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full bg-white">
       <head>
         <Meta />
         <Links />
