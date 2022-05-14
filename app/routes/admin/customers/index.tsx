@@ -1,17 +1,9 @@
-import {
-  Main,
-  Header,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Header } from "~/components/lib";
 import { json, LoaderFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   customers: Awaited<ReturnType<typeof getCustomers>>;
@@ -35,25 +27,25 @@ export default function RouteComponent() {
   return (
     <>
       <Header title="Customers" />
-      <Main>
+      <main>
         <Table
           headers={
             <>
-              <Th>Email</Th>
-              <Th>Created At</Th>
-              <ThSr>View</ThSr>
+              <Table.Th>Email</Table.Th>
+              <Table.Th>Created At</Table.Th>
+              <Table.ThSr>View</Table.ThSr>
             </>
           }
         >
           {customers.map((i) => (
             <tr key={i.id}>
-              <TdProminent>{i.email}</TdProminent>
-              <Td>{new Date(i.createdAt).toLocaleDateString()}</Td>
-              <TdLink to={`${i.id}`}>View</TdLink>
+              <Table.TdProminent>{i.email}</Table.TdProminent>
+              <Table.Td>{new Date(i.createdAt).toLocaleDateString()}</Table.Td>
+              <Table.TdLink to={`${i.id}`}>View</Table.TdLink>
             </tr>
           ))}
         </Table>
-      </Main>
+      </main>
     </>
   );
 }
