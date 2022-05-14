@@ -19,12 +19,12 @@ export function Header({
   meta?: React.ReactNode;
   side?: React.ReactNode;
 }) {
-  // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   // With page heading and stacked list
-  // https://tailwindui.com/components/application-ui/headings/page-headings
+  // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   // With meta, actions, and breadcrumbs
+  // https://tailwindui.com/components/application-ui/headings/page-headings
   return (
-    <header className="px-4 py-8 sm:px-6 lg:px-8">
+    <header className="py-8">
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="min-w-0 flex-1">
           <Breadcrumbs />
