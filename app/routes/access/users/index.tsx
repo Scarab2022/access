@@ -101,7 +101,9 @@ export default function RouteComponent() {
                       />
                       {i.code}
                     </p>
-                    <p className="hidden md:block">{activateExpireStatus}</p>
+                    <p className="mt-2 hidden md:block">
+                      {activateExpireStatus}
+                    </p>
                   </div>
                 </Link>
               </li>
