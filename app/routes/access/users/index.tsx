@@ -80,27 +80,28 @@ export default function RouteComponent() {
                   to={`${i.id}`}
                   className="block px-4 py-4 hover:bg-gray-50 sm:px-6"
                 >
-                  <div className="">
-                    <div className="flex items-center justify-between">
-                      <p className="truncate text-sm font-medium text-indigo-600">
-                        {i.name}
-                      </p>
-                      <p
-                        className={classNames(
-                          "rounded-full px-2 text-xs font-semibold leading-5",
-                          codeStatusColors[codeStatus]
-                        )}
-                      >
-                        {codeStatus}
-                      </p>
-                    </div>
-                    <p className="mt-2 flex items-center text-sm text-gray-500">
+                  <div className="flex items-center justify-between">
+                    <p className="truncate text-sm font-medium text-indigo-600">
+                      {i.name}
+                    </p>
+                    <p
+                      className={classNames(
+                        "rounded-full px-2 text-xs font-semibold leading-5",
+                        codeStatusColors[codeStatus]
+                      )}
+                    >
+                      {codeStatus}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between text-sm text-gray-500">
+                    <p className="mt-2 flex items-center ">
                       <LocationMarkerIcon
                         className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
                       />
                       {i.code}
                     </p>
+                    <p className="hidden md:block">{activateExpireStatus}</p>
                   </div>
                 </Link>
               </li>
