@@ -2,7 +2,7 @@ import { User } from "@prisma/client";
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Card, Header, Main } from "~/components/lib";
+import { Card, Header } from "~/components/lib";
 import { prisma } from "~/db.server";
 import { setUpResetPassword } from "~/models/user.server";
 
@@ -67,7 +67,7 @@ export default function RouteComponent() {
   return (
     <>
       <Header title={customer.email} />
-      <Main>
+      <main>
         <Card title="Password Reset Link">
           <div className="px-4 pb-8 sm:px-6 lg:px-8">
             {actionData ? (
@@ -83,7 +83,7 @@ export default function RouteComponent() {
             )}
           </div>
         </Card>
-      </Main>
+      </main>
     </>
   );
 }
