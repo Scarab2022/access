@@ -1,8 +1,6 @@
 import { Switch } from "@headlessui/react";
 import { classNames } from "~/utils";
 
-type T = JSX.IntrinsicElements
-
 function StyledSwitch({
   className,
   checked,
@@ -35,7 +33,7 @@ function StyledSwitch({
   );
 }
 
-StyledSwitch.Group = function Group({
+StyledSwitch.Group = function StyledSwitchGroup({
   as = "div",
   className,
   ...props
@@ -49,7 +47,7 @@ StyledSwitch.Group = function Group({
   );
 };
 
-StyledSwitch.Label = function Label({
+StyledSwitch.Label = function StyledSwitchLabel({
   as = "span",
   className,
   ...props
