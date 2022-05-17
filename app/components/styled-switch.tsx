@@ -1,6 +1,8 @@
 import { Switch } from "@headlessui/react";
 import { classNames } from "~/utils";
 
+type T = JSX.IntrinsicElements
+
 function StyledSwitch({
   className,
   checked,

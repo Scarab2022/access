@@ -5,6 +5,7 @@ import { Button, Header } from "~/components/lib";
 import { getAccessUsers } from "~/models/accessUser.server";
 import { classNames } from "~/utils";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
+import { StackedList } from "~/components/stacked-list";
 
 type LoaderData = {
   accessUsers: Awaited<ReturnType<typeof getAccessUsers>>;
@@ -70,46 +71,45 @@ export default function RouteComponent() {
         side={<Button onClick={() => navigate("create")}>Create</Button>}
       />
       <main>
-        <ul className="divide-y divide-gray-200 rounded-lg ring-1 ring-gray-300 ">
-          {accessUsers.map((i) => {
-            const { codeStatus, activateExpireStatus } =
-              codeActivateExpireStatus(i);
-            return (
-              <li key={i.id}>
-                <Link
-                  to={`${i.id}`}
-                  className="block px-4 py-4 hover:bg-gray-50 sm:px-6"
-                >
-                  <div className="flex items-center justify-between">
-                    <p className="truncate text-sm font-medium text-indigo-600">
-                      {i.name}
-                    </p>
-                    <p
-                      className={classNames(
-                        "rounded-full px-2 text-xs font-semibold leading-5",
-                        codeStatusColors[codeStatus]
-                      )}
-                    >
-                      {codeStatus}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <p className="mt-2 flex items-center ">
-                      <LocationMarkerIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      {i.code}
-                    </p>
-                    <p className="mt-2 hidden md:block">
-                      {activateExpireStatus}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        <StackedList.Chrome>
+          <StackedList>
+            {accessUsers.map((i) => {
+              const { codeStatus, activateExpireStatus } =
+                codeActivateExpireStatus(i);
+              return (
+                <li key={i.id}>
+                  <StackedList.Link to={`${i.id}`}>
+                    <div className="flex items-center justify-between">
+                      <p className="truncate text-sm font-medium text-indigo-600">
+                        {i.name}
+                      </p>
+                      <p
+                        className={classNames(
+                          "rounded-full px-2 text-xs font-semibold leading-5",
+                          codeStatusColors[codeStatus]
+                        )}
+                      >
+                        {codeStatus}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <p className="mt-2 flex items-center ">
+                        <LocationMarkerIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        {i.code}
+                      </p>
+                      <p className="mt-2 hidden md:block">
+                        {activateExpireStatus}
+                      </p>
+                    </div>
+                  </StackedList.Link>
+                </li>
+              );
+            })}
+          </StackedList>
+        </StackedList.Chrome>
       </main>
     </>
   );

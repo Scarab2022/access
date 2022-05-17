@@ -5,6 +5,7 @@ import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 import { Header } from "~/components/lib";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
+import { StackedList } from "~/components/stacked-list";
 
 type LoaderData = {
   accessHubs: Awaited<ReturnType<typeof getLoaderData>>;
@@ -34,11 +35,11 @@ export default function RouteComponent() {
     <>
       <Header title="Hubs" />
       <main>
-        <ul className="divide-y divide-gray-200">
-          {accessHubs.map((i) => (
-            <li key={i.id}>
-              <Link to={`${i.id}`} className="block hover:bg-gray-50">
-                <div className="rounded-lg px-4 py-4 ring-1 ring-gray-300 sm:px-6">
+        <StackedList.Chrome>
+          <StackedList>
+            {accessHubs.map((i) => (
+              <li key={i.id}>
+                <StackedList.Link to={`${i.id}`}>
                   <div className="flex items-center justify-between">
                     <p className="truncate text-sm font-medium text-indigo-600">
                       {i.name}
@@ -54,11 +55,11 @@ export default function RouteComponent() {
                     />
                     {i.description}
                   </p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                </StackedList.Link>
+              </li>
+            ))}
+          </StackedList>
+        </StackedList.Chrome>
       </main>
     </>
   );
