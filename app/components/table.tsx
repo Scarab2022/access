@@ -1,8 +1,16 @@
 import { Link } from "@remix-run/react";
 import { RemixLinkProps } from "@remix-run/react/components";
+import React from "react";
+import { classNames } from "~/utils";
 
 // With white background: https://tailwindui.com/components/application-ui/lists/tables
+// <div className="mt-8 flex flex-col">
+//   <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+//     <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+//       <table className="min-w-full divide-y divide-gray-300">
 // With white background and borders: https://tailwindui.com/components/application-ui/lists/tables
+// <div className="-mx-4 mt-10 ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg">
+//   <table className="min-w-full divide-y divide-gray-300">
 function Table({
   headers,
   children,
@@ -11,18 +19,39 @@ function Table({
   children: React.ReactNode;
 }) {
   return (
-    <div className="lg:-mx-8- -my-2 -mx-4 overflow-x-auto ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg">
+    // <div className="lg:-mx-8- -my-2 -mx-4 overflow-x-auto ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg">
+    //   <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+    <table className="min-w-full divide-y divide-gray-300">
+      <thead>
+        <tr>{headers}</tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200">{children}</tbody>
+    </table>
+    //   </div>
+    // </div>
+  );
+}
+
+Table.Container = function TableContainer({
+  children,
+  chrome,
+}: {
+  children: React.ReactNode;
+  chrome?: boolean;
+}) {
+  return (
+    <div
+      className={classNames(
+        "-my-2 -mx-4 overflow-x-auto  sm:-mx-6 md:mx-0 md:rounded-lg",
+        chrome && "ring-1 ring-gray-300"
+      )}
+    >
       <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-        <table className="min-w-full divide-y divide-gray-300">
-          <thead>
-            <tr>{headers}</tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">{children}</tbody>
-        </table>
+        {children}
       </div>
     </div>
   );
-}
+};
 
 Table.Th = function TableTh({ children }: { children: React.ReactNode }) {
   return (

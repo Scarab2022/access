@@ -28,23 +28,27 @@ export default function RouteComponent() {
     <>
       <Header title="Customers" />
       <main>
-        <Table
-          headers={
-            <>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>Created At</Table.Th>
-              <Table.ThSr>View</Table.ThSr>
-            </>
-          }
-        >
-          {customers.map((i) => (
-            <tr key={i.id}>
-              <Table.TdProminent>{i.email}</Table.TdProminent>
-              <Table.Td>{new Date(i.createdAt).toLocaleDateString()}</Table.Td>
-              <Table.TdLink to={`${i.id}`}>View</Table.TdLink>
-            </tr>
-          ))}
-        </Table>
+        <Table.Container chrome>
+          <Table
+            headers={
+              <>
+                <Table.Th>Email</Table.Th>
+                <Table.Th>Created At</Table.Th>
+                <Table.ThSr>View</Table.ThSr>
+              </>
+            }
+          >
+            {customers.map((i) => (
+              <tr key={i.id}>
+                <Table.TdProminent>{i.email}</Table.TdProminent>
+                <Table.Td>
+                  {new Date(i.createdAt).toLocaleDateString()}
+                </Table.Td>
+                <Table.TdLink to={`${i.id}`}>View</Table.TdLink>
+              </tr>
+            ))}
+          </Table>
+        </Table.Container>
       </main>
     </>
   );
