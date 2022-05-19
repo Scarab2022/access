@@ -2,18 +2,9 @@ import { LinkIcon, CheckIcon } from "@heroicons/react/solid";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import {
-  Button,
-  Card,
-  Header,
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Button, Header } from "~/components/lib";
+import { Section } from "~/components/section";
+import { Table } from "~/components/table";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { requireUserIdForRole } from "~/session.server";
 
@@ -65,39 +56,39 @@ export default function RouteComponent() {
           </>
         }
       />
-      <Main>
-        <Card title="Users">
+      <main>
+        <Section>
+          <Section.Heading>Users</Section.Heading>
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>Name</Th>
-                <Th>ID</Th>
-                <Th>Code</Th>
-                <Th>Activate Code At</Th>
-                <Th>Expire Code At</Th>
-                <ThSr>View</ThSr>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>ID</Table.Th>
+                <Table.Th>Code</Table.Th>
+                <Table.Th>Activate Code At</Table.Th>
+                <Table.Th>Expire Code At</Table.Th>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >
             {accessPoint.accessUsers.map((i) => (
               <tr key={i.id}>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.id}</Td>
-                <Td>{i.code}</Td>
-                <Td>
+                <Table.Td prominent>{i.name}</Table.Td>
+                <Table.Td>{i.id}</Table.Td>
+                <Table.Td>{i.code}</Table.Td>
+                <Table.Td>
                   {i.activateCodeAt &&
                     new Date(i.activateCodeAt).toLocaleString()}
-                </Td>
-                <Td>
+                </Table.Td>
+                <Table.Td>
                   {i.expireCodeAt && new Date(i.expireCodeAt).toLocaleString()}
-                </Td>
-                <TdLink to={`../../../users/${i.id}`}>View</TdLink>
+                </Table.Td>
+                <Table.TdLink to={`../../../users/${i.id}`}>View</Table.TdLink>
               </tr>
             ))}
           </Table>
-        </Card>
-      </Main>
+        </Section>
+      </main>
     </>
   );
 }

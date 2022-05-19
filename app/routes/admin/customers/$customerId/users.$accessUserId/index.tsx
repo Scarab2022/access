@@ -1,17 +1,9 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import {
-  Card,
-  Header,
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Header } from "~/components/lib";
+import { Section } from "~/components/section";
+import { Table } from "~/components/table";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
 import { requireUserIdForRole } from "~/session.server";
 
@@ -38,36 +30,36 @@ export default function RouteComponent() {
   return (
     <>
       <Header title={accessUser.name} />
-      <Main>
-        <Card title="Points">
+      <main>
+        <Section>
+          <Section.Heading>Points</Section.Heading>
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>Name</Th>
-                <Th>ID</Th>
-                <Th>Heartbeat At</Th>
-                <ThSr>View</ThSr>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>ID</Table.Th>
+                <Table.Th>Heartbeat At</Table.Th>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >
             {accessUser.accessPoints.map((i) => (
               <tr key={i.id}>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.id}</Td>
-                <Td>
+                <Table.Td prominent>{i.name}</Table.Td>
+                <Table.Td>{i.id}</Table.Td>
+                <Table.Td>
                   {i.accessHub.heartbeatAt &&
                     new Date(i.accessHub.heartbeatAt).toLocaleString()}
-                </Td>
+                </Table.Td>
 
-                <TdLink to={`../../hubs/${i.accessHubId}/points/${i.id}`}>
+                <Table.TdLink to={`../../hubs/${i.accessHubId}/points/${i.id}`}>
                   View
-                </TdLink>
+                </Table.TdLink>
               </tr>
             ))}
           </Table>
-        </Card>
-      </Main>
+        </Section>
+      </main>
     </>
   );
 }
