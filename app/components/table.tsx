@@ -34,32 +34,6 @@ function Table({
   );
 }
 
-Table.Container = function TableContainer({
-  children,
-  chrome,
-}: {
-  children: React.ReactNode;
-  chrome?: boolean;
-}) {
-  return (
-    <div
-      className={classNames(
-        "-my-2 -mx-4 overflow-x-auto sm:-mx-6 md:mx-0",
-        chrome && "ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg"
-      )}
-    >
-      <div
-        className={classNames(
-          "inline-block min-w-full py-2 align-middle",
-          chrome && "md:px-6 lg:px-8"
-        )}
-      >
-        {children}
-      </div>
-    </div>
-  );
-};
-
 Table.Th = function TableTh({
   sr = false,
   children,
@@ -93,6 +67,7 @@ Table.Td = function TableTd({
   prominent?: boolean;
   children: React.ReactNode;
 }) {
+  // With white background: https://tailwindui.com/components/application-ui/lists/tables
   // Prominent first td: whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0
   // Remaining td: whitespace-nowrap py-4 px-3 text-sm text-gray-500
   // With condensed content
@@ -117,7 +92,14 @@ Table.TdLink = function TableTdLink({
   to,
   onClick,
 }: { children: React.ReactNode } & Pick<RemixLinkProps, "to" | "onClick">) {
+  // With white background: https://tailwindui.com/components/application-ui/lists/tables
+  // Td link: relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0
+  // link: "text-indigo-600 hover:text-indigo-900"
+  // content: Edit<span className="sr-only">, {person.name}</span>
   // Tailwind comment: relative needed to work around issue on safari mobile if sr-only in children?
+  // Remaining td: whitespace-nowrap py-4 px-3 text-sm text-gray-500
+  // Th screen reader (rightmost col): relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0
+
   return (
     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
       <Link
