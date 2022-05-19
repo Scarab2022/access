@@ -10,7 +10,7 @@ import {
 } from "@remix-run/react";
 import { classNames } from "~/utils";
 
-export function Header({
+export function PageHeader({
   title,
   meta,
   side, // Should be fragment if more than 1 item for flex

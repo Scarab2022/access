@@ -4,7 +4,7 @@ import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 import {
-  Header,
+  PageHeader,
   Main,
   Table,
   Td,
@@ -39,7 +39,7 @@ export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header title="Points" />
+      <PageHeader title="Points" />
       <Main>
         <Table
           headers={

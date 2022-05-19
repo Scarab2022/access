@@ -3,7 +3,7 @@ import { AccessHub, User } from "@prisma/client";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Button, Header } from "~/components/lib";
+import { Button, PageHeader } from "~/components/lib";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";
 import { prisma } from "~/db.server";
@@ -42,7 +42,7 @@ export default function RouteComponent() {
   const navigate = useNavigate();
   return (
     <>
-      <Header
+      <PageHeader
         title={accessHub.name}
         side={
           <>

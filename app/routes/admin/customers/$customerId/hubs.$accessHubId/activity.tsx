@@ -1,7 +1,7 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Header } from "~/components/lib";
+import { PageHeader } from "~/components/lib";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";
 import { getAccessEvents } from "~/models/accessEvent.server";
@@ -38,7 +38,7 @@ export default function RouteComponent() {
   const { accessHub, accessEvents } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header title={accessHub.name} />
+      <PageHeader title={accessHub.name} />
       <main>
         <Section>
           <Section.Heading>Access Events</Section.Heading>

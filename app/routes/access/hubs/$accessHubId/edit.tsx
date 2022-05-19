@@ -11,7 +11,7 @@ import { getAccessHub } from "~/models/accessHub.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import {
-  Header,
+  PageHeader,
   Main,
   SettingsForm,
   SettingsFormField,
@@ -80,7 +80,7 @@ export default function RouteComponent() {
   const actionData = useActionData<ActionData>();
   return (
     <>
-      <Header />
+      <PageHeader />
       <Main>
         <SettingsForm
           replace

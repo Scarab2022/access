@@ -3,7 +3,7 @@ import { useLoaderData } from "@remix-run/react";
 import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import { Header } from "~/components/lib";
+import { PageHeader } from "~/components/lib";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { StackedList } from "~/components/stacked-list";
 
@@ -33,7 +33,7 @@ export default function RouteComponent() {
   // https://tailwindui.com/components/application-ui/lists/stacked-lists
   return (
     <>
-      <Header title="Hubs" />
+      <PageHeader title="Hubs" />
       <main>
         <StackedList.Chrome>
           <StackedList>

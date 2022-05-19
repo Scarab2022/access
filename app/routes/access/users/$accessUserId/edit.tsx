@@ -10,7 +10,7 @@ import type { ZodError } from "zod";
 import { z } from "zod";
 import {
   Button,
-  Header,
+  PageHeader,
   Main,
   SettingsForm,
   SettingsFormField,
@@ -145,7 +145,7 @@ export default function RouteComponent() {
 
   return (
     <>
-      <Header />
+      <PageHeader />
       <Main>
         <SettingsForm
           replace

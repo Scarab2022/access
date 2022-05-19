@@ -5,7 +5,7 @@ import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import {
   Main,
-  Header,
+  PageHeader,
   Table,
   Td,
   TdLink,
@@ -77,7 +77,7 @@ export default function RouteComponent() {
 
   return (
     <>
-      <Header
+      <PageHeader
         title="Dashboard"
         side={
           <StyledSwitch.Group>

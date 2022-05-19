@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Button, Header } from "~/components/lib";
+import { Button, PageHeader } from "~/components/lib";
 import { getAccessUsers } from "~/models/accessUser.server";
 import { classNames } from "~/utils";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
@@ -66,7 +66,7 @@ export default function RouteComponent() {
   // https://tailwindui.com/components/application-ui/lists/stacked-lists
   return (
     <>
-      <Header
+      <PageHeader
         title="Users"
         side={<Button onClick={() => navigate("create")}>Create</Button>}
       />

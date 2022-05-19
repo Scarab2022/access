@@ -1,9 +1,9 @@
-import { Header } from "~/components/lib";
 import { json, LoaderFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import { Table } from "~/components/table";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   customers: Awaited<ReturnType<typeof getCustomers>>;
@@ -26,7 +26,7 @@ export default function RouteComponent() {
   const { customers } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header title="Customers" />
+      <PageHeader title="Customers" />
       <main>
         <Table
           headers={

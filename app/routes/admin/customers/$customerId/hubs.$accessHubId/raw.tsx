@@ -1,6 +1,6 @@
 import React from "react";
 import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
-import { Header, Main } from "~/components/lib";
+import { PageHeader, Main } from "~/components/lib";
 import { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { json, LoaderFunction } from "@remix-run/node";
@@ -64,7 +64,7 @@ export default function RouteComponent() {
 
   return (
     <>
-      <Header
+      <PageHeader
         title={accessHub.name}
         side={
           <div className="relative flex items-start">

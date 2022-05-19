@@ -1,5 +1,5 @@
 import { LoaderFunction } from "@remix-run/node";
-import { Header } from "~/components/lib";
+import { PageHeader } from "~/components/page-header";
 import { requireUserIdForRole } from "~/session.server";
 
 export const handle = {
@@ -13,8 +13,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function RouteComponent() {
   return (
-      <>
-      <Header title="Dashboard" />
-      </>
-  )
+    <>
+      <PageHeader title="Dashboard" />
+    </>
+  );
 }

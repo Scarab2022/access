@@ -12,7 +12,7 @@ import { requireUserIdForRole } from "~/session.server";
 import {
   Button,
   Main,
-  Header,
+  PageHeader,
   Table,
   Td,
   TdLink,
@@ -43,7 +43,7 @@ export default function RouteComponent() {
   const navigate = useNavigate();
   return (
     <>
-      <Header
+      <PageHeader
         title={accessHub.name}
         meta={
           <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">

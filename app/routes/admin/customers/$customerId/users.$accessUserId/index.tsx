@@ -1,7 +1,7 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Header } from "~/components/lib";
+import { PageHeader } from "~/components/lib";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
@@ -29,7 +29,7 @@ export default function RouteComponent() {
   const { accessUser } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header title={accessUser.name} />
+      <PageHeader title={accessUser.name} />
       <main>
         <Section>
           <Section.Heading>Points</Section.Heading>

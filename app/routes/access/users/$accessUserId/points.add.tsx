@@ -1,8 +1,16 @@
-import { ActionFunction, json, LoaderFunction, redirect } from "@remix-run/node";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  redirect,
+} from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Header, Main, SettingsForm } from "~/components/lib";
-import { addPointsToAccessUser, getAccessUserWithPoints } from "~/models/accessUser.server";
+import { PageHeader, Main, SettingsForm } from "~/components/lib";
+import {
+  addPointsToAccessUser,
+  getAccessUserWithPoints,
+} from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
 import { getAccessPointsNotIn } from "~/models/accessPoint.server";
 
@@ -19,13 +27,13 @@ export const loader: LoaderFunction = async ({
   params: { accessUserId },
 }) => {
   const userId = await requireUserIdForRole(request, "customer");
-  invariant(accessUserId, "accessUserId not found")
+  invariant(accessUserId, "accessUserId not found");
   const accessUser = await getAccessUserWithPoints({
     id: Number(accessUserId),
     userId,
   });
   const notIn = accessUser.accessPoints.map((el) => el.id);
-  const accessPoints = await getAccessPointsNotIn({notIn, userId})
+  const accessPoints = await getAccessPointsNotIn({ notIn, userId });
   return json<LoaderData>({ accessPoints });
 };
 
@@ -48,7 +56,11 @@ export const action: ActionFunction = async ({
   }
   if (accessPointIds.length > 0) {
     // TODO: validate ids of access points belong to user.
-    await addPointsToAccessUser({id: Number(accessUserId), userId, accessPointIds})
+    await addPointsToAccessUser({
+      id: Number(accessUserId),
+      userId,
+      accessPointIds,
+    });
   }
   return redirect(`/access/users/${accessUserId}`);
 };
@@ -57,7 +69,7 @@ export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header />
+      <PageHeader />
       <Main>
         <SettingsForm replace method="post" title="Add Points" submitText="Add">
           <div className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">

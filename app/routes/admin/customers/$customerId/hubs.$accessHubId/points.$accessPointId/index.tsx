@@ -2,7 +2,7 @@ import { LinkIcon, CheckIcon } from "@heroicons/react/solid";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Button, Header } from "~/components/lib";
+import { Button, PageHeader } from "~/components/lib";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
@@ -31,7 +31,7 @@ export default function RouteComponent() {
   const navigate = useNavigate();
   return (
     <>
-      <Header
+      <PageHeader
         title={accessPoint.name}
         side={
           <>

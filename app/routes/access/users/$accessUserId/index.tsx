@@ -11,7 +11,7 @@ import {
   Card,
   DlCard,
   DlCardDtDd,
-  Header,
+  PageHeader,
   Main,
   Table,
   Td,
@@ -81,7 +81,7 @@ export default function RouteComponent() {
     codeActivateExpireStatus(accessUser);
   return (
     <>
-      <Header
+      <PageHeader
         title={accessUser.name}
         side={
           <Button onClick={() => navigate("edit")}>

@@ -23,7 +23,7 @@ import {
   Th,
   ThSr,
   TdLink,
-  Header,
+  PageHeader,
   Main,
   DlCard,
   DlCardDtDd,
@@ -54,7 +54,7 @@ export default function RouteComponent() {
   const removeFormActionBase = useFormAction("users");
   return (
     <>
-      <Header
+      <PageHeader
         title={accessPoint.name}
         meta={
           accessPoint.description ? (

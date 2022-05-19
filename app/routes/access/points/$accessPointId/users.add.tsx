@@ -2,7 +2,7 @@ import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import { Header, Main, SettingsForm } from "~/components/lib";
+import { PageHeader, Main, SettingsForm } from "~/components/lib";
 import {
   getAccessPoint,
   getAccessPointWithHubAndUsers,
@@ -86,7 +86,7 @@ export default function RouteComponent() {
   const { accessUsers } = useLoaderData<LoaderData>();
   return (
     <>
-      <Header />
+      <PageHeader />
       <Main>
         <SettingsForm
           replace

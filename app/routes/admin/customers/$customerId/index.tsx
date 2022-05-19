@@ -1,12 +1,13 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useFormAction, useLoaderData, useSubmit } from "@remix-run/react";
-import { Button, Header } from "~/components/lib";
+import { Button } from "~/components/lib";
 import { prisma } from "~/db.server";
 import type { User } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { requireUserIdForRole } from "~/session.server";
 import { Table } from "~/components/table";
 import { Section } from "~/components/section";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   customer: Awaited<ReturnType<typeof getCustomer>>;
@@ -75,7 +76,7 @@ export default function RouteComponent() {
   const resetPasswordAction = useFormAction("resetpassword");
   return (
     <>
-      <Header
+      <PageHeader
         title={customer.email}
         side={
           <Button
