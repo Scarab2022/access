@@ -10,37 +10,37 @@ import {
 } from "@remix-run/react";
 import { classNames } from "~/utils";
 
-export function PageHeader({
-  title,
-  meta,
-  side, // Should be fragment if more than 1 item for flex
-}: {
-  title?: string;
-  meta?: React.ReactNode;
-  side?: React.ReactNode;
-}) {
-  // With page heading and stacked list
-  // https://tailwindui.com/components/application-ui/page-examples/detail-screens
-  // With meta, actions, and breadcrumbs
-  // https://tailwindui.com/components/application-ui/headings/page-headings
-  return (
-    <header className="py-8">
-      <div className="lg:flex lg:items-center lg:justify-between">
-        <div className="min-w-0 flex-1">
-          <Breadcrumbs />
-          {title ? (
-            // sm:leading-snug otherwise sm:truncate's overflow hidden will cut off lowercase g's
-            <h2 className="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:leading-snug">
-              {title}
-            </h2>
-          ) : null}
-          {meta}
-        </div>
-        {side ? <div className="mt-5 flex lg:mt-0 lg:ml-4">{side}</div> : null}
-      </div>
-    </header>
-  );
-}
+// export function PageHeaderObsolete({
+//   title,
+//   meta,
+//   side, // Should be fragment if more than 1 item for flex
+// }: {
+//   title?: string;
+//   meta?: React.ReactNode;
+//   side?: React.ReactNode;
+// }) {
+//   // With page heading and stacked list
+//   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
+//   // With meta, actions, and breadcrumbs
+//   // https://tailwindui.com/components/application-ui/headings/page-headings
+//   return (
+//     <header className="py-8">
+//       <div className="lg:flex lg:items-center lg:justify-between">
+//         <div className="min-w-0 flex-1">
+//           <Breadcrumbs />
+//           {title ? (
+//             // sm:leading-snug otherwise sm:truncate's overflow hidden will cut off lowercase g's
+//             <h2 className="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:leading-snug">
+//               {title}
+//             </h2>
+//           ) : null}
+//           {meta}
+//         </div>
+//         {side ? <div className="mt-5 flex lg:mt-0 lg:ml-4">{side}</div> : null}
+//       </div>
+//     </header>
+//   );
+// }
 
 export function Main({ children }: { children: React.ReactNode }) {
   // No px-4 since tables need to extend to the edge on mobile.

@@ -6,13 +6,14 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { PageHeader, Main, SettingsForm } from "~/components/lib";
+import { Main, SettingsForm } from "~/components/lib";
 import {
   addPointsToAccessUser,
   getAccessUserWithPoints,
 } from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
 import { getAccessPointsNotIn } from "~/models/accessPoint.server";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Add Points",

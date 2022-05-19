@@ -11,12 +11,12 @@ import { getAccessPoint } from "~/models/accessPoint.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import {
-  PageHeader,
   Main,
   SettingsForm,
   SettingsFormField,
 } from "~/components/lib";
 import invariant from "tiny-invariant";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Edit",

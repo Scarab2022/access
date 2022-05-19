@@ -1,10 +1,11 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Card, PageHeader, Main, Table, Th } from "~/components/lib";
+import { Card, Main, Table, Th } from "~/components/lib";
 import { requireUserIdForRole } from "~/session.server";
 import { getAccessHub } from "~/models/accessHub.server";
 import { getAccessEvents } from "~/models/accessEvent.server";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Activity",

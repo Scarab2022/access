@@ -23,7 +23,6 @@ import {
   Th,
   ThSr,
   TdLink,
-  PageHeader,
   Main,
   DlCard,
   DlCardDtDd,
@@ -32,6 +31,7 @@ import {
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { classNames } from "~/utils";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;

@@ -3,9 +3,9 @@ import { useLoaderData } from "@remix-run/react";
 import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import { PageHeader } from "~/components/lib";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { StackedList } from "~/components/stacked-list";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessHubs: Awaited<ReturnType<typeof getLoaderData>>;

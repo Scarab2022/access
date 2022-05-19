@@ -5,7 +5,6 @@ import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import {
   Main,
-  PageHeader,
   Table,
   Td,
   TdLink,
@@ -15,6 +14,7 @@ import {
 } from "~/components/lib";
 import { requireUserIdForRole } from "~/session.server";
 import { StyledSwitch } from "~/components/styled-switch";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Dashboard",

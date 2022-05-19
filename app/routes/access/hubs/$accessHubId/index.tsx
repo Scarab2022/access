@@ -12,7 +12,6 @@ import { requireUserIdForRole } from "~/session.server";
 import {
   Button,
   Main,
-  PageHeader,
   Table,
   Td,
   TdLink,
@@ -23,6 +22,7 @@ import {
 import invariant from "tiny-invariant";
 import { getAccessHubWithPoints } from "~/models/accessHub.server";
 import { classNames } from "~/utils";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHubWithPoints>>;

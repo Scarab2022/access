@@ -2,13 +2,14 @@ import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import { PageHeader, Main, SettingsForm } from "~/components/lib";
+import { Main, SettingsForm } from "~/components/lib";
 import {
   getAccessPoint,
   getAccessPointWithHubAndUsers,
 } from "~/models/accessPoint.server";
 import invariant from "tiny-invariant";
 import { User } from "@prisma/client";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Add Users",

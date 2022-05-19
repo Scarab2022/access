@@ -2,11 +2,11 @@ import { ActionFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { z, ZodError } from "zod";
 import {
-  PageHeader,
   Main,
   SettingsForm,
   SettingsFormField,
 } from "~/components/lib";
+import { PageHeader } from "~/components/page-header";
 import { createAccessUser } from "~/models/accessUser.server";
 import { requireUserIdForRole } from "~/session.server";
 

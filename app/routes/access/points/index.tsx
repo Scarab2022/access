@@ -4,7 +4,6 @@ import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 import {
-  PageHeader,
   Main,
   Table,
   Td,
@@ -13,6 +12,7 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessPoints: Awaited<ReturnType<typeof getLoaderData>>;

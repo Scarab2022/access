@@ -1,11 +1,12 @@
 import React from "react";
 import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
-import { PageHeader, Main } from "~/components/lib";
+import { Main } from "~/components/lib";
 import { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { json, LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireUserIdForRole } from "~/session.server";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Raw",

@@ -2,7 +2,8 @@ import { User } from "@prisma/client";
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Card, PageHeader } from "~/components/lib";
+import { Card } from "~/components/lib";
+import { PageHeader } from "~/components/page-header";
 import { prisma } from "~/db.server";
 import { setUpResetPassword } from "~/models/user.server";
 

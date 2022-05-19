@@ -10,7 +10,6 @@ import type { ZodError } from "zod";
 import { z } from "zod";
 import {
   Button,
-  PageHeader,
   Main,
   SettingsForm,
   SettingsFormField,
@@ -21,6 +20,7 @@ import {
   updateAccessUser,
 } from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
+import { PageHeader } from "~/components/page-header";
 
 export const handle = {
   breadcrumb: "Edit",

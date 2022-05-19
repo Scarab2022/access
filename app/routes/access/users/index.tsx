@@ -1,11 +1,12 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Button, PageHeader } from "~/components/lib";
+import { Button } from "~/components/lib";
 import { getAccessUsers } from "~/models/accessUser.server";
 import { classNames } from "~/utils";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { StackedList } from "~/components/stacked-list";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessUsers: Awaited<ReturnType<typeof getAccessUsers>>;

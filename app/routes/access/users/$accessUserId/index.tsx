@@ -11,7 +11,6 @@ import {
   Card,
   DlCard,
   DlCardDtDd,
-  PageHeader,
   Main,
   Table,
   Td,
@@ -23,6 +22,7 @@ import {
 import { PencilIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
+import { PageHeader } from "~/components/page-header";
 
 type LoaderData = {
   accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>;

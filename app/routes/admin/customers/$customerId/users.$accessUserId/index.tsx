@@ -1,7 +1,7 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { PageHeader } from "~/components/lib";
+import { PageHeader } from "~/components/page-header";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
