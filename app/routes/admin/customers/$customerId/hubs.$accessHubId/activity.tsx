@@ -1,7 +1,9 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Card, Header, Main, Table, Th } from "~/components/lib";
+import { Header } from "~/components/lib";
+import { Section } from "~/components/section";
+import { Table } from "~/components/table";
 import { getAccessEvents } from "~/models/accessEvent.server";
 import { getAccessHub } from "~/models/accessHub.server";
 import { requireUserIdForRole } from "~/session.server";
@@ -37,42 +39,32 @@ export default function RouteComponent() {
   return (
     <>
       <Header title={accessHub.name} />
-      <Main>
-        <Card title="Access Events">
+      <main>
+        <Section>
+          <Section.Heading>Access Events</Section.Heading>
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>At</Th>
-                <Th>Point</Th>
-                <Th>Access</Th>
-                <Th>User</Th>
-                <Th>Code</Th>
+                <Table.Th>At</Table.Th>
+                <Table.Th>Point</Table.Th>
+                <Table.Th>Access</Table.Th>
+                <Table.Th>User</Table.Th>
+                <Table.Th>Code</Table.Th>
               </>
             }
           >
             {accessEvents.map((i) => (
               <tr key={i.id}>
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
-                  {new Date(i.at).toLocaleString()}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                  {i.accessPoint.name}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                  {i.access}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                  {i.accessUser ? i.accessUser.name : null}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                  {i.code}
-                </td>
+                <Table.Td prominent>{new Date(i.at).toLocaleString()}</Table.Td>
+                <Table.Td>{i.accessPoint.name}</Table.Td>
+                <Table.Td>{i.access}</Table.Td>
+                <Table.Td>{i.accessUser ? i.accessUser.name : null}</Table.Td>
+                <Table.Td>{i.code}</Table.Td>
               </tr>
             ))}
           </Table>
-        </Card>
-      </Main>
+        </Section>
+      </main>
     </>
   );
 }
