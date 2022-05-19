@@ -3,18 +3,9 @@ import { AccessHub, User } from "@prisma/client";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import {
-  Button,
-  Card,
-  Header,
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Button, Header } from "~/components/lib";
+import { Section } from "~/components/section";
+import { Table } from "~/components/table";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 
@@ -76,30 +67,30 @@ export default function RouteComponent() {
           </>
         }
       />
-      <Main>
-        <Card title="Points">
+      <main>
+        <Section>
+          <Section.Heading>Points</Section.Heading>
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>Position</Th>
-                <Th>Name</Th>
-                <Th>ID</Th>
-                <ThSr>View</ThSr>
+                <Table.Th>Position</Table.Th>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>ID</Table.Th>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >
             {accessHub.accessPoints.map((i) => (
               <tr key={i.id}>
-                <Td>{i.position}</Td>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.id}</Td>
-                <TdLink to={`points/${i.id}`}>View</TdLink>
+                <Table.Td>{i.position}</Table.Td>
+                <Table.Td prominent>{i.name}</Table.Td>
+                <Table.Td>{i.id}</Table.Td>
+                <Table.TdLink to={`points/${i.id}`}>View</Table.TdLink>
               </tr>
             ))}
           </Table>
-        </Card>
-      </Main>
+        </Section>
+      </main>
     </>
   );
 }
