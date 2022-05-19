@@ -70,7 +70,7 @@ export default function RouteComponent() {
       />
       <main>
         <Section>
-          <Section.Heading>Points</Section.Heading>
+          <Section.Header>Points</Section.Header>
           <Table
             headers={
               <>

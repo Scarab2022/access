@@ -32,7 +32,7 @@ export default function RouteComponent() {
       <PageHeader title={accessUser.name} />
       <main>
         <Section>
-          <Section.Heading>Points</Section.Heading>
+          <Section.Header>Points</Section.Header>
           <Table
             headers={
               <>

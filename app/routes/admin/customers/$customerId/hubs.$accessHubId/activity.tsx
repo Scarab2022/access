@@ -41,7 +41,7 @@ export default function RouteComponent() {
       <PageHeader title={accessHub.name} />
       <main>
         <Section>
-          <Section.Heading>Access Events</Section.Heading>
+          <Section.Header>Access Events</Section.Header>
           <Table
             headers={
               <>

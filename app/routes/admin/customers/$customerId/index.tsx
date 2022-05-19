@@ -90,7 +90,7 @@ export default function RouteComponent() {
       />
       <main className="space-y-6 ">
         <Section>
-          <Section.Heading>Access Hubs</Section.Heading>
+          <Section.Header>Access Hubs</Section.Header>
           <Table
             headers={
               <>
@@ -118,7 +118,7 @@ export default function RouteComponent() {
           </Table>
         </Section>
         <Section>
-          <Section.Heading>Access Users</Section.Heading>
+          <Section.Header>Access Users</Section.Header>
           <Table
             headers={
               <>

@@ -59,7 +59,7 @@ export default function RouteComponent() {
       />
       <main>
         <Section>
-          <Section.Heading>Users</Section.Heading>
+          <Section.Header>Users</Section.Header>
           <Table
             headers={
               <>

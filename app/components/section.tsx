@@ -4,7 +4,7 @@ function Section({ children }: { children: React.ReactNode }) {
   return <div>{children}</div>;
 }
 
-Section.Heading = function SectionHeading({
+Section.Header = function SectionHeader({
   children,
 }: {
   children: React.ReactNode;
