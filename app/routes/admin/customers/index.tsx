@@ -40,7 +40,7 @@ export default function RouteComponent() {
           >
             {customers.map((i) => (
               <tr key={i.id}>
-                <Table.TdProminent>{i.email}</Table.TdProminent>
+                <Table.Td prominent>{i.email}</Table.Td>
                 <Table.Td>
                   {new Date(i.createdAt).toLocaleDateString()}
                 </Table.Td>

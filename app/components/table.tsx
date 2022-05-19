@@ -111,18 +111,6 @@ Table.Td = function TableTd({
   );
 };
 
-Table.TdProminent = function TableTdProminent({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-      {children}
-    </td>
-  );
-};
-
 // Intended for link in last column since text-right.
 Table.TdLink = function TableTdLink({
   children,
