@@ -86,9 +86,26 @@ Table.Th = function TableTh({
   );
 };
 
-Table.Td = function TableTd({ children }: { children: React.ReactNode }) {
+Table.Td = function TableTd({
+  prominent = false,
+  children,
+}: {
+  prominent?: boolean;
+  children: React.ReactNode;
+}) {
+  // Prominent first td: whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0
+  // Remaining td: whitespace-nowrap py-4 px-3 text-sm text-gray-500
+  // With condensed content
+  // First td not prominent: whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6
+  // Second td prominent: whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900
+  // Remaining td: whitespace-nowrap px-2 py-2 text-sm text-gray-900
   return (
-    <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
+    <td
+      className={classNames(
+        "whitespace-nowrap py-4 px-3 text-sm first:pl-4 first:pr-3 first:sm:pl-6 first:md:pl-0",
+        prominent ? "font-medium text-gray-900" : "text-gray-500"
+      )}
+    >
       {children}
     </td>
   );

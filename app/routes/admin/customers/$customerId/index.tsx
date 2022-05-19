@@ -101,7 +101,7 @@ export default function RouteComponent() {
         >
           {customer.accessHubs.map((i) => (
             <tr key={i.id}>
-              <Table.TdProminent>{i.name}</Table.TdProminent>
+              <Table.Td prominent>{i.name}</Table.Td>
               <Table.Td>{i.id}</Table.Td>
               <Table.Td>{i.description}</Table.Td>
               <Table.Td>
@@ -130,7 +130,7 @@ export default function RouteComponent() {
                 codeActivateExpireStatus(i);
               return (
                 <tr key={i.id}>
-                  <Table.TdProminent>{i.name}</Table.TdProminent>
+                  <Table.Td prominent>{i.name}</Table.Td>
                   <Table.Td>{i.id}</Table.Td>
                   <Table.Td>{i.code}</Table.Td>
                   <Table.Td>{codeStatus}</Table.Td>
