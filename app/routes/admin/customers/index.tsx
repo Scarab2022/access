@@ -34,7 +34,7 @@ export default function RouteComponent() {
               <>
                 <Table.Th>Email</Table.Th>
                 <Table.Th>Created At</Table.Th>
-                <Table.ThSr>View</Table.ThSr>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >

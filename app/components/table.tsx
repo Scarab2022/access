@@ -19,16 +19,18 @@ function Table({
   children: React.ReactNode;
 }) {
   return (
-    // <div className="lg:-mx-8- -my-2 -mx-4 overflow-x-auto ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg">
-    //   <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-    <table className="min-w-full divide-y divide-gray-300">
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody className="divide-y divide-gray-200">{children}</tbody>
-    </table>
-    //   </div>
-    // </div>
+    <div className="flex flex-col">
+      <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <table className="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>{headers}</tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">{children}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -42,33 +44,44 @@ Table.Container = function TableContainer({
   return (
     <div
       className={classNames(
-        "-my-2 -mx-4 overflow-x-auto  sm:-mx-6 md:mx-0 md:rounded-lg",
-        chrome && "ring-1 ring-gray-300"
+        "-my-2 -mx-4 overflow-x-auto sm:-mx-6 md:mx-0",
+        chrome && "ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg"
       )}
     >
-      <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+      <div
+        className={classNames(
+          "inline-block min-w-full py-2 align-middle",
+          chrome && "md:px-6 lg:px-8"
+        )}
+      >
         {children}
       </div>
     </div>
   );
 };
 
-Table.Th = function TableTh({ children }: { children: React.ReactNode }) {
+Table.Th = function TableTh({
+  sr = false,
+  children,
+}: {
+  sr?: boolean;
+  children: React.ReactNode;
+}) {
+  // With white background: https://tailwindui.com/components/application-ui/lists/tables
+  // First th: py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0
+  // Remaining th: py-3.5 px-3 text-left text-sm font-semibold text-gray-900
+  // Screen reader (rightmost col): relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0
+  // Tailwind comment: relative needed to work around issue on safari mobile.
   return (
     <th
       scope="col"
-      className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+      className={classNames(
+        sr
+          ? "relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0"
+          : "py-3.5 px-3 text-left text-sm font-semibold text-gray-900 first:pl-4 first:pr-3 first:sm:pl-6 first:md:pl-0"
+      )}
     >
-      {children}
-    </th>
-  );
-};
-
-Table.ThSr = function TableThSr({ children }: { children: React.ReactNode }) {
-  return (
-    // Tailwind comment: relative needed to work around issue on safari mobile.
-    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0">
-      <span className="sr-only">{children}</span>
+      {sr ? <span className="sr-only">{children}</span> : children}
     </th>
   );
 };
