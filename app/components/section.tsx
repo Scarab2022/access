@@ -18,4 +18,12 @@ Section.Header = function SectionHeader({
   );
 };
 
+Section.Body = function SectionBody({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <div className="mt-8">{children}</div>;
+};
+
 export { Section };

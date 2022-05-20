@@ -4,6 +4,7 @@ import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Card } from "~/components/lib";
 import { PageHeader } from "~/components/page-header";
+import { Section } from "~/components/section";
 import { prisma } from "~/db.server";
 import { setUpResetPassword } from "~/models/user.server";
 
@@ -69,8 +70,9 @@ export default function RouteComponent() {
     <>
       <PageHeader title={customer.email} />
       <main>
-        <Card title="Password Reset Link">
-          <div className="px-4 pb-8 sm:px-6 lg:px-8">
+        <Section>
+          <Section.Header>Password Reset Link</Section.Header>
+          <Section.Body>
             {actionData ? (
               <div>
                 <p>{actionData.resetPasswordHref}</p>
@@ -82,8 +84,8 @@ export default function RouteComponent() {
             ) : (
               "Already generated."
             )}
-          </div>
-        </Card>
+          </Section.Body>
+        </Section>
       </main>
     </>
   );
