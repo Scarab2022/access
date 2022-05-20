@@ -1,6 +1,6 @@
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
+import { ActionFunction, redirect } from "@remix-run/node";
 import { useActionData, useLocation } from "@remix-run/react";
-import { Main, SettingsForm, SettingsFormField } from "~/components/lib";
+import { SettingsForm, SettingsFormField } from "~/components/lib";
 import { z, ZodError } from "zod";
 import { resetPassword } from "~/models/user.server";
 
@@ -10,14 +10,6 @@ const SearchParams = z
     token: z.string().min(32),
   })
   .strict();
-
-// type LoaderData = Awaited<ReturnType<typeof validateSearchParams>>;
-
-// export const loader: LoaderFunction = async ({
-//   request,
-// }): Promise<LoaderData> => {
-//   return await validateSearchParams(request);
-// };
 
 const FieldValues = z
   .object({
@@ -58,7 +50,7 @@ export default function RouteComponent() {
   const location = useLocation();
 
   return (
-    <Main>
+    <main>
       <div className="mt-8">
         <SettingsForm
           replace
@@ -83,6 +75,6 @@ export default function RouteComponent() {
           </SettingsFormField>
         </SettingsForm>
       </div>
-    </Main>
+    </main>
   );
 }

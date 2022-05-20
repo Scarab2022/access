@@ -2,7 +2,6 @@ import { ActionFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { z, ZodError } from "zod";
 import {
-  Main,
   SettingsForm,
   SettingsFormField,
 } from "~/components/lib";
@@ -56,7 +55,7 @@ export default function RouteComponent() {
   return (
     <>
       <PageHeader />
-      <Main>
+      <main>
         <SettingsForm
           replace
           method="post"
@@ -109,7 +108,7 @@ export default function RouteComponent() {
             />
           </SettingsFormField>
         </SettingsForm>
-      </Main>
+      </main>
     </>
   );
 }

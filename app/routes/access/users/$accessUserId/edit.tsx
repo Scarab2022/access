@@ -8,7 +8,7 @@ import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
-import { Main, SettingsForm, SettingsFormField } from "~/components/lib";
+import { SettingsForm, SettingsFormField } from "~/components/lib";
 import { Button } from "~/components/Button";
 import {
   getAccessUser,
@@ -142,7 +142,7 @@ export default function RouteComponent() {
   return (
     <>
       <PageHeader />
-      <Main>
+      <main>
         <SettingsForm
           replace
           method="post"
@@ -287,7 +287,7 @@ export default function RouteComponent() {
             id="expireCodeAtHidden"
           />
         </SettingsForm>
-      </Main>
+      </main>
     </>
   );
 }

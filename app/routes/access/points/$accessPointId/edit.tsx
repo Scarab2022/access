@@ -10,11 +10,7 @@ import { requireUserIdForRole } from "~/session.server";
 import { getAccessPoint } from "~/models/accessPoint.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
-import {
-  Main,
-  SettingsForm,
-  SettingsFormField,
-} from "~/components/lib";
+import { SettingsForm, SettingsFormField } from "~/components/lib";
 import invariant from "tiny-invariant";
 import { PageHeader } from "~/components/page-header";
 
@@ -79,7 +75,7 @@ export default function RouteComponent() {
   return (
     <>
       <PageHeader />
-      <Main>
+      <main>
         <SettingsForm
           replace
           method="post"
@@ -119,7 +115,7 @@ export default function RouteComponent() {
             />
           </SettingsFormField>
         </SettingsForm>
-      </Main>
+      </main>
     </>
   );
 }

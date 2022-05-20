@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Main, SettingsForm } from "~/components/lib";
+import { SettingsForm } from "~/components/lib";
 import {
   addPointsToAccessUser,
   getAccessUserWithPoints,
@@ -71,7 +71,7 @@ export default function RouteComponent() {
   return (
     <>
       <PageHeader />
-      <Main>
+      <main>
         <SettingsForm replace method="post" title="Add Points" submitText="Add">
           <div className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
             {accessPoints.map((ap, apIdx) => (
@@ -102,7 +102,7 @@ export default function RouteComponent() {
             ))}
           </div>
         </SettingsForm>
-      </Main>
+      </main>
     </>
   );
 }

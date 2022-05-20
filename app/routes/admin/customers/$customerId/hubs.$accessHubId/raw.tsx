@@ -1,6 +1,5 @@
 import React from "react";
 import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
-import { Main } from "~/components/lib";
 import { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { json, LoaderFunction } from "@remix-run/node";
@@ -88,9 +87,9 @@ export default function RouteComponent() {
           </div>
         }
       />
-      <Main>
+      <main>
         <pre>{JSON.stringify(poll.data?.accessHub ?? accessHub, null, 2)}</pre>
-      </Main>
+      </main>
     </>
   );
 }
