@@ -9,20 +9,13 @@ import { Menu, Transition } from "@headlessui/react";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import {
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
 import { Button } from "~/components/Button";
 import invariant from "tiny-invariant";
 import { getAccessHubWithPoints } from "~/models/accessHub.server";
 import { classNames } from "~/utils";
 import { PageHeader } from "~/components/page-header";
+import { Section } from "~/components/section";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   accessHub: Awaited<ReturnType<typeof getAccessHubWithPoints>>;
@@ -115,42 +108,34 @@ export default function RouteComponent() {
           </>
         }
       />
-      <Main>
-        <section>
-          <div className="bg-white pt-6 shadow sm:overflow-hidden sm:rounded-md">
-            <div className="px-4 sm:px-6 lg:px-8">
-              <h2
-                id="access-points-heading"
-                className="text-lg font-medium leading-6 text-gray-900"
-              >
-                Access Points
-              </h2>
-            </div>
-            <div className="mt-6">
-              <Table
-                decor="edge"
-                headers={
-                  <>
-                    <Th>Position</Th>
-                    <Th>Name</Th>
-                    <Th>Description</Th>
-                    <ThSr>View</ThSr>
-                  </>
-                }
-              >
-                {accessHub.accessPoints.map((i) => (
-                  <tr key={i.id}>
-                    <Td>{i.position}</Td>
-                    <TdProminent>{i.name}</TdProminent>
-                    <Td>{i.description}</Td>
-                    <TdLink to={`./../../points/${i.id}`}>View</TdLink>
-                  </tr>
-                ))}
-              </Table>
-            </div>
-          </div>
-        </section>
-      </Main>
+      <main>
+        <Section>
+          <Section.Header>Access Points</Section.Header>
+          <Section.Body>
+            <Table
+              headers={
+                <>
+                  <Table.Th>Position</Table.Th>
+                  <Table.Th>Name</Table.Th>
+                  <Table.Th>Description</Table.Th>
+                  <Table.Th sr>View</Table.Th>
+                </>
+              }
+            >
+              {accessHub.accessPoints.map((i) => (
+                <tr key={i.id}>
+                  <Table.Td>{i.position}</Table.Td>
+                  <Table.Td prominent>{i.name}</Table.Td>
+                  <Table.Td>{i.description}</Table.Td>
+                  <Table.TdLink to={`./../../points/${i.id}`}>
+                    View
+                  </Table.TdLink>
+                </tr>
+              ))}
+            </Table>
+          </Section.Body>
+        </Section>
+      </main>
     </>
   );
 }

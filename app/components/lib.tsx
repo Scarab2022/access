@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
-import { FormProps, RemixLinkProps } from "@remix-run/react/components";
+import { FormProps } from "@remix-run/react/components";
 import React from "react";
 import {
   Form,
@@ -10,38 +10,6 @@ import {
 } from "@remix-run/react";
 import { classNames } from "~/utils";
 import { Button } from "./Button";
-
-// export function PageHeaderObsolete({
-//   title,
-//   meta,
-//   side, // Should be fragment if more than 1 item for flex
-// }: {
-//   title?: string;
-//   meta?: React.ReactNode;
-//   side?: React.ReactNode;
-// }) {
-//   // With page heading and stacked list
-//   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
-//   // With meta, actions, and breadcrumbs
-//   // https://tailwindui.com/components/application-ui/headings/page-headings
-//   return (
-//     <header className="py-8">
-//       <div className="lg:flex lg:items-center lg:justify-between">
-//         <div className="min-w-0 flex-1">
-//           <Breadcrumbs />
-//           {title ? (
-//             // sm:leading-snug otherwise sm:truncate's overflow hidden will cut off lowercase g's
-//             <h2 className="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:leading-snug">
-//               {title}
-//             </h2>
-//           ) : null}
-//           {meta}
-//         </div>
-//         {side ? <div className="mt-5 flex lg:mt-0 lg:ml-4">{side}</div> : null}
-//       </div>
-//     </header>
-//   );
-// }
 
 export function Main({ children }: { children: React.ReactNode }) {
   // No px-4 since tables need to extend to the edge on mobile.
@@ -82,97 +50,6 @@ export function Breadcrumbs() {
           ))}
       </ol>
     </nav>
-  );
-}
-
-export function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th
-      scope="col"
-      className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-6"
-    >
-      {children}
-    </th>
-  );
-}
-
-export function ThSr({ children }: { children: React.ReactNode }) {
-  return (
-    // Tailwind comment: relative needed to work around issue on safari mobile.
-    <th scope="col" className="relative px-4 py-3 sm:px-6">
-      <span className="sr-only">{children}</span>
-    </th>
-  );
-}
-
-export function Td({ children }: { children: React.ReactNode }) {
-  return (
-    <td className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 sm:px-6">
-      {children}
-    </td>
-  );
-}
-
-export function TdProminent({ children }: { children: React.ReactNode }) {
-  return (
-    <td className="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-900 sm:px-6">
-      {children}
-    </td>
-  );
-}
-
-// Intended for link in last column since text-right.
-export function TdLink({
-  children,
-  to,
-  onClick,
-}: { children: React.ReactNode } & Pick<RemixLinkProps, "to" | "onClick">) {
-  return (
-    <td className="whitespace-nowrap px-4 py-4 text-right text-sm font-medium sm:px-6">
-      <Link
-        to={to}
-        className="text-indigo-600 hover:text-indigo-900"
-        onClick={onClick}
-      >
-        {children}
-      </Link>
-    </td>
-  );
-}
-
-export function Table({
-  headers,
-  children,
-  decor = "shadow",
-}: {
-  headers: React.ReactFragment;
-  children: React.ReactNode;
-  decor?: "shadow" | "edge";
-}) {
-  // Tailwind UI table with shadow: <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-  // Tailwind UI details table: <div className="overflow-hidden border-t border-gray-200">
-  return (
-    <div className="flex flex-col">
-      <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <div
-            className={classNames(
-              decor === "shadow" ? "border-b shadow sm:rounded-lg" : "border-t",
-              "overflow-hidden border-gray-200"
-            )}
-          >
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>{headers}</tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                {children}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }
 

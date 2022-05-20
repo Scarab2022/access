@@ -6,23 +6,13 @@ import {
   useFormAction,
 } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import {
-  Card,
-  DlCard,
-  DlCardDtDd,
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
+import { Card, DlCard, DlCardDtDd } from "~/components/lib";
 import { Button } from "~/components/Button";
 import { PencilIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
 import { PageHeader } from "~/components/page-header";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>;
@@ -90,7 +80,7 @@ export default function RouteComponent() {
           </Button>
         }
       />
-      <Main>
+      <main>
         <DlCard>
           <DlCardDtDd term="Code" description={accessUser.code} />
           <DlCardDtDd term="Code Status" description={codeStatus} />
@@ -110,22 +100,21 @@ export default function RouteComponent() {
           side={<Button onClick={() => navigate("points/add")}>Add</Button>}
         >
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>Name</Th>
-                <Th>Hub</Th>
-                <Th>Description</Th>
-                <ThSr>View</ThSr>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>Hub</Table.Th>
+                <Table.Th>Description</Table.Th>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >
             {accessUser.accessPoints.map((i) => (
               <tr key={i.id}>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.accessHub.name}</Td>
-                <Td>{i.description}</Td>
-                <TdLink
+                <Table.Td prominent>{i.name}</Table.Td>
+                <Table.Td>{i.accessHub.name}</Table.Td>
+                <Table.Td>{i.description}</Table.Td>
+                <Table.TdLink
                   to="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -136,12 +125,12 @@ export default function RouteComponent() {
                   }}
                 >
                   Remove
-                </TdLink>
+                </Table.TdLink>
               </tr>
             ))}
           </Table>
         </Card>
-      </Main>
+      </main>
     </>
   );
 }

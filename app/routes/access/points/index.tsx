@@ -3,16 +3,8 @@ import { useLoaderData } from "@remix-run/react";
 import { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import {
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
 import { PageHeader } from "~/components/page-header";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   accessPoints: Awaited<ReturnType<typeof getLoaderData>>;
@@ -40,27 +32,27 @@ export default function RouteComponent() {
   return (
     <>
       <PageHeader title="Points" />
-      <Main>
+      <main>
         <Table
           headers={
             <>
-              <Th>Name</Th>
-              <Th>Hub</Th>
-              <Th>Description</Th>
-              <ThSr>View</ThSr>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Hub</Table.Th>
+              <Table.Th>Description</Table.Th>
+              <Table.Th sr>View</Table.Th>
             </>
           }
         >
           {accessPoints.map((i) => (
             <tr key={i.id}>
-              <TdProminent>{i.name}</TdProminent>
-              <Td>{i.accessHub.name}</Td>
-              <Td>{i.description}</Td>
-              <TdLink to={`${i.id}`}>View</TdLink>
+              <Table.Td prominent>{i.name}</Table.Td>
+              <Table.Td>{i.accessHub.name}</Table.Td>
+              <Table.Td>{i.description}</Table.Td>
+              <Table.TdLink to={`${i.id}`}>View</Table.TdLink>
             </tr>
           ))}
         </Table>
-      </Main>
+      </main>
     </>
   );
 }

@@ -3,18 +3,10 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useFetcher, useLocation } from "@remix-run/react";
 import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
-import {
-  Main,
-  Table,
-  Td,
-  TdLink,
-  TdProminent,
-  Th,
-  ThSr,
-} from "~/components/lib";
 import { requireUserIdForRole } from "~/session.server";
 import { StyledSwitch } from "~/components/styled-switch";
 import { PageHeader } from "~/components/page-header";
+import { Table } from "~/components/table";
 
 export const handle = {
   breadcrumb: "Dashboard",
@@ -86,27 +78,27 @@ export default function RouteComponent() {
           </StyledSwitch.Group>
         }
       />
-      <Main>
+      <main>
         <Table
           headers={
             <>
-              <Th>Hub</Th>
-              <Th>Name</Th>
-              <Th>Connection</Th>
-              <ThSr>View</ThSr>
+              <Table.Th>Hub</Table.Th>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Connection</Table.Th>
+              <Table.Th sr>View</Table.Th>
             </>
           }
         >
           {(poll.data?.accessPoints ?? accessPoints).map((i) => (
             <tr key={i.id}>
-              <Td>{i.accessHub.name}</Td>
-              <TdProminent>{i.name}</TdProminent>
-              <Td>{connectionStatus(i.accessHub.heartbeatAt)}</Td>
-              <TdLink to={`../points/${i.id}`}>View</TdLink>
+              <Table.Td>{i.accessHub.name}</Table.Td>
+              <Table.Td prominent>{i.name}</Table.Td>
+              <Table.Td>{connectionStatus(i.accessHub.heartbeatAt)}</Table.Td>
+              <Table.TdLink to={`../points/${i.id}`}>View</Table.TdLink>
             </tr>
           ))}
         </Table>
-      </Main>
+      </main>
     </>
   );
 }

@@ -15,23 +15,13 @@ import {
   PencilIcon,
 } from "@heroicons/react/solid";
 import { Fragment } from "react";
-import {
-  Table,
-  TdProminent,
-  Td,
-  Th,
-  ThSr,
-  TdLink,
-  Main,
-  DlCard,
-  DlCardDtDd,
-  Card,
-} from "~/components/lib";
+import { DlCard, DlCardDtDd, Card } from "~/components/lib";
 import { Button } from "~/components/Button";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { classNames } from "~/utils";
 import { PageHeader } from "~/components/page-header";
+import { Table } from "~/components/table";
 
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
@@ -141,7 +131,7 @@ export default function RouteComponent() {
           </>
         }
       />
-      <Main>
+      <main>
         <DlCard>
           <DlCardDtDd term="Hub" description={accessPoint.accessHub.name} />
           <DlCardDtDd term="ID" description={accessPoint.id.toString()} />
@@ -168,22 +158,21 @@ export default function RouteComponent() {
           side={<Button onClick={() => navigate("users/add")}>Add</Button>}
         >
           <Table
-            decor="edge"
             headers={
               <>
-                <Th>Name</Th>
-                <Th>Description</Th>
-                <Th>Code</Th>
-                <ThSr>View</ThSr>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>Description</Table.Th>
+                <Table.Th>Code</Table.Th>
+                <Table.Th sr>View</Table.Th>
               </>
             }
           >
             {accessPoint.accessUsers.map((i) => (
               <tr key={i.id}>
-                <TdProminent>{i.name}</TdProminent>
-                <Td>{i.description}</Td>
-                <Td>{i.code}</Td>
-                <TdLink
+                <Table.Td prominent>{i.name}</Table.Td>
+                <Table.Td>{i.description}</Table.Td>
+                <Table.Td>{i.code}</Table.Td>
+                <Table.TdLink
                   to="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -194,12 +183,12 @@ export default function RouteComponent() {
                   }}
                 >
                   Remove
-                </TdLink>
+                </Table.TdLink>
               </tr>
             ))}
           </Table>
         </Card>
-      </Main>
+      </main>
     </>
   );
 }
