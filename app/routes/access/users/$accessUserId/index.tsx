@@ -6,13 +6,14 @@ import {
   useFormAction,
 } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Card, DlCard, DlCardDtDd } from "~/components/lib";
+import { DlCard, DlCardDtDd } from "~/components/lib";
 import { Button } from "~/components/Button";
 import { PencilIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
 import { PageHeader } from "~/components/page-header";
 import { Table } from "~/components/table";
+import { Section } from "~/components/section";
 
 type LoaderData = {
   accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>;
@@ -80,7 +81,7 @@ export default function RouteComponent() {
           </Button>
         }
       />
-      <main>
+      <main className="space-y-6">
         <DlCard>
           <DlCardDtDd term="Code" description={accessUser.code} />
           <DlCardDtDd term="Code Status" description={codeStatus} />
@@ -95,10 +96,12 @@ export default function RouteComponent() {
             description={accessUser.description}
           />
         </DlCard>
-        <Card
-          title="Access Points"
-          side={<Button onClick={() => navigate("points/add")}>Add</Button>}
-        >
+        <Section>
+          <Section.Header
+            side={<Button onClick={() => navigate("points/add")}>Add</Button>}
+          >
+            Access Points
+          </Section.Header>
           <Table
             headers={
               <>
@@ -129,7 +132,7 @@ export default function RouteComponent() {
               </tr>
             ))}
           </Table>
-        </Card>
+        </Section>
       </main>
     </>
   );

@@ -15,13 +15,14 @@ import {
   PencilIcon,
 } from "@heroicons/react/solid";
 import { Fragment } from "react";
-import { DlCard, DlCardDtDd, Card } from "~/components/lib";
+import { DlCard, DlCardDtDd } from "~/components/lib";
 import { Button } from "~/components/Button";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { classNames } from "~/utils";
 import { PageHeader } from "~/components/page-header";
 import { Table } from "~/components/table";
+import { Section } from "~/components/section";
 
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
@@ -131,7 +132,7 @@ export default function RouteComponent() {
           </>
         }
       />
-      <main>
+      <main className="space-y-6">
         <DlCard>
           <DlCardDtDd term="Hub" description={accessPoint.accessHub.name} />
           <DlCardDtDd term="ID" description={accessPoint.id.toString()} />
@@ -153,10 +154,12 @@ export default function RouteComponent() {
             description={accessPoint.description}
           />
         </DlCard>
-        <Card
-          title="Users With Access"
-          side={<Button onClick={() => navigate("users/add")}>Add</Button>}
-        >
+        <Section>
+          <Section.Header
+            side={<Button onClick={() => navigate("users/add")}>Add</Button>}
+          >
+            Users With Access
+          </Section.Header>
           <Table
             headers={
               <>
@@ -187,7 +190,7 @@ export default function RouteComponent() {
               </tr>
             ))}
           </Table>
-        </Card>
+        </Section>
       </main>
     </>
   );

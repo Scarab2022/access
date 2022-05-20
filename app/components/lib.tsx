@@ -57,26 +57,6 @@ export function DlCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function Card({
-  title,
-  side,
-  children,
-}: {
-  title: string;
-  side?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="bg-white pt-6 shadow sm:overflow-hidden sm:rounded-md">
-      <div className="px-4 pb-6 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
-        <h2 className="text-lg font-medium leading-6 text-gray-900">{title}</h2>
-        {side ? <div className="mt-5 flex lg:mt-0 lg:ml-4">{side}</div> : null}
-      </div>
-      {children}
-    </section>
-  );
-}
-
 export function SettingsFormField({
   id,
   label,
