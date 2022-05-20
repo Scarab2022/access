@@ -2,7 +2,6 @@ import { User } from "@prisma/client";
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Card } from "~/components/lib";
 import { PageHeader } from "~/components/page-header";
 import { Section } from "~/components/section";
 import { prisma } from "~/db.server";
@@ -76,7 +75,7 @@ export default function RouteComponent() {
             {actionData ? (
               <div>
                 <p>{actionData.resetPasswordHref}</p>
-                <p>
+                <p className="mt-2">
                   Expires at{" "}
                   {new Date(actionData.resetPasswordExpireAt).toLocaleString()}
                 </p>

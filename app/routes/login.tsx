@@ -96,107 +96,335 @@ export default function LoginPage() {
     }
   }, [actionData]);
 
+  // Simple card
+  // https://tailwindui.com/components/application-ui/forms/sign-in-forms
+  // <html class="h-full bg-gray-50">
+  // <body class="h-full">
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <Form method="post" className="space-y-6" noValidate>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email address
-            </label>
-            <div className="mt-1">
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.email && (
-                <div className="pt-1 text-red-700" id="email-error">
-                  {actionData.errors.email}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <div className="mt-1">
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.password && (
-                <div className="pt-1 text-red-700" id="password-error">
-                  {actionData.errors.password}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+    <div className="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Log in to your account
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Or{" "}
+          <Link
+            to={{
+              pathname: "/join",
+              search: searchParams.toString(),
+            }}
+            className="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Log in
-          </button>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember"
-                name="remember"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
+            join here
+          </Link>
+        </p>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="py-8 px-4 sm:px-10">
+          <Form method="post" className="space-y-6" noValidate>
+            <div>
               <label
-                htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
               >
-                Remember me
+                Email address
               </label>
+              <div className="mt-1">
+                <input
+                  ref={emailRef}
+                  id="email"
+                  required
+                  autoFocus={true}
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={actionData?.errors?.email ? true : undefined}
+                  aria-describedby="email-error"
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+                {actionData?.errors?.email && (
+                  <div className="pt-1 text-red-700" id="email-error">
+                    {actionData.errors.email}
+                  </div>
+                )}
+              </div>
             </div>
-            {/* <Link
-              to="/resetpassword"
-              className="text-sm text-blue-500 underline"
-            >
-              Forgot password?
-            </Link> */}
-          </div>
-          <div className="text-center text-sm text-gray-500">
-            Don't have an account?{" "}
-            <Link
-              className="text-blue-500 underline"
-              to={{
-                pathname: "/join",
-                search: searchParams.toString(),
-              }}
-            >
-              Sign up
-            </Link>
-          </div>
-        </Form>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  ref={passwordRef}
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  aria-invalid={actionData?.errors?.password ? true : undefined}
+                  aria-describedby="password-error"
+                  required
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+                {actionData?.errors?.password && (
+                  <div className="pt-1 text-red-700" id="password-error">
+                    {actionData.errors.password}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember"
+                  name="remember"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label
+                  htmlFor="remember"
+                  className="ml-2 block text-sm text-gray-900"
+                >
+                  Remember me
+                </label>
+              </div>
+
+              {/* <div className="text-sm">
+                <a
+                  href="."
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Forgot your password?
+                </a>
+              </div> */}
+            </div>
+
+            <div>
+              <input type="hidden" name="redirectTo" value={redirectTo} />
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Sign in
+              </button>
+            </div>
+          </Form>
+        </div>
       </div>
     </div>
+
+    //   <div className="flex min-h-full flex-col justify-center">
+    //     <div className="mx-auto w-full max-w-md px-8">
+    //       <Form method="post" className="space-y-6" noValidate>
+    //         <div>
+    //           <label
+    //             htmlFor="email"
+    //             className="block text-sm font-medium text-gray-700"
+    //           >
+    //             Email address
+    //           </label>
+    //           <div className="mt-1">
+    //             <input
+    //               ref={emailRef}
+    //               id="email"
+    //               required
+    //               autoFocus={true}
+    //               name="email"
+    //               type="email"
+    //               autoComplete="email"
+    //               aria-invalid={actionData?.errors?.email ? true : undefined}
+    //               aria-describedby="email-error"
+    //               className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+    //             />
+    //             {actionData?.errors?.email && (
+    //               <div className="pt-1 text-red-700" id="email-error">
+    //                 {actionData.errors.email}
+    //               </div>
+    //             )}
+    //           </div>
+    //         </div>
+
+    //         <div>
+    //           <label
+    //             htmlFor="password"
+    //             className="block text-sm font-medium text-gray-700"
+    //           >
+    //             Password
+    //           </label>
+    //           <div className="mt-1">
+    //             <input
+    //               id="password"
+    //               ref={passwordRef}
+    //               name="password"
+    //               type="password"
+    //               autoComplete="current-password"
+    //               aria-invalid={actionData?.errors?.password ? true : undefined}
+    //               aria-describedby="password-error"
+    //               className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+    //             />
+    //             {actionData?.errors?.password && (
+    //               <div className="pt-1 text-red-700" id="password-error">
+    //                 {actionData.errors.password}
+    //               </div>
+    //             )}
+    //           </div>
+    //         </div>
+
+    //         <input type="hidden" name="redirectTo" value={redirectTo} />
+    //         <button
+    //           type="submit"
+    //           className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+    //         >
+    //           Log in
+    //         </button>
+    //         <div className="flex items-center justify-between">
+    //           <div className="flex items-center">
+    //             <input
+    //               id="remember"
+    //               name="remember"
+    //               type="checkbox"
+    //               className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+    //             />
+    //             <label
+    //               htmlFor="remember"
+    //               className="ml-2 block text-sm text-gray-900"
+    //             >
+    //               Remember me
+    //             </label>
+    //           </div>
+    //           {/* <Link
+    //             to="/resetpassword"
+    //             className="text-sm text-blue-500 underline"
+    //           >
+    //             Forgot password?
+    //           </Link> */}
+    //         </div>
+    //         <div className="text-center text-sm text-gray-500">
+    //           Don't have an account?{" "}
+    //           <Link
+    //             className="text-blue-500 underline"
+    //             to={{
+    //               pathname: "/join",
+    //               search: searchParams.toString(),
+    //             }}
+    //           >
+    //             Sign up
+    //           </Link>
+    //         </div>
+    //       </Form>
+    //     </div>
+    //   </div>
+  );
+}
+
+function Example() {
+  // Simple card
+  // https://tailwindui.com/components/application-ui/forms/sign-in-forms
+  // <html class="h-full bg-gray-50">
+  // <body class="h-full">
+  return (
+    <>
+      <div className="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Log in to your account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{" "}
+            <a
+              href="."
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              join here
+            </a>
+          </p>
+        </div>
+
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          {/* <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10"> */}
+          <div className="py-8 px-4 sm:px-10">
+            <form className="space-y-6" action="#" method="POST">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Email address
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Password
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
+                    Remember me
+                  </label>
+                </div>
+
+                <div className="text-sm">
+                  <a
+                    href="."
+                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot your password?
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
