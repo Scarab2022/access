@@ -10,7 +10,6 @@ import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import {
-  Button,
   Main,
   Table,
   Td,
@@ -19,6 +18,7 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
+import { Button } from "~/components/Button";
 import invariant from "tiny-invariant";
 import { getAccessHubWithPoints } from "~/models/accessHub.server";
 import { classNames } from "~/utils";

@@ -8,12 +8,8 @@ import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
-import {
-  Button,
-  Main,
-  SettingsForm,
-  SettingsFormField,
-} from "~/components/lib";
+import { Main, SettingsForm, SettingsFormField } from "~/components/lib";
+import { Button } from "~/components/Button";
 import {
   getAccessUser,
   markAccessUserAsDeleted,

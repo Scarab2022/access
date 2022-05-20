@@ -16,7 +16,6 @@ import {
 } from "@heroicons/react/solid";
 import { Fragment } from "react";
 import {
-  Button,
   Table,
   TdProminent,
   Td,
@@ -28,6 +27,7 @@ import {
   DlCardDtDd,
   Card,
 } from "~/components/lib";
+import { Button } from "~/components/Button";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { classNames } from "~/utils";

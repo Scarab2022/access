@@ -7,7 +7,6 @@ import {
 } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import {
-  Button,
   Card,
   DlCard,
   DlCardDtDd,
@@ -19,6 +18,7 @@ import {
   Th,
   ThSr,
 } from "~/components/lib";
+import { Button } from "~/components/Button";
 import { PencilIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { getAccessUserWithPoints } from "~/models/accessUser.server";
