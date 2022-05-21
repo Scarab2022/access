@@ -15,7 +15,6 @@ import {
   PencilIcon,
 } from "@heroicons/react/solid";
 import { Fragment } from "react";
-import { DlCard, DlCardDtDd } from "~/components/lib";
 import { Button } from "~/components/button";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
@@ -23,6 +22,7 @@ import { classNames } from "~/utils";
 import { PageHeader } from "~/components/page-header";
 import { Table } from "~/components/table";
 import { Section } from "~/components/section";
+import { DescriptionList } from "~/components/description-list";
 
 type LoaderData = {
   accessPoint: Awaited<ReturnType<typeof getAccessPointWithHubAndUsers>>;
@@ -133,27 +133,34 @@ export default function RouteComponent() {
         }
       />
       <main className="space-y-6">
-        <DlCard>
-          <DlCardDtDd term="Hub" description={accessPoint.accessHub.name} />
-          <DlCardDtDd term="ID" description={accessPoint.id.toString()} />
-          <DlCardDtDd
-            term="Position"
-            description={accessPoint.position.toString()}
-          />
-          <DlCardDtDd
-            term="Heartbeat"
-            description={
-              accessPoint.accessHub.heartbeatAt
-                ? new Date(accessPoint.accessHub.heartbeatAt).toLocaleString()
-                : ""
-            }
-          />
-          <DlCardDtDd
-            wide={true}
-            term="Description"
-            description={accessPoint.description}
-          />
-        </DlCard>
+        <div className="mx-auto max-w-lg">
+          <DescriptionList>
+            <DescriptionList.Item
+              term="Hub"
+              description={accessPoint.accessHub.name}
+            />
+            <DescriptionList.Item
+              term="ID"
+              description={accessPoint.id.toString()}
+            />
+            <DescriptionList.Item
+              term="Position"
+              description={accessPoint.position.toString()}
+            />
+            <DescriptionList.Item
+              term="Heartbeat"
+              description={
+                accessPoint.accessHub.heartbeatAt
+                  ? new Date(accessPoint.accessHub.heartbeatAt).toLocaleString()
+                  : ""
+              }
+            />
+            <DescriptionList.Item
+              term="Description"
+              description={accessPoint.description}
+            />
+          </DescriptionList>
+        </div>
         <Section>
           <Section.Header
             side={<Button onClick={() => navigate("users/add")}>Add</Button>}

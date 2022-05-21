@@ -6,7 +6,6 @@ import {
   useFormAction,
 } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { DlCard, DlCardDtDd } from "~/components/lib";
 import { Button } from "~/components/button";
 import { PencilIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
@@ -83,36 +82,24 @@ export default function RouteComponent() {
         }
       />
       <main className="space-y-6">
-        <DescriptionList>
-          <DescriptionList.Item term="Code" description={accessUser.code} />
-          <DescriptionList.Item term="Code Status" description={codeStatus} />
-          <DescriptionList.Item
-            term="ID"
-            description={accessUser.id.toString()}
-          />
-          <DescriptionList.Item
-            term="Activate Expire Status"
-            description={activateExpireStatus}
-          />
-          <DescriptionList.Item
-            term="Description"
-            description={accessUser.description}
-          />
-        </DescriptionList>
-        <DlCard>
-          <DlCardDtDd term="Code" description={accessUser.code} />
-          <DlCardDtDd term="Code Status" description={codeStatus} />
-          <DlCardDtDd term="ID" description={accessUser.id.toString()} />
-          <DlCardDtDd
-            term="Activate Expire Status"
-            description={activateExpireStatus}
-          />
-          <DlCardDtDd
-            wide={true}
-            term="Description"
-            description={accessUser.description}
-          />
-        </DlCard>
+        <div className="mx-auto max-w-lg">
+          <DescriptionList>
+            <DescriptionList.Item term="Code" description={accessUser.code} />
+            <DescriptionList.Item term="Code Status" description={codeStatus} />
+            <DescriptionList.Item
+              term="ID"
+              description={accessUser.id.toString()}
+            />
+            <DescriptionList.Item
+              term="Activate Expire Status"
+              description={activateExpireStatus}
+            />
+            <DescriptionList.Item
+              term="Description"
+              description={accessUser.description}
+            />
+          </DescriptionList>
+        </div>
         <Section>
           <Section.Header
             side={<Button onClick={() => navigate("points/add")}>Add</Button>}
