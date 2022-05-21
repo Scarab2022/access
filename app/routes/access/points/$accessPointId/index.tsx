@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/solid";
 import { Fragment } from "react";
 import { DlCard, DlCardDtDd } from "~/components/lib";
-import { Button } from "~/components/Button";
+import { Button } from "~/components/button";
 import invariant from "tiny-invariant";
 import { getAccessPointWithHubAndUsers } from "~/models/accessPoint.server";
 import { classNames } from "~/utils";

@@ -9,7 +9,7 @@ import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import { SettingsForm, SettingsFormField } from "~/components/lib";
-import { Button } from "~/components/Button";
+import { Button } from "~/components/button";
 import {
   getAccessUser,
   markAccessUserAsDeleted,

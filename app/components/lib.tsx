@@ -1,7 +1,7 @@
 import { FormProps } from "@remix-run/react/components";
 import React from "react";
 import { Form, useCatch, useNavigate } from "@remix-run/react";
-import { Button } from "./Button";
+import { Button } from "./button";
 
 export function GenericCatchBoundary() {
   const caught = useCatch();

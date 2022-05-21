@@ -1,6 +1,6 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { useFormAction, useLoaderData, useSubmit } from "@remix-run/react";
-import { Button } from "~/components/Button";
+import { Button } from "~/components/button";
 import { prisma } from "~/db.server";
 import type { User } from "@prisma/client";
 import invariant from "tiny-invariant";

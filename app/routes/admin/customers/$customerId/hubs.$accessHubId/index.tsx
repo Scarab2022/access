@@ -3,7 +3,7 @@ import { AccessHub, User } from "@prisma/client";
 import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Button } from "~/components/Button";
+import { Button } from "~/components/button";
 import { PageHeader } from "~/components/page-header";
 import { Section } from "~/components/section";
 import { Table } from "~/components/table";

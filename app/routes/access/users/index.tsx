@@ -1,7 +1,7 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { Button } from "~/components/Button";
+import { Button } from "~/components/button";
 import { getAccessUsers } from "~/models/accessUser.server";
 import { classNames } from "~/utils";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
