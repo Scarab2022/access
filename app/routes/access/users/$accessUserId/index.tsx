@@ -14,6 +14,7 @@ import { getAccessUserWithPoints } from "~/models/accessUser.server";
 import { PageHeader } from "~/components/page-header";
 import { Table } from "~/components/table";
 import { Section } from "~/components/section";
+import { DescriptionList } from "~/components/description-list";
 
 type LoaderData = {
   accessUser: Awaited<ReturnType<typeof getAccessUserWithPoints>>;
@@ -82,6 +83,22 @@ export default function RouteComponent() {
         }
       />
       <main className="space-y-6">
+        <DescriptionList>
+          <DescriptionList.Item term="Code" description={accessUser.code} />
+          <DescriptionList.Item term="Code Status" description={codeStatus} />
+          <DescriptionList.Item
+            term="ID"
+            description={accessUser.id.toString()}
+          />
+          <DescriptionList.Item
+            term="Activate Expire Status"
+            description={activateExpireStatus}
+          />
+          <DescriptionList.Item
+            term="Description"
+            description={accessUser.description}
+          />
+        </DescriptionList>
         <DlCard>
           <DlCardDtDd term="Code" description={accessUser.code} />
           <DlCardDtDd term="Code Status" description={codeStatus} />
