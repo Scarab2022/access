@@ -84,6 +84,31 @@ function Header({ children }: { children: React.ReactNode }) {
   );
 }
 
-// export { SettingsForm };
-const Section = Object.assign(SectionRoot, { Header });
+function GridRoot({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+      {children}
+    </div>
+  );
+}
+
+const groupSpan = {
+  whole: "sm:col-span-6",
+  half: "sm:col-span-3",
+  third: "sm:col-span-2",
+  "three-quarters": "sm:col-span-4",
+};
+
+function Group({
+  span = "whole",
+  children,
+}: {
+  span?: "whole" | "half" | "third" | "three-quarters";
+  children: React.ReactNode;
+}) {
+  return <div className={groupSpan[span]}>{children}</div>;
+}
+
+const Grid = Object.assign(GridRoot, { Group });
+const Section = Object.assign(SectionRoot, { Header, Grid });
 export const SettingsForm = Object.assign(SettingsFormRoot, { Section });
