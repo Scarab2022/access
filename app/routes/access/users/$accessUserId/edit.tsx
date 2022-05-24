@@ -8,7 +8,10 @@ import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
-import { SettingsForm, SettingsFormField } from "~/components/lib";
+import {
+  SettingsForm as DeprecatedSettingsForm,
+  SettingsFormField,
+} from "~/components/lib";
 import { Button } from "~/components/button";
 import {
   getAccessUser,
@@ -17,6 +20,7 @@ import {
 } from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
 import { PageHeader } from "~/components/page-header";
+import { SettingsForm } from "~/components/settings-form";
 
 export const handle = {
   breadcrumb: "Edit",
@@ -143,7 +147,24 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <SettingsForm
+        <SettingsForm className="mx-auto max-w-xs">
+          <SettingsForm.Section>
+            <SettingsForm.Section.Header>
+              Access User Settings
+            </SettingsForm.Section.Header>
+          </SettingsForm.Section>
+          <SettingsForm.Section>
+            <SettingsForm.Section.Header>
+              Section Header 2
+            </SettingsForm.Section.Header>
+          </SettingsForm.Section>
+          <SettingsForm.Section>
+            <SettingsForm.Section.Header>
+              Section Header 3
+            </SettingsForm.Section.Header>
+          </SettingsForm.Section>
+        </SettingsForm>
+        <DeprecatedSettingsForm
           replace
           method="post"
           title="Access User Settings"
@@ -286,7 +307,7 @@ export default function RouteComponent() {
             name="expireCodeAtHidden"
             id="expireCodeAtHidden"
           />
-        </SettingsForm>
+        </DeprecatedSettingsForm>
       </main>
     </>
   );
