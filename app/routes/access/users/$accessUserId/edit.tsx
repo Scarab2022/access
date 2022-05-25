@@ -21,6 +21,7 @@ import {
 import invariant from "tiny-invariant";
 import { PageHeader } from "~/components/page-header";
 import { SettingsForm } from "~/components/settings-form";
+import { Form } from "~/components/form";
 
 export const handle = {
   breadcrumb: "Edit",
@@ -147,13 +148,16 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <SettingsForm className="mx-auto max-w-sm">
-          <SettingsForm.Section>
-            <SettingsForm.Section.Header>
-              Access User Settings
-            </SettingsForm.Section.Header>
-            <SettingsForm.Section.Grid>
-              <SettingsForm.Section.Grid.Group>
+        <Form className="mx-auto max-w-sm">
+          <Form.Section>
+            <div>
+              <Form.H3>Access User Settings</Form.H3>
+              <Form.SectionDescription>
+                Set your settings here.
+              </Form.SectionDescription>
+            </div>
+            <Form.Grid>
+              <Form.Group>
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
@@ -176,20 +180,16 @@ export default function RouteComponent() {
                 >
                   We'll only use this for spam.
                 </p>
-              </SettingsForm.Section.Grid.Group>
-            </SettingsForm.Section.Grid>
-          </SettingsForm.Section>
-          <SettingsForm.Section>
-            <SettingsForm.Section.Header>
-              Section Header 2
-            </SettingsForm.Section.Header>
-          </SettingsForm.Section>
-          <SettingsForm.Section>
-            <SettingsForm.Section.Header>
-              Section Header 3
-            </SettingsForm.Section.Header>
-          </SettingsForm.Section>
-        </SettingsForm>
+              </Form.Group>
+            </Form.Grid>
+          </Form.Section>
+          <Form.Section>
+            <Form.H3>Section Header 2</Form.H3>
+          </Form.Section>
+          <Form.Section>
+            <Form.H3>Section Header 3</Form.H3>
+          </Form.Section>
+        </Form>
         <DeprecatedSettingsForm
           replace
           method="post"
