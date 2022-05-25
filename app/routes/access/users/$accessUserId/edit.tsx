@@ -148,7 +148,7 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <Form className="mx-auto max-w-sm">
+        <Form className="mx-auto max-w-sm" replace>
           <Form.Section>
             <div>
               <Form.H3>Access User Settings</Form.H3>
