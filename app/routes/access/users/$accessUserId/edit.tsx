@@ -254,7 +254,7 @@ export default function RouteComponent() {
             >
               Delete
             </Form.DangerButton>
-            <Form.CancelButton>Cancel</Form.CancelButton>
+            <Form.CancelButton />
             <Form.SubmitButton
               onClick={(e) => {
                 console.log("submit");

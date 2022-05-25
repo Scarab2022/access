@@ -1,10 +1,7 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { z, ZodError } from "zod";
-import {
-  SettingsForm,
-  SettingsFormField,
-} from "~/components/lib";
+import { Form } from "~/components/form";
 import { PageHeader } from "~/components/page-header";
 import { createAccessUser } from "~/models/accessUser.server";
 import { requireUserIdForRole } from "~/session.server";
@@ -56,58 +53,64 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <SettingsForm
-          replace
-          method="post"
-          title="Create Access User"
-          submitText="Create"
-          formErrors={actionData?.formErrors?.formErrors}
-        >
-          <SettingsFormField
-            id="name"
-            label="Name"
-            errors={actionData?.formErrors?.fieldErrors?.name}
-          >
-            <input
-              type="text"
-              name="name"
-              id="name"
-              defaultValue={
-                actionData?.fieldValues ? actionData.fieldValues.name : ""
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="description"
-            label="Description"
-            errors={actionData?.formErrors?.fieldErrors?.description}
-          >
-            <textarea
-              name="description"
-              id="description"
-              rows={3}
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.description
-                  : ""
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="code"
-            label="Code"
-            errors={actionData?.formErrors?.fieldErrors?.code}
-          >
-            <input
-              type="text"
-              name="code"
-              id="code"
-              defaultValue={
-                actionData?.fieldValues ? actionData.fieldValues.code : ""
-              }
-            />
-          </SettingsFormField>
-        </SettingsForm>
+        <Form method="post" className="mx-auto max-w-sm" replace>
+          <Form.Section>
+            <div>
+              <Form.H3>Create Access User</Form.H3>
+              <Form.Errors>{actionData?.formErrors?.formErrors}</Form.Errors>
+            </div>
+            <Form.Grid>
+              <Form.Field
+                id="name"
+                label="Name"
+                errors={actionData?.formErrors?.fieldErrors?.name}
+              >
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  defaultValue={
+                    actionData?.fieldValues ? actionData.fieldValues.name : ""
+                  }
+                />
+              </Form.Field>
+              <Form.Field
+                id="description"
+                label="Description"
+                errors={actionData?.formErrors?.fieldErrors?.description}
+              >
+                <textarea
+                  name="description"
+                  id="description"
+                  rows={3}
+                  defaultValue={
+                    actionData?.fieldValues
+                      ? actionData.fieldValues.description
+                      : ""
+                  }
+                />
+              </Form.Field>
+              <Form.Field
+                id="code"
+                label="Code"
+                errors={actionData?.formErrors?.fieldErrors?.code}
+              >
+                <input
+                  type="text"
+                  name="code"
+                  id="code"
+                  defaultValue={
+                    actionData?.fieldValues ? actionData.fieldValues.code : ""
+                  }
+                />
+              </Form.Field>
+            </Form.Grid>
+          </Form.Section>
+          <Form.ButtonSection>
+            <Form.CancelButton />
+            <Form.SubmitButton>Create</Form.SubmitButton>
+          </Form.ButtonSection>
+        </Form>
       </main>
     </>
   );

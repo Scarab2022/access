@@ -236,6 +236,7 @@ Form.SubmitButton = function FormSubmitButton({
 
 Form.CancelButton = function FormCancelButton({
   className,
+  children,
   ...rest
 }: Parameters<typeof Button>[0]) {
   const navigate = useNavigate();
@@ -245,7 +246,9 @@ Form.CancelButton = function FormCancelButton({
       className={classNames(className, "ml-auto")}
       onClick={() => navigate(-1)}
       {...rest}
-    />
+    >
+      {children || "Cancel"}
+    </Button>
   );
 };
 Form.DangerButton = function FormDangerButton({
