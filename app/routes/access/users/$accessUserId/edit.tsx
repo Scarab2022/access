@@ -9,11 +9,6 @@ import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
 import {
-  SettingsForm as DeprecatedSettingsForm,
-  SettingsFormField,
-} from "~/components/lib";
-import { Button } from "~/components/button";
-import {
   getAccessUser,
   markAccessUserAsDeleted,
   updateAccessUser,
@@ -123,6 +118,7 @@ function formatDatetimeLocal(dt: Date) {
   })}`;
 }
 
+// TODO: Show errors for entire form: formErrors={actionData?.formErrors?.formErrors}
 export default function RouteComponent() {
   const { accessUser } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
@@ -151,9 +147,6 @@ export default function RouteComponent() {
           <Form.Section>
             <div>
               <Form.H3>Access User Settings</Form.H3>
-              <Form.SectionDescription>
-                Set your settings here.
-              </Form.SectionDescription>
             </div>
             <Form.Grid>
               <Form.Field
@@ -305,150 +298,6 @@ export default function RouteComponent() {
             </Form.SubmitButton>
           </Form.ButtonSection>
         </Form>
-        {/* <DeprecatedSettingsForm
-          replace
-          method="post"
-          title="Access User Settings"
-          formErrors={actionData?.formErrors?.formErrors}
-          submitOnClick={(e) => {
-            const activateCodeAt =
-              e.currentTarget.form?.elements.namedItem("activateCodeAt");
-            const activateCodeAtHidden =
-              e.currentTarget.form?.elements.namedItem("activateCodeAtHidden");
-            if (
-              activateCodeAt &&
-              activateCodeAt instanceof HTMLInputElement &&
-              activateCodeAtHidden &&
-              activateCodeAtHidden instanceof HTMLInputElement
-            ) {
-              // input datetime-local does not have timezone so
-              // convert to local time on the client since the server
-              // will not know the correct timezone.
-              activateCodeAtHidden.value = activateCodeAt.value
-                ? new Date(activateCodeAt.value).toJSON()
-                : "";
-            }
-            const expireCodeAt =
-              e.currentTarget.form?.elements.namedItem("expireCodeAt");
-            const expireCodeAtHidden =
-              e.currentTarget.form?.elements.namedItem("expireCodeAtHidden");
-            if (
-              expireCodeAt &&
-              expireCodeAt instanceof HTMLInputElement &&
-              expireCodeAtHidden &&
-              expireCodeAtHidden instanceof HTMLInputElement
-            ) {
-              expireCodeAtHidden.value = expireCodeAt.value
-                ? new Date(expireCodeAt.value).toJSON()
-                : "";
-            }
-          }}
-          leftButton={
-            <Button
-              variant="red"
-              onClick={(e) =>
-                submit(e.currentTarget.form, { method: "delete" })
-              }
-            >
-              Delete
-            </Button>
-          }
-        >
-          <SettingsFormField
-            id="name"
-            label="Name"
-            errors={actionData?.formErrors?.fieldErrors?.name}
-          >
-            <input
-              type="text"
-              name="name"
-              id="name"
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.name
-                  : accessUser.name
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="description"
-            label="Description"
-            errors={actionData?.formErrors?.fieldErrors?.description}
-          >
-            <textarea
-              name="description"
-              id="description"
-              rows={3}
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.description
-                  : accessUser.description
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="code"
-            label="Code"
-            errors={actionData?.formErrors?.fieldErrors?.code}
-          >
-            <input
-              type="text"
-              name="code"
-              id="code"
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.code
-                  : accessUser.code
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="activateCodeAt"
-            label="Activate Code At"
-            errors={activateCodeAtErrorsCombined}
-          >
-            <input
-              type="datetime-local"
-              name="activateCodeAt"
-              id="activateCodeAt"
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.activatedCodeAt
-                  : accessUser.activateCodeAt
-                  ? formatDatetimeLocal(new Date(accessUser.activateCodeAt))
-                  : ""
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="expireCodeAt"
-            label="Expire Code At"
-            errors={expireCodeAtErrorsCombined}
-          >
-            <input
-              type="datetime-local"
-              name="expireCodeAt"
-              id="expireCodeAt"
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.activatedCodeAt
-                  : accessUser.expireCodeAt
-                  ? formatDatetimeLocal(new Date(accessUser.expireCodeAt))
-                  : ""
-              }
-            />
-          </SettingsFormField>
-          <input
-            type="hidden"
-            name="activateCodeAtHidden"
-            id="activateCodeAtHidden"
-          />
-          <input
-            type="hidden"
-            name="expireCodeAtHidden"
-            id="expireCodeAtHidden"
-          />
-        </DeprecatedSettingsForm> */}
       </main>
     </>
   );

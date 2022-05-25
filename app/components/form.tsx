@@ -4,6 +4,8 @@ import React from "react";
 import { classNames } from "~/utils";
 import { Button } from "./button";
 
+// TODO: Show errors for the entire form.
+// formErrors={actionData?.formErrors?.formErrors}
 function Form({ className, children, ...rest }: FormProps) {
   return (
     <RemixForm
@@ -144,13 +146,14 @@ Form.Input = function FormInput({
   // https://tailwindui.com/components/application-ui/forms/input-groups
   // <input type="email" name="email" id="email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com" aria-describedby="email-description">
   // <input type="email" name="email" id="email" class="block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error" />
+  // Removed pr-10 from validationError
   return (
     <input
       className={classNames(
         className,
         "block w-full rounded-md sm:text-sm",
         validationError
-          ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
+          ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
           : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       )}
       {...rest}
@@ -193,7 +196,7 @@ Form.Field = function FormField({
                 child.props.className,
                 "block w-full rounded-md sm:text-sm",
                 validationError
-                  ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
+                  ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
                   : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               ),
             })
