@@ -147,7 +147,7 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <Form className="mx-auto max-w-sm" replace>
+        <Form method="post" className="mx-auto max-w-sm" replace>
           <Form.Section>
             <div>
               <Form.H3>Access User Settings</Form.H3>
@@ -252,8 +252,60 @@ export default function RouteComponent() {
               />
             </Form.Grid>
           </Form.Section>
+          <Form.ButtonSection>
+            <Form.DangerButton
+              onClick={(e) =>
+                submit(e.currentTarget.form, { method: "delete" })
+              }
+            >
+              Delete
+            </Form.DangerButton>
+            <Form.CancelButton>Cancel</Form.CancelButton>
+            <Form.SubmitButton
+              onClick={(e) => {
+                console.log("submit");
+                const activateCodeAt =
+                  e.currentTarget.form?.elements.namedItem("activateCodeAt");
+                const activateCodeAtHidden =
+                  e.currentTarget.form?.elements.namedItem(
+                    "activateCodeAtHidden"
+                  );
+                if (
+                  activateCodeAt &&
+                  activateCodeAt instanceof HTMLInputElement &&
+                  activateCodeAtHidden &&
+                  activateCodeAtHidden instanceof HTMLInputElement
+                ) {
+                  // input datetime-local does not have timezone so
+                  // convert to local time on the client since the server
+                  // will not know the correct timezone.
+                  activateCodeAtHidden.value = activateCodeAt.value
+                    ? new Date(activateCodeAt.value).toJSON()
+                    : "";
+                }
+                const expireCodeAt =
+                  e.currentTarget.form?.elements.namedItem("expireCodeAt");
+                const expireCodeAtHidden =
+                  e.currentTarget.form?.elements.namedItem(
+                    "expireCodeAtHidden"
+                  );
+                if (
+                  expireCodeAt &&
+                  expireCodeAt instanceof HTMLInputElement &&
+                  expireCodeAtHidden &&
+                  expireCodeAtHidden instanceof HTMLInputElement
+                ) {
+                  expireCodeAtHidden.value = expireCodeAt.value
+                    ? new Date(expireCodeAt.value).toJSON()
+                    : "";
+                }
+              }}
+            >
+              Save
+            </Form.SubmitButton>
+          </Form.ButtonSection>
         </Form>
-        <DeprecatedSettingsForm
+        {/* <DeprecatedSettingsForm
           replace
           method="post"
           title="Access User Settings"
@@ -396,7 +448,7 @@ export default function RouteComponent() {
             name="expireCodeAtHidden"
             id="expireCodeAtHidden"
           />
-        </DeprecatedSettingsForm>
+        </DeprecatedSettingsForm> */}
       </main>
     </>
   );

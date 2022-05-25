@@ -1,7 +1,8 @@
-import { Form as RemixForm } from "@remix-run/react";
+import { Form as RemixForm, useNavigate } from "@remix-run/react";
 import { FormProps } from "@remix-run/react/components";
 import React from "react";
 import { classNames } from "~/utils";
+import { Button } from "./button";
 
 function Form({ className, children, ...rest }: FormProps) {
   return (
@@ -205,6 +206,47 @@ Form.Field = function FormField({
       ) : null}
     </Form.Group>
   );
+};
+
+Form.ButtonSection = function FormButtonSection({
+  className,
+  children,
+  ...rest
+}: JSX.IntrinsicElements["div"]) {
+  return (
+    <div className={classNames(className, "flex justify-end pt-5")} {...rest}>
+      {children}
+    </div>
+  );
+};
+
+Form.SubmitButton = function FormSubmitButton({
+  className,
+  ...rest
+}: Parameters<typeof Button>[0]) {
+  return (
+    <Button type="submit" className={classNames(className, "ml-3")} {...rest} />
+  );
+};
+
+Form.CancelButton = function FormCancelButton({
+  className,
+  ...rest
+}: Parameters<typeof Button>[0]) {
+  const navigate = useNavigate();
+  return (
+    <Button
+      variant="white"
+      className={classNames(className, "ml-auto")}
+      onClick={() => navigate(-1)}
+      {...rest}
+    />
+  );
+};
+Form.DangerButton = function FormDangerButton({
+  ...rest
+}: Parameters<typeof Button>[0]) {
+  return <Button variant="red" {...rest} />;
 };
 
 export { Form };
