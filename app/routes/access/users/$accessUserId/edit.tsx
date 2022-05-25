@@ -158,7 +158,7 @@ export default function RouteComponent() {
             <Form.Grid>
               <Form.Group>
                 <Form.Label htmlFor="name">Name</Form.Label>
-                <Form.Control>
+                <Form.Control validationError={false}>
                   <Form.Input
                     type="text"
                     name="name"
@@ -168,8 +168,26 @@ export default function RouteComponent() {
                         ? actionData.fieldValues.name
                         : accessUser.name
                     }
+                    validationError={false}
                   />
                 </Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="name">Name</Form.Label>
+                <Form.Control validationError={true}>
+                  <Form.Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.name
+                        : accessUser.name
+                    }
+                    validationError={true}
+                  />
+                </Form.Control>
+                <Form.ValidationError>Name is required.</Form.ValidationError>
               </Form.Group>
               <Form.Group>
                 <label

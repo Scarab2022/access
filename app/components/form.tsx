@@ -113,10 +113,21 @@ Form.Label = function FormLabel({
 Form.Control = function FormControl({
   className,
   children,
+  validationError,
   ...rest
-}: JSX.IntrinsicElements["div"]) {
+}: { validationError: boolean } & JSX.IntrinsicElements["div"]) {
+  // Input with label and help text, Input with validation error
+  // https://tailwindui.com/components/application-ui/forms/input-groups
+  // <div class="mt-1">
+  // <div class="relative mt-1 rounded-md shadow-sm">
   return (
-    <div className={classNames(className, "mt-1")} {...rest}>
+    <div
+      className={classNames(
+        className,
+        validationError ? "relative mt-1 rounded-md shadow-sm" : "mt-1"
+      )}
+      {...rest}
+    >
       {children}
     </div>
   );
@@ -124,16 +135,36 @@ Form.Control = function FormControl({
 
 Form.Input = function FormInput({
   className,
+  validationError,
   ...rest
-}: JSX.IntrinsicElements["input"]) {
+}: { validationError: boolean } & JSX.IntrinsicElements["input"]) {
+  // Input with label and help text, Input with validation error
+  // https://tailwindui.com/components/application-ui/forms/input-groups
+  // <input type="email" name="email" id="email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com" aria-describedby="email-description">
+  // <input type="email" name="email" id="email" class="block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error" />
   return (
     <input
       className={classNames(
         className,
-        "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        "block w-full rounded-md sm:text-sm",
+        validationError
+          ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
+          : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       )}
       {...rest}
     />
+  );
+};
+
+Form.ValidationError = function FormValidationError({
+  className,
+  children,
+  ...rest
+}: JSX.IntrinsicElements["p"]) {
+  return (
+    <p className={classNames(className, "mt-2 text-sm text-red-600")} {...rest}>
+      {children}
+    </p>
   );
 };
 
