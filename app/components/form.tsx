@@ -1,5 +1,6 @@
 import { Form as RemixForm } from "@remix-run/react";
 import { FormProps } from "@remix-run/react/components";
+import React from "react";
 import { classNames } from "~/utils";
 
 function Form({ className, children, ...rest }: FormProps) {
@@ -165,6 +166,44 @@ Form.ValidationError = function FormValidationError({
     <p className={classNames(className, "mt-2 text-sm text-red-600")} {...rest}>
       {children}
     </p>
+  );
+};
+
+Form.Field = function FormField({
+  id,
+  label,
+  children, // only 1 child.
+  errors,
+}: {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+  errors?: string[];
+}) {
+  const child = React.Children.only(children);
+  const validationError = Boolean(errors);
+  return (
+    <Form.Group>
+      <Form.Label htmlFor={id}>{label}</Form.Label>
+      <Form.Control validationError={validationError}>
+        {React.isValidElement(child)
+          ? React.cloneElement(child, {
+              className: classNames(
+                child.props.className,
+                "block w-full rounded-md sm:text-sm",
+                validationError
+                  ? "border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
+                  : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              ),
+            })
+          : null}
+      </Form.Control>
+      {errors ? (
+        <Form.ValidationError id={`${id}-error`} role="alert">
+          {errors.join(". ")}
+        </Form.ValidationError>
+      ) : null}
+    </Form.Group>
   );
 };
 
