@@ -20,7 +20,6 @@ import {
 } from "~/models/accessUser.server";
 import invariant from "tiny-invariant";
 import { PageHeader } from "~/components/page-header";
-import { SettingsForm } from "~/components/settings-form";
 import { Form } from "~/components/form";
 
 export const handle = {
@@ -182,12 +181,6 @@ export default function RouteComponent() {
                 </p>
               </Form.Group>
             </Form.Grid>
-          </Form.Section>
-          <Form.Section>
-            <Form.H3>Section Header 2</Form.H3>
-          </Form.Section>
-          <Form.Section>
-            <Form.H3>Section Header 3</Form.H3>
           </Form.Section>
         </Form>
         <DeprecatedSettingsForm
