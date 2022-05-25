@@ -147,6 +147,7 @@ export default function RouteComponent() {
           <Form.Section>
             <div>
               <Form.H3>Access User Settings</Form.H3>
+              <Form.Errors>{actionData?.formErrors?.formErrors}</Form.Errors>
             </div>
             <Form.Grid>
               <Form.Field

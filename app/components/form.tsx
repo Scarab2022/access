@@ -166,12 +166,14 @@ Form.ValidationError = function FormValidationError({
   children,
   ...rest
 }: JSX.IntrinsicElements["p"]) {
-  return (
+  return children ? (
     <p className={classNames(className, "mt-2 text-sm text-red-600")} {...rest}>
       {children}
     </p>
-  );
+  ) : null;
 };
+
+Form.Errors = Form.ValidationError;
 
 Form.Field = function FormField({
   id,
