@@ -92,4 +92,49 @@ Form.Group = function FormGroup({
   return <div className={groupSpan[span]}>{children}</div>;
 };
 
+Form.Label = function FormLabel({
+  className,
+  children,
+  ...rest
+}: JSX.IntrinsicElements["label"]) {
+  return (
+    <label
+      className={classNames(
+        className,
+        "block text-sm font-medium text-gray-700"
+      )}
+      {...rest}
+    >
+      {children}
+    </label>
+  );
+};
+
+Form.Control = function FormControl({
+  className,
+  children,
+  ...rest
+}: JSX.IntrinsicElements["div"]) {
+  return (
+    <div className={classNames(className, "mt-1")} {...rest}>
+      {children}
+    </div>
+  );
+};
+
+Form.Input = function FormInput({
+  className,
+  ...rest
+}: JSX.IntrinsicElements["input"]) {
+  return (
+    <input
+      className={classNames(
+        className,
+        "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      )}
+      {...rest}
+    />
+  );
+};
+
 export { Form };

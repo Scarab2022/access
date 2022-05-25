@@ -157,6 +157,21 @@ export default function RouteComponent() {
             </div>
             <Form.Grid>
               <Form.Group>
+                <Form.Label htmlFor="name">Name</Form.Label>
+                <Form.Control>
+                  <Form.Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.name
+                        : accessUser.name
+                    }
+                  />
+                </Form.Control>
+              </Form.Group>
+              <Form.Group>
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
