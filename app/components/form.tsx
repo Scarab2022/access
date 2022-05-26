@@ -4,18 +4,31 @@ import React from "react";
 import { classNames } from "~/utils";
 import { Button } from "./button";
 
-// TODO: Show errors for the entire form.
-// formErrors={actionData?.formErrors?.formErrors}
 function Form({ className, children, ...rest }: FormProps) {
   return (
     <RemixForm
       className={classNames(className, "space-y-8 divide-y divide-gray-200")}
       {...rest}
     >
-      <div className="space-y-8 divide-y divide-gray-200">{children}</div>
+      {children}
     </RemixForm>
   );
 }
+
+Form.Content = function FormContent({
+  className,
+  children,
+  ...rest
+}: JSX.IntrinsicElements["div"]) {
+  return (
+    <div
+      className={classNames(className, "space-y-8 divide-y divide-gray-200")}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
+};
 
 Form.Section = function FormSection({
   className,
@@ -24,6 +37,25 @@ Form.Section = function FormSection({
 }: JSX.IntrinsicElements["div"]) {
   return (
     <div className={classNames(className, "pt-8 first:pt-0")} {...rest}>
+      {children}
+    </div>
+  );
+};
+
+Form.SectionHeader = function FormSectionHeader({
+  title,
+  description,
+  error,
+  children,
+  ...rest
+}: { description?: string; error?: string } & JSX.IntrinsicElements["div"]) {
+  return (
+    <div {...rest}>
+      {title ? <Form.H3>{title}</Form.H3> : null}
+      {description ? (
+        <Form.SectionDescription>{description}</Form.SectionDescription>
+      ) : null}
+      {error ? <Form.Error>{error}</Form.Error> : null}
       {children}
     </div>
   );
@@ -62,7 +94,7 @@ Form.SectionDescription = function FormSectionDescription({
   );
 };
 
-Form.Grid = function FormGrid({
+Form.SectionContent = function FormSectionContent({
   className,
   children,
   ...rest
@@ -173,7 +205,7 @@ Form.ValidationError = function FormValidationError({
   ) : null;
 };
 
-Form.Errors = Form.ValidationError;
+Form.Error = Form.ValidationError;
 
 Form.Field = function FormField({
   id,
@@ -213,7 +245,7 @@ Form.Field = function FormField({
   );
 };
 
-Form.ButtonSection = function FormButtonSection({
+Form.Footer = function FormFooter({
   className,
   children,
   ...rest

@@ -144,109 +144,114 @@ export default function RouteComponent() {
       <PageHeader />
       <main>
         <Form method="post" className="mx-auto max-w-sm" replace>
-          <Form.Section>
-            <div>
-              <Form.H3>Access User Settings</Form.H3>
-              <Form.Errors>{actionData?.formErrors?.formErrors}</Form.Errors>
-            </div>
-            <Form.Grid>
-              <Form.Field
-                id="name"
-                label="Name"
-                errors={actionData?.formErrors?.fieldErrors?.name}
-              >
-                <input
-                  type="text"
-                  name="name"
+          <Form.Content>
+            <Form.Section>
+              <Form.SectionHeader title="Access User Settings" />
+              {/* <div>
+                <Form.H3>Access User Settings</Form.H3>
+                <Form.Error>{actionData?.formErrors?.formErrors}</Form.Error>
+              </div> */}
+              <Form.SectionContent>
+                <Form.Field
                   id="name"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.name
-                      : accessUser.name
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="description"
-                label="Description"
-                errors={actionData?.formErrors?.fieldErrors?.description}
-              >
-                <textarea
-                  name="description"
+                  label="Name"
+                  errors={actionData?.formErrors?.fieldErrors?.name}
+                >
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.name
+                        : accessUser.name
+                    }
+                  />
+                </Form.Field>
+                <Form.Field
                   id="description"
-                  rows={3}
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.description
-                      : accessUser.description
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="code"
-                label="Code"
-                errors={actionData?.formErrors?.fieldErrors?.code}
-              >
-                <input
-                  type="text"
-                  name="code"
+                  label="Description"
+                  errors={actionData?.formErrors?.fieldErrors?.description}
+                >
+                  <textarea
+                    name="description"
+                    id="description"
+                    rows={3}
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.description
+                        : accessUser.description
+                    }
+                  />
+                </Form.Field>
+                <Form.Field
                   id="code"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.code
-                      : accessUser.code
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="activateCodeAt"
-                label="Activate Code At"
-                errors={activateCodeAtErrorsCombined}
-              >
-                <input
-                  type="datetime-local"
-                  name="activateCodeAt"
+                  label="Code"
+                  errors={actionData?.formErrors?.fieldErrors?.code}
+                >
+                  <input
+                    type="text"
+                    name="code"
+                    id="code"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.code
+                        : accessUser.code
+                    }
+                  />
+                </Form.Field>
+                <Form.Field
                   id="activateCodeAt"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.activatedCodeAt
-                      : accessUser.activateCodeAt
-                      ? formatDatetimeLocal(new Date(accessUser.activateCodeAt))
-                      : ""
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="expireCodeAt"
-                label="Expire Code At"
-                errors={expireCodeAtErrorsCombined}
-              >
-                <input
-                  type="datetime-local"
-                  name="expireCodeAt"
+                  label="Activate Code At"
+                  errors={activateCodeAtErrorsCombined}
+                >
+                  <input
+                    type="datetime-local"
+                    name="activateCodeAt"
+                    id="activateCodeAt"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.activatedCodeAt
+                        : accessUser.activateCodeAt
+                        ? formatDatetimeLocal(
+                            new Date(accessUser.activateCodeAt)
+                          )
+                        : ""
+                    }
+                  />
+                </Form.Field>
+                <Form.Field
                   id="expireCodeAt"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.activatedCodeAt
-                      : accessUser.expireCodeAt
-                      ? formatDatetimeLocal(new Date(accessUser.expireCodeAt))
-                      : ""
-                  }
+                  label="Expire Code At"
+                  errors={expireCodeAtErrorsCombined}
+                >
+                  <input
+                    type="datetime-local"
+                    name="expireCodeAt"
+                    id="expireCodeAt"
+                    defaultValue={
+                      actionData?.fieldValues
+                        ? actionData.fieldValues.activatedCodeAt
+                        : accessUser.expireCodeAt
+                        ? formatDatetimeLocal(new Date(accessUser.expireCodeAt))
+                        : ""
+                    }
+                  />
+                </Form.Field>
+                <input
+                  type="hidden"
+                  name="activateCodeAtHidden"
+                  id="activateCodeAtHidden"
                 />
-              </Form.Field>
-              <input
-                type="hidden"
-                name="activateCodeAtHidden"
-                id="activateCodeAtHidden"
-              />
-              <input
-                type="hidden"
-                name="expireCodeAtHidden"
-                id="expireCodeAtHidden"
-              />
-            </Form.Grid>
-          </Form.Section>
-          <Form.ButtonSection>
+                <input
+                  type="hidden"
+                  name="expireCodeAtHidden"
+                  id="expireCodeAtHidden"
+                />
+              </Form.SectionContent>
+            </Form.Section>
+          </Form.Content>
+          <Form.Footer>
             <Form.DangerButton
               onClick={(e) =>
                 submit(e.currentTarget.form, { method: "delete" })
@@ -257,7 +262,6 @@ export default function RouteComponent() {
             <Form.CancelButton />
             <Form.SubmitButton
               onClick={(e) => {
-                console.log("submit");
                 const activateCodeAt =
                   e.currentTarget.form?.elements.namedItem("activateCodeAt");
                 const activateCodeAtHidden =
@@ -297,7 +301,7 @@ export default function RouteComponent() {
             >
               Save
             </Form.SubmitButton>
-          </Form.ButtonSection>
+          </Form.Footer>
         </Form>
       </main>
     </>

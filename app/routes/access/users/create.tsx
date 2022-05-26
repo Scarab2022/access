@@ -57,9 +57,9 @@ export default function RouteComponent() {
           <Form.Section>
             <div>
               <Form.H3>Create Access User</Form.H3>
-              <Form.Errors>{actionData?.formErrors?.formErrors}</Form.Errors>
+              <Form.Error>{actionData?.formErrors?.formErrors}</Form.Error>
             </div>
-            <Form.Grid>
+            <Form.SectionContent>
               <Form.Field
                 id="name"
                 label="Name"
@@ -104,12 +104,12 @@ export default function RouteComponent() {
                   }
                 />
               </Form.Field>
-            </Form.Grid>
+            </Form.SectionContent>
           </Form.Section>
-          <Form.ButtonSection>
+          <Form.Footer>
             <Form.CancelButton />
             <Form.SubmitButton>Create</Form.SubmitButton>
-          </Form.ButtonSection>
+          </Form.Footer>
         </Form>
       </main>
     </>
