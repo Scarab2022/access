@@ -13,7 +13,8 @@ import { classNames, useUser } from "~/utils";
 
 export const handle = {
   breadcrumb: (match: ReturnType<typeof useMatches>[number]) => (
-    <Link to={match.pathname} className="text-gray-400 hover:text-gray-500">
+    // Don't link to match.pathname.
+    <Link to="/" className="text-gray-400 hover:text-gray-500">
       <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
       <span className="sr-only">Home</span>
     </Link>
