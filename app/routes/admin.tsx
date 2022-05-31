@@ -1,4 +1,5 @@
-import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
+import type { useMatches} from "@remix-run/react";
+import { Link, NavLink, Outlet, useSubmit } from "@remix-run/react";
 import {
   GenericCatchBoundary,
   GenericErrorBoundary,
