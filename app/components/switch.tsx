@@ -1,15 +1,15 @@
-import { Switch } from "@headlessui/react";
+import { Switch as HuiSwitch } from "@headlessui/react";
 import { classNames } from "~/utils";
 
-function StyledSwitch({
+function Switch({
   className,
   checked,
   children,
-  ...props
-}: Parameters<typeof Switch>[0]) {
+  ...rest
+}: Parameters<typeof HuiSwitch>[0]) {
   return (
-    <Switch
-      {...props}
+    <HuiSwitch
+      {...rest}
       checked={checked}
       className={classNames(
         className,
@@ -33,32 +33,32 @@ function StyledSwitch({
   );
 }
 
-StyledSwitch.Group = function StyledSwitchGroup({
+Switch.Group = function SwitchGroup({
   as = "div",
   className,
-  ...props
-}: Parameters<typeof Switch.Group>[0]) {
+  ...rest
+}: Parameters<typeof HuiSwitch.Group>[0]) {
   return (
-    <Switch.Group
-      {...props}
+    <HuiSwitch.Group
+      {...rest}
       as={as}
       className={className ? className : "flex items-center"}
     />
   );
 };
 
-StyledSwitch.Label = function StyledSwitchLabel({
+Switch.Label = function SwitchLabel({
   as = "span",
   className,
-  ...props
-}: Parameters<typeof Switch.Label>[0]) {
+  ...rest
+}: Parameters<typeof HuiSwitch.Label>[0]) {
   return (
-    <Switch.Label
-      {...props}
+    <HuiSwitch.Label
+      {...rest}
       as={as}
       className={classNames(className, "text-sm font-medium text-gray-900")}
     />
   );
 };
 
-export { StyledSwitch };
+export { Switch };

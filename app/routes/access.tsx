@@ -1,5 +1,9 @@
-import { Link, useMatches, NavLink, Outlet, useSubmit } from "@remix-run/react";
-import { GenericCatchBoundary, GenericErrorBoundary } from "~/components/lib";
+import type { useMatches } from "@remix-run/react";
+import { Link, NavLink, Outlet, useSubmit } from "@remix-run/react";
+import {
+  GenericCatchBoundary,
+  GenericErrorBoundary,
+} from "~/components/boundaries";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon, UserIcon } from "@heroicons/react/outline";

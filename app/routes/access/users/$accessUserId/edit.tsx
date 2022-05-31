@@ -1,9 +1,5 @@
-import {
-  ActionFunction,
-  json,
-  LoaderFunction,
-  redirect,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData, useSubmit } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import type { ZodError } from "zod";
@@ -118,7 +114,6 @@ function formatDatetimeLocal(dt: Date) {
   })}`;
 }
 
-// TODO: Show errors for entire form: formErrors={actionData?.formErrors?.formErrors}
 export default function RouteComponent() {
   const { accessUser } = useLoaderData<LoaderData>();
   const actionData = useActionData<ActionData>();
@@ -146,11 +141,10 @@ export default function RouteComponent() {
         <Form method="post" className="mx-auto max-w-sm" replace>
           <Form.Content>
             <Form.Section>
-              <Form.SectionHeader title="Access User Settings" />
-              {/* <div>
-                <Form.H3>Access User Settings</Form.H3>
-                <Form.Error>{actionData?.formErrors?.formErrors}</Form.Error>
-              </div> */}
+              <Form.SectionHeader
+                title="Access User Settings"
+                errors={actionData?.formErrors?.formErrors}
+              />
               <Form.SectionContent>
                 <Form.Field
                   id="name"

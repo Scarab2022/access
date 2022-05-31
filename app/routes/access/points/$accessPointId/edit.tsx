@@ -1,18 +1,14 @@
-import {
-  ActionFunction,
-  json,
-  LoaderFunction,
-  redirect,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 import { getAccessPoint } from "~/models/accessPoint.server";
 import type { ZodError } from "zod";
 import { z } from "zod";
-import { SettingsForm, SettingsFormField } from "~/components/lib";
 import invariant from "tiny-invariant";
 import { PageHeader } from "~/components/page-header";
+import { Form } from "~/components/form";
 
 export const handle = {
   breadcrumb: "Edit",
@@ -76,45 +72,54 @@ export default function RouteComponent() {
     <>
       <PageHeader />
       <main>
-        <SettingsForm
-          replace
-          method="post"
-          title="Access Point Settings"
-          formErrors={actionData?.formErrors?.formErrors}
-        >
-          <SettingsFormField
-            id="name"
-            label="Name"
-            errors={actionData?.formErrors?.fieldErrors?.name}
-          >
-            <input
-              type="text"
-              name="name"
-              id="name"
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.name
-                  : accessPoint.name
-              }
-            />
-          </SettingsFormField>
-          <SettingsFormField
-            id="description"
-            label="Description"
-            errors={actionData?.formErrors?.fieldErrors?.description}
-          >
-            <textarea
-              name="description"
-              id="description"
-              rows={3}
-              defaultValue={
-                actionData?.fieldValues
-                  ? actionData.fieldValues.description
-                  : accessPoint.description
-              }
-            />
-          </SettingsFormField>
-        </SettingsForm>
+        <Form method="post" className="mx-auto max-w-sm" replace>
+          <Form.Content>
+            <Form.Section>
+              <Form.SectionHeader
+                title="Access Point Settings"
+                errors={actionData?.formErrors?.formErrors}
+              />
+            </Form.Section>
+            <Form.SectionContent>
+              <Form.Field
+                id="name"
+                label="Name"
+                errors={actionData?.formErrors?.fieldErrors?.name}
+              >
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  defaultValue={
+                    actionData?.fieldValues
+                      ? actionData.fieldValues.name
+                      : accessPoint.name
+                  }
+                />
+              </Form.Field>
+              <Form.Field
+                id="description"
+                label="Description"
+                errors={actionData?.formErrors?.fieldErrors?.description}
+              >
+                <textarea
+                  name="description"
+                  id="description"
+                  rows={3}
+                  defaultValue={
+                    actionData?.fieldValues
+                      ? actionData.fieldValues.description
+                      : accessPoint.description
+                  }
+                />
+              </Form.Field>
+            </Form.SectionContent>
+          </Form.Content>
+          <Form.Footer>
+            <Form.CancelButton />
+            <Form.SubmitButton>Save</Form.SubmitButton>
+          </Form.Footer>
+        </Form>
       </main>
     </>
   );

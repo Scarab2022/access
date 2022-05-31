@@ -1,11 +1,13 @@
-import { json, LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { StackedList } from "~/components/stacked-list";
 import { PageHeader } from "~/components/page-header";
+import { Badge } from "~/components/badge";
 
 type LoaderData = {
   accessHubs: Awaited<ReturnType<typeof getLoaderData>>;
@@ -44,9 +46,7 @@ export default function RouteComponent() {
                     <p className="truncate text-sm font-medium text-indigo-600">
                       {i.name}
                     </p>
-                    <p className="rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                      Active
-                    </p>
+                    <Badge color="green">ACTIVE</Badge>
                   </div>
                   <p className="mt-2 flex items-center text-sm text-gray-500">
                     <LocationMarkerIcon

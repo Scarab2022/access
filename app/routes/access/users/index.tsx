@@ -3,10 +3,10 @@ import { useLoaderData, useNavigate } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
 import { Button } from "~/components/button";
 import { getAccessUsers } from "~/models/accessUser.server";
-import { classNames } from "~/utils";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { StackedList } from "~/components/stacked-list";
 import { PageHeader } from "~/components/page-header";
+import { Badge } from "~/components/badge";
 
 type LoaderData = {
   accessUsers: Awaited<ReturnType<typeof getAccessUsers>>;
@@ -46,9 +46,9 @@ function codeActivateExpireStatus(
 }
 
 const codeStatusColors = {
-  PENDING: "bg-yellow-100 text-yellow-800",
-  ACTIVE: "bg-green-100 text-green-800",
-  EXPIRED: "bg-red-100 text-red-800",
+  PENDING: "yellow",
+  ACTIVE: "green",
+  EXPIRED: "red",
 } as const;
 
 export const loader: LoaderFunction = async ({
@@ -84,14 +84,9 @@ export default function RouteComponent() {
                       <p className="truncate text-sm font-medium text-indigo-600">
                         {i.name}
                       </p>
-                      <p
-                        className={classNames(
-                          "rounded-full px-2 text-xs font-semibold leading-5",
-                          codeStatusColors[codeStatus]
-                        )}
-                      >
+                      <Badge color={codeStatusColors[codeStatus]}>
                         {codeStatus}
-                      </p>
+                      </Badge>
                     </div>
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <p className="mt-2 flex items-center ">

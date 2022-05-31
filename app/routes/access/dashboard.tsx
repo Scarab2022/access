@@ -1,10 +1,11 @@
 import * as React from "react";
-import { json, LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData, useFetcher, useLocation } from "@remix-run/react";
 import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
-import { StyledSwitch } from "~/components/styled-switch";
+import { Switch } from "~/components/switch";
 import { PageHeader } from "~/components/page-header";
 import { Table } from "~/components/table";
 
@@ -57,7 +58,7 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
-  const [isPolling, setIsPolling] = React.useState(true);
+  const [isPolling, setIsPolling] = React.useState(false);
   const location = useLocation();
 
   React.useEffect(() => {
@@ -72,10 +73,10 @@ export default function RouteComponent() {
       <PageHeader
         title="Dashboard"
         side={
-          <StyledSwitch.Group>
-            <StyledSwitch checked={isPolling} onChange={setIsPolling} />
-            <StyledSwitch.Label className="ml-3">Poll</StyledSwitch.Label>
-          </StyledSwitch.Group>
+          <Switch.Group>
+            <Switch checked={isPolling} onChange={setIsPolling} />
+            <Switch.Label className="ml-3">Poll</Switch.Label>
+          </Switch.Group>
         }
       />
       <main>

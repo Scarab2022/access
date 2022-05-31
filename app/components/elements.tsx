@@ -1,6 +1,14 @@
-function H3({ children }: { children: React.ReactNode }) {
+import { classNames } from "~/utils";
+
+function H3({ className, ...rest }: JSX.IntrinsicElements["h3"]) {
   return (
-    <h3 className="text-lg font-medium leading-6 text-gray-900">{children}</h3>
+    <h3
+      className={classNames(
+        className,
+        "text-lg font-medium leading-6 text-gray-900"
+      )}
+      {...rest}
+    />
   );
 }
 

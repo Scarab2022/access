@@ -1,8 +1,9 @@
 import React from "react";
 import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
-import { AccessHub, User } from "@prisma/client";
+import type { AccessHub, User } from "@prisma/client";
 import { prisma } from "~/db.server";
-import { json, LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { requireUserIdForRole } from "~/session.server";
 import { PageHeader } from "~/components/page-header";
@@ -52,7 +53,7 @@ export const loader: LoaderFunction = async ({
 export default function RouteComponent() {
   const { accessHub } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
-  const [isPolling, setIsPolling] = React.useState(true);
+  const [isPolling, setIsPolling] = React.useState(false);
   const location = useLocation();
 
   React.useEffect(() => {

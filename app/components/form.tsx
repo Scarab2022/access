@@ -1,5 +1,5 @@
 import { Form as RemixForm, useNavigate } from "@remix-run/react";
-import { FormProps } from "@remix-run/react/components";
+import type { FormProps } from "@remix-run/react/components";
 import React from "react";
 import { classNames } from "~/utils";
 import { Button } from "./button";
@@ -45,17 +45,17 @@ Form.Section = function FormSection({
 Form.SectionHeader = function FormSectionHeader({
   title,
   description,
-  error,
+  errors,
   children,
   ...rest
-}: { description?: string; error?: string } & JSX.IntrinsicElements["div"]) {
+}: { description?: string; errors?: string[] } & JSX.IntrinsicElements["div"]) {
   return (
     <div {...rest}>
       {title ? <Form.H3>{title}</Form.H3> : null}
       {description ? (
         <Form.SectionDescription>{description}</Form.SectionDescription>
       ) : null}
-      {error ? <Form.Error>{error}</Form.Error> : null}
+      {errors && errors.length > 0 ? <Form.Errors errors={errors} /> : null}
       {children}
     </div>
   );
@@ -121,11 +121,14 @@ const groupSpan = {
 
 Form.Group = function FormGroup({
   span = "whole",
+  className,
   children,
 }: {
   span?: keyof typeof groupSpan;
 } & JSX.IntrinsicElements["div"]) {
-  return <div className={groupSpan[span]}>{children}</div>;
+  return (
+    <div className={classNames(className, groupSpan[span])}>{children}</div>
+  );
 };
 
 Form.Label = function FormLabel({
@@ -149,9 +152,9 @@ Form.Label = function FormLabel({
 Form.Control = function FormControl({
   className,
   children,
-  validationError,
+  invalid,
   ...rest
-}: { validationError: boolean } & JSX.IntrinsicElements["div"]) {
+}: { invalid: boolean } & JSX.IntrinsicElements["div"]) {
   // Input with label and help text, Input with validation error
   // https://tailwindui.com/components/application-ui/forms/input-groups
   // <div class="mt-1">
@@ -160,7 +163,7 @@ Form.Control = function FormControl({
     <div
       className={classNames(
         className,
-        validationError ? "relative mt-1 rounded-md shadow-sm" : "mt-1"
+        invalid ? "relative mt-1 rounded-md shadow-sm" : "mt-1"
       )}
       {...rest}
     >
@@ -171,20 +174,20 @@ Form.Control = function FormControl({
 
 Form.Input = function FormInput({
   className,
-  validationError,
+  invalid,
   ...rest
-}: { validationError: boolean } & JSX.IntrinsicElements["input"]) {
+}: { invalid: boolean } & JSX.IntrinsicElements["input"]) {
   // Input with label and help text, Input with validation error
   // https://tailwindui.com/components/application-ui/forms/input-groups
   // <input type="email" name="email" id="email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="you@example.com" aria-describedby="email-description">
   // <input type="email" name="email" id="email" class="block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error" />
-  // Removed pr-10 from validationError
+  // Removed pr-10 from invalid
   return (
     <input
       className={classNames(
         className,
         "block w-full rounded-md sm:text-sm",
-        validationError
+        invalid
           ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
           : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       )}
@@ -193,19 +196,17 @@ Form.Input = function FormInput({
   );
 };
 
-Form.ValidationError = function FormValidationError({
+Form.Errors = function FormErrors({
   className,
-  children,
+  errors,
   ...rest
-}: JSX.IntrinsicElements["p"]) {
-  return children ? (
+}: { errors?: string[] } & JSX.IntrinsicElements["p"]) {
+  return errors && errors.length > 0 ? (
     <p className={classNames(className, "mt-2 text-sm text-red-600")} {...rest}>
-      {children}
+      {errors.join(". ")}
     </p>
   ) : null;
 };
-
-Form.Error = Form.ValidationError;
 
 Form.Field = function FormField({
   id,
@@ -219,17 +220,17 @@ Form.Field = function FormField({
   errors?: string[];
 }) {
   const child = React.Children.only(children);
-  const validationError = Boolean(errors);
+  const invalid = Boolean(errors && errors.length > 0);
   return (
     <Form.Group>
       <Form.Label htmlFor={id}>{label}</Form.Label>
-      <Form.Control validationError={validationError}>
+      <Form.Control invalid={invalid}>
         {React.isValidElement(child)
           ? React.cloneElement(child, {
               className: classNames(
                 child.props.className,
                 "block w-full rounded-md sm:text-sm",
-                validationError
+                invalid
                   ? "border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500"
                   : "border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               ),
@@ -237,11 +238,27 @@ Form.Field = function FormField({
           : null}
       </Form.Control>
       {errors ? (
-        <Form.ValidationError id={`${id}-error`} role="alert">
-          {errors.join(". ")}
-        </Form.ValidationError>
+        <Form.Errors id={`${id}-error`} role="alert" errors={errors} />
       ) : null}
     </Form.Group>
+  );
+};
+
+Form.List = function FormList({
+  className,
+  ...rest
+}: Parameters<typeof Form.Group>[0]) {
+  // Simple list with heading
+  // https://tailwindui.com/components/application-ui/forms/checkboxes
+  // <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
+  return (
+    <Form.Group
+      className={classNames(
+        className,
+        "-mb-8 divide-y divide-gray-200 border-t border-gray-200"
+      )}
+      {...rest}
+    />
   );
 };
 

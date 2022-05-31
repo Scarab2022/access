@@ -1,4 +1,4 @@
-import { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { PageHeader } from "~/components/page-header";
 import { requireUserIdForRole } from "~/session.server";
 

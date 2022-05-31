@@ -1,39 +1,54 @@
-import React from "react";
+import { classNames } from "~/utils";
 
-function DescriptionList({ children }: { children: React.ReactNode }) {
+function DescriptionList({ className, ...rest }: JSX.IntrinsicElements["dl"]) {
   // Left aligned: https://tailwindui.com/components/application-ui/data-display/description-lists
-  return <dl className="sm:divide-y sm:divide-gray-200">{children}</dl>;
+  return (
+    <dl
+      className={classNames(className, "sm:divide-y sm:divide-gray-200")}
+      {...rest}
+    />
+  );
 }
 
 DescriptionList.Group = function DescriptionListGroup({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  className,
+  ...rest
+}: JSX.IntrinsicElements["div"]) {
   return (
-    <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5">
-      {children}
-    </div>
+    <div
+      className={classNames(
+        className,
+        "py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5"
+      )}
+      {...rest}
+    />
   );
 };
 
 DescriptionList.Dt = function DescriptionListDt({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <dt className="text-sm font-medium text-gray-500">{children}</dt>;
+  className,
+  ...rest
+}: JSX.IntrinsicElements["dt"]) {
+  return (
+    <dt
+      className={classNames(className, "text-sm font-medium text-gray-500")}
+      {...rest}
+    />
+  );
 };
 
 DescriptionList.Dd = function DescriptionListDd({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  className,
+  ...rest
+}: JSX.IntrinsicElements["dd"]) {
   return (
-    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-      {children}
-    </dd>
+    <dd
+      className={classNames(
+        className,
+        "mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"
+      )}
+      {...rest}
+    />
   );
 };
 

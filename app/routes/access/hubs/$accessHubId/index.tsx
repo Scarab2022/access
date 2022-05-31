@@ -111,7 +111,7 @@ export default function RouteComponent() {
       <main>
         <Section>
           <Section.Header>Access Points</Section.Header>
-          <Section.Body>
+          <Section.Content>
             <Table
               headers={
                 <>
@@ -133,7 +133,7 @@ export default function RouteComponent() {
                 </tr>
               ))}
             </Table>
-          </Section.Body>
+          </Section.Content>
         </Section>
       </main>
     </>

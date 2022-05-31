@@ -71,7 +71,7 @@ export default function RouteComponent() {
       <main>
         <Section>
           <Section.Header>Password Reset Link</Section.Header>
-          <Section.Body>
+          <Section.Content>
             {actionData ? (
               <div>
                 <p>{actionData.resetPasswordHref}</p>
@@ -83,7 +83,7 @@ export default function RouteComponent() {
             ) : (
               "Already generated."
             )}
-          </Section.Body>
+          </Section.Content>
         </Section>
       </main>
     </>

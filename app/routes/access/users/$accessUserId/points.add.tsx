@@ -6,7 +6,6 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { requireUserIdForRole } from "~/session.server";
-import { SettingsForm } from "~/components/lib";
 import {
   addPointsToAccessUser,
   getAccessUserWithPoints,
@@ -15,6 +14,7 @@ import invariant from "tiny-invariant";
 import { getAccessPointsNotIn } from "~/models/accessPoint.server";
 import { PageHeader } from "~/components/page-header";
 import { Form } from "~/components/form";
+import { Checkbox } from "~/components/checkbox";
 
 export const handle = {
   breadcrumb: "Add Points",
@@ -69,73 +69,49 @@ export const action: ActionFunction = async ({
 
 export default function RouteComponent() {
   const { accessPoints } = useLoaderData<LoaderData>();
+  // Simple list with heading
+  // https://tailwindui.com/components/application-ui/forms/checkboxes
+  // <div class="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
   return (
     <>
       <PageHeader />
       <main>
         <Form replace method="post" className="mx-auto max-w-sm">
-          <Form.Section>
-            <div>
-              <Form.H3>Add Points</Form.H3>
-            </div>
-            {accessPoints.map((ap, apIdx) => (
-              <div key={ap.id} className="relative flex items-start py-4">
-                <div className="min-w-0 flex-1 text-sm">
-                  <label
-                    htmlFor={`accessPoint-${apIdx}`}
-                    className="select-none font-medium text-gray-700"
-                  >
-                    {`${ap.accessHub.name}: ${ap.name}`}
-                  </label>
-                </div>
-                <div className="ml-3 flex h-5 items-center">
-                  <input
-                    id={`accessPoint-${apIdx}`}
-                    name={`accessPoint-${apIdx}`}
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <input
-                    id={`accessPoint-${apIdx}-id`}
-                    name={`accessPoint-${apIdx}-id`}
-                    type="hidden"
-                    value={ap.id}
-                  />
-                </div>
-              </div>
-            ))}
-          </Form.Section>
+          <Form.Content>
+            <Form.Section>
+              <Form.SectionHeader title="Add Points" />
+              <Form.SectionContent>
+                <Form.List>
+                  {accessPoints.map((i, idx) => {
+                    const idName = `accessPoint-${idx}`;
+                    const hiddenIdName = `${idName}-id`;
+                    return (
+                      <Checkbox.ListItem
+                        key={i.id}
+                        labelProps={{
+                          htmlFor: idName,
+                          children: `${i.accessHub.name}: ${i.name}`,
+                        }}
+                        checkboxProps={{ id: idName, name: idName }}
+                      >
+                        <input
+                          id={hiddenIdName}
+                          name={hiddenIdName}
+                          type="hidden"
+                          value={i.id}
+                        />
+                      </Checkbox.ListItem>
+                    );
+                  })}
+                </Form.List>
+              </Form.SectionContent>
+            </Form.Section>
+          </Form.Content>
+          <Form.Footer>
+            <Form.CancelButton />
+            <Form.SubmitButton>Add</Form.SubmitButton>
+          </Form.Footer>
         </Form>
-        <SettingsForm replace method="post" title="Add Points" submitText="Add">
-          <div className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200">
-            {accessPoints.map((ap, apIdx) => (
-              <div key={ap.id} className="relative flex items-start py-4">
-                <div className="min-w-0 flex-1 text-sm">
-                  <label
-                    htmlFor={`accessPoint-${apIdx}`}
-                    className="select-none font-medium text-gray-700"
-                  >
-                    {`${ap.accessHub.name}: ${ap.name}`}
-                  </label>
-                </div>
-                <div className="ml-3 flex h-5 items-center">
-                  <input
-                    id={`accessPoint-${apIdx}`}
-                    name={`accessPoint-${apIdx}`}
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <input
-                    id={`accessPoint-${apIdx}-id`}
-                    name={`accessPoint-${apIdx}-id`}
-                    type="hidden"
-                    value={ap.id}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </SettingsForm>
       </main>
     </>
   );

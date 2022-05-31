@@ -82,7 +82,7 @@ export default function RouteComponent() {
         }
       />
       <main className="space-y-6">
-        <div className="mx-auto max-w-lg">
+        <Section className="mx-auto max-w-lg">
           <DescriptionList>
             <DescriptionList.Item term="Code" description={accessUser.code} />
             <DescriptionList.Item term="Code Status" description={codeStatus} />
@@ -99,43 +99,45 @@ export default function RouteComponent() {
               description={accessUser.description}
             />
           </DescriptionList>
-        </div>
+        </Section>
         <Section>
           <Section.Header
             side={<Button onClick={() => navigate("points/add")}>Add</Button>}
           >
             Access Points
           </Section.Header>
-          <Table
-            headers={
-              <>
-                <Table.Th>Name</Table.Th>
-                <Table.Th>Hub</Table.Th>
-                <Table.Th>Description</Table.Th>
-                <Table.Th sr>View</Table.Th>
-              </>
-            }
-          >
-            {accessUser.accessPoints.map((i) => (
-              <tr key={i.id}>
-                <Table.Td prominent>{i.name}</Table.Td>
-                <Table.Td>{i.accessHub.name}</Table.Td>
-                <Table.Td>{i.description}</Table.Td>
-                <Table.TdLink
-                  to="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    submit(null, {
-                      method: "post",
-                      action: `${removeFormActionBase}/${i.id}/remove`,
-                    });
-                  }}
-                >
-                  Remove
-                </Table.TdLink>
-              </tr>
-            ))}
-          </Table>
+          <Section.Content>
+            <Table
+              headers={
+                <>
+                  <Table.Th>Name</Table.Th>
+                  <Table.Th>Hub</Table.Th>
+                  <Table.Th>Description</Table.Th>
+                  <Table.Th sr>View</Table.Th>
+                </>
+              }
+            >
+              {accessUser.accessPoints.map((i) => (
+                <tr key={i.id}>
+                  <Table.Td prominent>{i.name}</Table.Td>
+                  <Table.Td>{i.accessHub.name}</Table.Td>
+                  <Table.Td>{i.description}</Table.Td>
+                  <Table.TdLink
+                    to="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      submit(null, {
+                        method: "post",
+                        action: `${removeFormActionBase}/${i.id}/remove`,
+                      });
+                    }}
+                  >
+                    Remove
+                  </Table.TdLink>
+                </tr>
+              ))}
+            </Table>
+          </Section.Content>
         </Section>
       </main>
     </>

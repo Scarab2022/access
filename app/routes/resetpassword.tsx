@@ -1,8 +1,10 @@
-import { ActionFunction, redirect } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useActionData, useLocation } from "@remix-run/react";
-import { SettingsForm, SettingsFormField } from "~/components/lib";
-import { z, ZodError } from "zod";
+import type { ZodError } from "zod";
+import { z } from "zod";
 import { resetPassword } from "~/models/user.server";
+import { Form } from "~/components/form";
 
 const SearchParams = z
   .object({
@@ -51,30 +53,43 @@ export default function RouteComponent() {
 
   return (
     <main>
-      <div className="mt-8">
-        <SettingsForm
-          replace
-          action={`${location.pathname}${location.search}`}
-          method="post"
-          title="Reset Password"
-          formErrors={actionData?.formErrors?.formErrors}
-        >
-          <SettingsFormField
-            id="password"
-            label="Password"
-            errors={actionData?.formErrors?.fieldErrors?.password}
-          >
-            <input
-              type="password"
-              name="password"
-              id="password"
-              defaultValue={
-                actionData?.fieldValues ? actionData.fieldValues.password : ""
-              }
+      <Form
+        replace
+        method="post"
+        action={`${location.pathname}${location.search}`}
+        className="mt-8 px-4 sm:mx-auto sm:w-full sm:max-w-md sm:px-10"
+      >
+        <Form.Content>
+          <Form.Section>
+            <Form.SectionHeader
+              title="Reset Password"
+              errors={actionData?.formErrors?.formErrors}
             />
-          </SettingsFormField>
-        </SettingsForm>
-      </div>
+            <Form.SectionContent>
+              <Form.Field
+                id="password"
+                label="Password"
+                errors={actionData?.formErrors?.fieldErrors?.password}
+              >
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  defaultValue={
+                    actionData?.fieldValues
+                      ? actionData.fieldValues.password
+                      : ""
+                  }
+                />
+              </Form.Field>
+            </Form.SectionContent>
+          </Form.Section>
+        </Form.Content>
+        <Form.Footer>
+          <Form.CancelButton />
+          <Form.SubmitButton>Save</Form.SubmitButton>
+        </Form.Footer>
+      </Form>
     </main>
   );
 }

@@ -14,7 +14,7 @@ const FieldValues = z
   .object({
     name: z.string().min(1).max(50),
     description: z.string().max(100),
-    code: z.string().min(1).max(50),
+    code: z.string().min(3).max(50),
   })
   .strict();
 
@@ -55,10 +55,10 @@ export default function RouteComponent() {
       <main>
         <Form method="post" className="mx-auto max-w-sm" replace>
           <Form.Section>
-            <div>
-              <Form.H3>Create Access User</Form.H3>
-              <Form.Error>{actionData?.formErrors?.formErrors}</Form.Error>
-            </div>
+            <Form.SectionHeader
+              title="Create Access User"
+              errors={actionData?.formErrors?.formErrors}
+            />
             <Form.SectionContent>
               <Form.Field
                 id="name"
