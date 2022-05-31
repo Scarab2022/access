@@ -3,7 +3,7 @@
 ## Setup
 
 - node >= 14
-- git clone https://github.com/mw10013/access.git
+- git clone https://github.com/Scarab2022/access.git
 - .env file in root. See .env.example
 - npm install
 - npm run docker
