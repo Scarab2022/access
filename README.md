@@ -12,7 +12,6 @@
 - npm run build # first time
 - npm run dev
 - localhost:3000
-- rachel@remix.run/racheliscool
 
 ## Dev Database
 
