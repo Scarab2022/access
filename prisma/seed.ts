@@ -1,23 +1,35 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-
+  
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
-  const adminEmail = "admin@access.com";
+  const customerEmail = "scarab2022@gmail.com";
+  const admin1Email = "ola.scarab@gmail.com";
+  const admin2Email = "mw10013@gmail.com";
 
   // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
-    // no worries if it doesn't exist yet
-  });
-  await prisma.user.delete({ where: { email: adminEmail } }).catch(() => {});
+  // await prisma.user.delete({ where: { email } }).catch(() => {
+  //   // no worries if it doesn't exist yet
+  // });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  const hashedPassword =
+    "$2a$10$xe2ZEEJJqULy6VJ2khSBFeyKWXUWdS0Jkj4SmtsT6ZFOw.fzHdlVa";
 
   await prisma.user.create({
     data: {
-      email: "admin@access.com",
+      email: admin1Email,
+      role: "admin",
+      password: {
+        create: {
+          hash: hashedPassword,
+        },
+      },
+    },
+  });
+
+  await prisma.user.create({
+    data: {
+      email: admin2Email,
       role: "admin",
       password: {
         create: {
@@ -29,7 +41,7 @@ async function seed() {
 
   const user = await prisma.user.create({
     data: {
-      email,
+      email: customerEmail,
       role: "customer",
       password: {
         create: {
