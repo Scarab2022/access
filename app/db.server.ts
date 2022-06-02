@@ -52,7 +52,22 @@ function getClient() {
         url: databaseUrl.toString(),
       },
     },
+    log: [
+      {
+        emit: "event",
+        level: "query",
+      },
+      "info",
+      "warn",
+      "error",
+    ],
   });
+
+  client.$on("query", (e) => {
+    console.log("Query: " + e.query);
+    console.log("Params: " + e.params);
+  });
+
   // connect eagerly
   client.$connect();
 
