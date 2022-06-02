@@ -72,7 +72,7 @@ export default function RouteComponent() {
         side={<Button onClick={() => navigate("create")}>Create</Button>}
       />
       <main>
-        <StackedList.Chrome>
+        <StackedList.Chrome className="mx-auto max-w-2xl">
           <StackedList>
             {accessUsers.map((i) => {
               const { codeStatus, activateExpireStatus } =

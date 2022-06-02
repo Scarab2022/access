@@ -37,7 +37,7 @@ export default function RouteComponent() {
     <>
       <PageHeader title="Hubs" />
       <main>
-        <StackedList.Chrome>
+        <StackedList.Chrome className="mx-auto max-w-2xl">
           <StackedList>
             {accessHubs.map((i) => (
               <li key={i.id}>
