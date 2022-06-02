@@ -148,14 +148,6 @@ export default function RouteComponent() {
               description={accessPoint.position.toString()}
             />
             <DescriptionList.Item
-              term="Heartbeat"
-              description={
-                accessPoint.accessHub.heartbeatAt
-                  ? new Date(accessPoint.accessHub.heartbeatAt).toLocaleString()
-                  : ""
-              }
-            />
-            <DescriptionList.Item
               term="Description"
               description={accessPoint.description}
             />
