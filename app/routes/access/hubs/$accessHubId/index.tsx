@@ -127,9 +127,7 @@ export default function RouteComponent() {
                   <Table.Td>{i.position}</Table.Td>
                   <Table.Td prominent>{i.name}</Table.Td>
                   <Table.Td>{i.description}</Table.Td>
-                  <Table.TdLink to={`./../../points/${i.id}`}>
-                    View
-                  </Table.TdLink>
+                  <Table.TdLink to={`points/${i.id}`}>View</Table.TdLink>
                 </tr>
               ))}
             </Table>

@@ -6,13 +6,15 @@ import { requireUserIdForRole } from "~/session.server";
 
 export const action: ActionFunction = async ({
   request,
-  params: { accessPointId, accessUserId },
+  params: { accessHubId, accessPointId, accessUserId },
 }) => {
   const userId = await requireUserIdForRole(request, "customer");
+  invariant(accessHubId, "accessHubId not found");
   invariant(accessPointId, "accessPointId not found");
   invariant(accessUserId, "accessUserId not found");
   const accessPoint = await getAccessPoint({
     id: Number(accessPointId),
+    accessHubId,
     userId,
   });
   await prisma.accessPoint.update({
@@ -21,5 +23,5 @@ export const action: ActionFunction = async ({
       accessUsers: { disconnect: { id: Number(accessUserId) } },
     },
   });
-  return redirect(`/access/points/${accessPoint.id}`);
+  return redirect(`/access/hubs/${accessHubId}/points/${accessPoint.id}`);
 };

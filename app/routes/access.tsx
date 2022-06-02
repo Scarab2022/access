@@ -30,7 +30,6 @@ const navigation = [
   { name: "Dashboard", to: "dashboard" },
   { name: "Users", to: "users" },
   { name: "Hubs", to: "hubs" },
-  { name: "Points", to: "points" },
 ];
 
 function Navbar() {

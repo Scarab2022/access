@@ -95,7 +95,9 @@ export default function RouteComponent() {
               <Table.Td>{i.accessHub.name}</Table.Td>
               <Table.Td prominent>{i.name}</Table.Td>
               <Table.Td>{connectionStatus(i.accessHub.heartbeatAt)}</Table.Td>
-              <Table.TdLink to={`../points/${i.id}`}>View</Table.TdLink>
+              <Table.TdLink to={`../hubs/${i.accessHubId}/points/${i.id}`}>
+                View
+              </Table.TdLink>
             </tr>
           ))}
         </Table>

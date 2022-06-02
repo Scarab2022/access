@@ -6,12 +6,14 @@ export type { AccessPoint } from "@prisma/client";
 
 export function getAccessPoint({
   id,
+  accessHubId,
   userId,
-}: Pick<AccessPoint, "id"> & {
+}: Pick<AccessPoint, "id" | "accessHubId"> & {
   userId: User["id"];
 }) {
+  console.log({ id, accessHubId, userId });
   return prisma.accessPoint.findFirst({
-    where: { id, accessHub: { user: { id: userId } } },
+    where: { id, accessHubId, accessHub: { user: { id: userId } } },
     rejectOnNotFound: true,
   });
 }

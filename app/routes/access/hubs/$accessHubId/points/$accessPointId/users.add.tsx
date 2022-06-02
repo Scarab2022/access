@@ -39,9 +39,10 @@ function getAccessUsers({
 
 export const loader: LoaderFunction = async ({
   request,
-  params: { accessPointId },
+  params: { accessHubId, accessPointId },
 }): Promise<LoaderData> => {
   const userId = await requireUserIdForRole(request, "customer");
+  invariant(accessHubId, "accessHubId not found");
   invariant(accessPointId, "accessPointId not found");
 
   const accessPoint = await getAccessPointWithHubAndUsers({
@@ -55,9 +56,10 @@ export const loader: LoaderFunction = async ({
 
 export const action: ActionFunction = async ({
   request,
-  params: { accessPointId },
+  params: { accessHubId, accessPointId },
 }) => {
   const userId = await requireUserIdForRole(request, "customer");
+  invariant(accessHubId, "accessHubId not found");
   invariant(accessPointId, "accessPointId not found");
 
   const formData = await request.formData();
@@ -73,6 +75,7 @@ export const action: ActionFunction = async ({
   if (ids.length > 0) {
     const accessPoint = await getAccessPoint({
       id: Number(accessPointId),
+      accessHubId,
       userId,
     });
 
@@ -82,7 +85,7 @@ export const action: ActionFunction = async ({
       data: { accessUsers: { connect: ids.map((id) => ({ id })) } },
     });
   }
-  return redirect(`/access/points/${accessPointId}`);
+  return redirect(`/access/hubs/${accessHubId}/points/${accessPointId}`);
 };
 
 export default function RouteComponent() {
