@@ -1,7 +1,7 @@
 import { Outlet } from "@remix-run/react";
 
 export const handle = {
-  breadcrumb: "Access Point",
+  breadcrumb: "Point",
 };
 
 export default function RouteComponent() {
