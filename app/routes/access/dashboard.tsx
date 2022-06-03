@@ -13,33 +13,66 @@ export const handle = {
   breadcrumb: "Dashboard",
 };
 
-type LoaderData = {
-  accessPoints: Awaited<ReturnType<typeof getLoaderData>>;
-};
+type LoaderData = Awaited<ReturnType<typeof getLoaderData>>;
 
-function getLoaderData({ userId }: { userId: User["id"] }) {
-  return prisma.accessPoint.findMany({
+async function getLoaderData({ userId }: { userId: User["id"] }) {
+  // return prisma.accessPoint.findMany({
+  //   where: {
+  //     accessHub: {
+  //       userId: userId,
+  //     },
+  //   },
+  //   include: {
+  //     accessUsers: true,
+  //     accessHub: {
+  //       include: {
+  //         user: true,
+  //       },
+  //     },
+  //   },
+  //   orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
+  // });
+
+  const accessHubs = await prisma.accessHub.findMany({
     where: {
-      accessHub: {
-        userId: userId,
-      },
+      userId,
     },
+    orderBy: [{ name: "asc" }],
     include: {
-      accessUsers: true,
-      accessHub: {
+      accessPoints: {
         include: {
-          user: true,
+          accessUsers: true,
+          accessEvents: {
+            where: {
+              at: {
+                gte: new Date(Date.now() - 12 * 60 * 60 * 1000),
+              },
+            },
+          },
+          _count: {
+            select: { accessEvents: true },
+          },
         },
       },
     },
-    orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
   });
+
+  const groupBy = await prisma.accessEvent.groupBy({
+    by: ["accessPointId", "access"],
+    orderBy: [{ accessPointId: "asc" }],
+    _count: {
+      _all: true,
+      access: true,
+    },
+  });
+
+  return { accessHubs, groupBy };
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserIdForRole(request, "customer");
-  const accessPoints = await getLoaderData({ userId });
-  return json<LoaderData>({ accessPoints });
+  const data = await getLoaderData({ userId });
+  return json<LoaderData>(data);
 };
 
 function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
@@ -56,7 +89,7 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 }
 
 export default function RouteComponent() {
-  const { accessPoints } = useLoaderData<LoaderData>();
+  const { accessHubs, groupBy } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
   const [isPolling, setIsPolling] = React.useState(false);
   const location = useLocation();
@@ -80,7 +113,9 @@ export default function RouteComponent() {
         }
       />
       <main>
-        <Table
+        <pre>{JSON.stringify(groupBy, null, 2)}</pre>
+        <pre>{JSON.stringify(accessHubs, null, 2)}</pre>
+        {/* <Table
           headers={
             <>
               <Table.Th>Hub</Table.Th>
@@ -100,7 +135,7 @@ export default function RouteComponent() {
               </Table.TdLink>
             </tr>
           ))}
-        </Table>
+        </Table> */}
       </main>
     </>
   );
