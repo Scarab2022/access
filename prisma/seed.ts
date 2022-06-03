@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function seed() {
+async function seedUsers() {
   const customerEmail = "scarab2022@gmail.com";
   const admin1Email = "ola.scarab@gmail.com";
   const admin2Email = "mw10013@gmail.com";
@@ -67,6 +67,12 @@ async function seed() {
     },
   });
 
+  return { user };
+}
+
+async function seedAccessUsers({
+  user,
+}: Awaited<ReturnType<typeof seedUsers>>) {
   const masterAccessUser = await prisma.accessUser.create({
     data: {
       name: "Master",
@@ -79,7 +85,7 @@ async function seed() {
   const guest1AccessUser = await prisma.accessUser.create({
     data: {
       name: "Guest1",
-      description: "Access to everything",
+      description: "Guest1 for Brooklyn BnB",
       code: "111",
       userId: user.id,
     },
@@ -88,12 +94,56 @@ async function seed() {
   const guest2AccessUser = await prisma.accessUser.create({
     data: {
       name: "Guest2",
-      description: "Access to everything",
+      description: "Guest2 for Brooklyn BnB",
       code: "222",
       userId: user.id,
     },
   });
 
+  const guest3AccessUser = await prisma.accessUser.create({
+    data: {
+      name: "Guest3",
+      description: "Guest1 for Staten Island BnB",
+      code: "333",
+      userId: user.id,
+    },
+  });
+
+  const guest4AccessUser = await prisma.accessUser.create({
+    data: {
+      name: "Guest4",
+      description: "Guest2 for Brooklyn BnB",
+      code: "444",
+      userId: user.id,
+    },
+  });
+
+  return {
+    masterAccessUser,
+    guest1AccessUser,
+    guest2AccessUser,
+    guest3AccessUser,
+    guest4AccessUser,
+  };
+}
+
+async function seedAccessHub({
+  accessHubId,
+  accessHubName,
+  accessHubToken,
+  user,
+  masterAccessUser,
+  guest1AccessUser,
+  guest2AccessUser,
+}: {
+  accessHubId: string;
+  accessHubName: string;
+  accessHubToken: string;
+} & Awaited<ReturnType<typeof seedUsers>> &
+  Pick<
+    Awaited<ReturnType<typeof seedAccessUsers>>,
+    "masterAccessUser" | "guest1AccessUser" | "guest2AccessUser"
+  >) {
   const accessHub = await prisma.accessHub.create({
     include: {
       accessPoints: true,
@@ -106,13 +156,12 @@ async function seed() {
       },
     },
     data: {
-      id: "cl2uwi6uv0030ybthbkls5w0i",
-      name: "Brooklyn BnB",
+      id: accessHubId,
+      name: accessHubName,
       userId: user.id,
       apiToken: {
         create: {
-          token:
-            "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e331",
+          token: accessHubToken,
         },
       },
       accessPoints: {
@@ -159,7 +208,12 @@ async function seed() {
       },
     },
   });
+  return { accessHub };
+}
 
+async function seedAccessHubEvents({
+  accessHub,
+}: Awaited<ReturnType<typeof seedAccessHub>>) {
   let at = new Date();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const _ of Array(125).keys()) {
@@ -193,6 +247,41 @@ async function seed() {
       });
     }
   }
+}
+
+async function seed() {
+  const { user } = await seedUsers();
+  const {
+    masterAccessUser,
+    guest1AccessUser,
+    guest2AccessUser,
+    guest3AccessUser,
+    guest4AccessUser,
+  } = await seedAccessUsers({ user });
+
+  const { accessHub: accessHub1 } = await seedAccessHub({
+    accessHubId: "cl2uwi6uv0030ybthbkls5w0i",
+    accessHubName: "Brooklyn BnB",
+    accessHubToken:
+      "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e331",
+    user,
+    masterAccessUser,
+    guest1AccessUser,
+    guest2AccessUser,
+  });
+  await seedAccessHubEvents({ accessHub: accessHub1 });
+
+  const { accessHub: accessHub2 } = await seedAccessHub({
+    accessHubId: "cl2uwi6uv0030ybthbkls5w02",
+    accessHubName: "Staten Island BnB",
+    accessHubToken:
+      "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e332",
+    user,
+    masterAccessUser,
+    guest1AccessUser: guest3AccessUser,
+    guest2AccessUser: guest4AccessUser,
+  });
+  await seedAccessHubEvents({ accessHub: accessHub2 });
 
   console.log(`Database has been seeded. 🌱`);
 }
