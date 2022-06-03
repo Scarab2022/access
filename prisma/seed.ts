@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-  
+
 const prisma = new PrismaClient();
 
 async function seed() {
@@ -94,7 +94,17 @@ async function seed() {
     },
   });
 
-  await prisma.accessHub.create({
+  const accessHub = await prisma.accessHub.create({
+    include: {
+      accessPoints: true,
+      user: {
+        include: {
+          accessUsers: {
+            include: { accessPoints: true },
+          },
+        },
+      },
+    },
     data: {
       id: "cl2uwi6uv0030ybthbkls5w0i",
       name: "Brooklyn BnB",
@@ -139,13 +149,50 @@ async function seed() {
             },
           },
           {
-            name: "Unused",
+            name: "Basement Door",
             position: 4,
+            accessUsers: {
+              connect: [{ id: masterAccessUser.id }],
+            },
           },
         ],
       },
     },
   });
+
+  let at = new Date();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const _ of Array(125).keys()) {
+    at.setTime(at.getTime() - 90 * 60 * 1000);
+    const accessUser =
+      accessHub.user.accessUsers[
+        Math.floor(Math.random() * accessHub.user.accessUsers.length)
+      ];
+    const accessPoint =
+      accessHub.accessPoints[
+        Math.floor(Math.random() * accessHub.accessPoints.length)
+      ];
+    if (accessUser.accessPoints.some((ap) => ap.id === accessPoint.id)) {
+      await prisma.accessEvent.create({
+        data: {
+          at,
+          access: "grant",
+          code: accessUser.code,
+          accessUserId: accessUser.id,
+          accessPointId: accessPoint.id,
+        },
+      });
+    } else {
+      await prisma.accessEvent.create({
+        data: {
+          at,
+          access: "deny",
+          code: accessUser.code,
+          accessPointId: accessPoint.id,
+        },
+      });
+    }
+  }
 
   console.log(`Database has been seeded. 🌱`);
 }

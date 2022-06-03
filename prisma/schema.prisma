@@ -94,7 +94,7 @@ model AccessPoint {
 model AccessEvent {
   id                Int         @id @default(autoincrement())
   at                DateTime
-  access            String
+  access            String      // 'grant' | 'deny'
   code              String
   accessUser        AccessUser?  @relation(fields: [accessUserId], references: [id])
   accessUserId      Int?
