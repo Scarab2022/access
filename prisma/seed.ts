@@ -1,48 +1,20 @@
-import { PrismaClient } from "@prisma/client";
+import { AccessHub, ApiToken, PrismaClient, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function seedUsers() {
-  const customerEmail = "scarab2022@gmail.com";
-  const admin1Email = "ola.scarab@gmail.com";
-  const admin2Email = "mw10013@gmail.com";
+const hashedPassword =
+  "$2a$10$xe2ZEEJJqULy6VJ2khSBFeyKWXUWdS0Jkj4SmtsT6ZFOw.fzHdlVa";
 
+async function seedUser({ email, role }: Pick<User, "email" | "role">) {
   // cleanup the existing database
   // await prisma.user.delete({ where: { email } }).catch(() => {
   //   // no worries if it doesn't exist yet
   // });
 
-  const hashedPassword =
-    "$2a$10$xe2ZEEJJqULy6VJ2khSBFeyKWXUWdS0Jkj4SmtsT6ZFOw.fzHdlVa";
-
-  await prisma.user.create({
-    data: {
-      email: admin1Email,
-      role: "admin",
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
-    },
-  });
-
-  await prisma.user.create({
-    data: {
-      email: admin2Email,
-      role: "admin",
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
-    },
-  });
-
   const user = await prisma.user.create({
     data: {
-      email: customerEmail,
-      role: "customer",
+      email,
+      role,
       password: {
         create: {
           hash: hashedPassword,
@@ -50,29 +22,48 @@ async function seedUsers() {
       },
     },
   });
-
-  await prisma.note.create({
-    data: {
-      title: "My first note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
-
-  await prisma.note.create({
-    data: {
-      title: "My second note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
-
   return { user };
 }
 
-async function seedAccessUsers({
-  user,
-}: Awaited<ReturnType<typeof seedUsers>>) {
+async function seedCustomer({
+  email,
+  role,
+  accessHubId,
+  accessHubToken,
+}: Parameters<typeof seedUser>[0] & {
+  accessHubId?: AccessHub["id"];
+  accessHubToken?: ApiToken["token"];
+}) {
+  const { user } = await seedUser({ email, role });
+  const {
+    masterAccessUser,
+    guest1AccessUser,
+    guest2AccessUser,
+    guest3AccessUser,
+    guest4AccessUser,
+  } = await seedAccessUsers({ user });
+
+  await seedAccessHub({
+    accessHubId,
+    accessHubName: `The ${email} BnB`,
+    accessHubToken,
+    user,
+    masterAccessUser,
+    guest1AccessUser,
+    guest2AccessUser,
+  });
+
+  await seedAccessHub({
+    accessHubName: `The ${email} Nook`,
+    accessHubToken,
+    user,
+    masterAccessUser,
+    guest1AccessUser: guest3AccessUser,
+    guest2AccessUser: guest4AccessUser,
+  });
+}
+
+async function seedAccessUsers({ user }: Awaited<ReturnType<typeof seedUser>>) {
   const masterAccessUser = await prisma.accessUser.create({
     data: {
       name: "Master",
@@ -136,10 +127,10 @@ async function seedAccessHub({
   guest1AccessUser,
   guest2AccessUser,
 }: {
-  accessHubId: string;
+  accessHubId?: string;
   accessHubName: string;
-  accessHubToken: string;
-} & Awaited<ReturnType<typeof seedUsers>> &
+  accessHubToken?: string;
+} & Awaited<ReturnType<typeof seedUser>> &
   Pick<
     Awaited<ReturnType<typeof seedAccessUsers>>,
     "masterAccessUser" | "guest1AccessUser" | "guest2AccessUser"
@@ -208,6 +199,7 @@ async function seedAccessHub({
       },
     },
   });
+  await seedAccessHubEvents({ accessHub });
   return { accessHub };
 }
 
@@ -250,38 +242,19 @@ async function seedAccessHubEvents({
 }
 
 async function seed() {
-  const { user } = await seedUsers();
-  const {
-    masterAccessUser,
-    guest1AccessUser,
-    guest2AccessUser,
-    guest3AccessUser,
-    guest4AccessUser,
-  } = await seedAccessUsers({ user });
-
-  const { accessHub: accessHub1 } = await seedAccessHub({
+  await seedUser({ email: "ola.scarab@gmail.com", role: "admin" });
+  await seedUser({ email: "mw10013@gmail.com", role: "admin" });
+  await seedCustomer({
+    email: "scarab2022@gmail.com",
+    role: "customer",
     accessHubId: "cl2uwi6uv0030ybthbkls5w0i",
-    accessHubName: "Brooklyn BnB",
     accessHubToken:
       "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e331",
-    user,
-    masterAccessUser,
-    guest1AccessUser,
-    guest2AccessUser,
   });
-  await seedAccessHubEvents({ accessHub: accessHub1 });
-
-  const { accessHub: accessHub2 } = await seedAccessHub({
-    accessHubId: "cl2uwi6uv0030ybthbkls5w02",
-    accessHubName: "Staten Island BnB",
-    accessHubToken:
-      "d627713660c1891414ac55a6ccd1c1294292bb19a9e6be741f340782a531e332",
-    user,
-    masterAccessUser,
-    guest1AccessUser: guest3AccessUser,
-    guest2AccessUser: guest4AccessUser,
+  await seedCustomer({
+    email: "scarab3033@gmail.com",
+    role: "customer",
   });
-  await seedAccessHubEvents({ accessHub: accessHub2 });
 
   console.log(`Database has been seeded. 🌱`);
 }
