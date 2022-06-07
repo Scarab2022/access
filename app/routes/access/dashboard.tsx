@@ -16,23 +16,6 @@ export const handle = {
 type LoaderData = Awaited<ReturnType<typeof getLoaderData>>;
 
 async function getLoaderData({ userId }: { userId: User["id"] }) {
-  // return prisma.accessPoint.findMany({
-  //   where: {
-  //     accessHub: {
-  //       userId: userId,
-  //     },
-  //   },
-  //   include: {
-  //     accessUsers: true,
-  //     accessHub: {
-  //       include: {
-  //         user: true,
-  //       },
-  //     },
-  //   },
-  //   orderBy: [{ accessHub: { name: "asc" } }, { name: "asc" }],
-  // });
-
   const accessHubs = await prisma.accessHub.findMany({
     where: {
       userId,
@@ -41,16 +24,8 @@ async function getLoaderData({ userId }: { userId: User["id"] }) {
     include: {
       accessPoints: {
         include: {
-          accessUsers: true,
-          accessEvents: {
-            where: {
-              at: {
-                gte: new Date(Date.now() - 12 * 60 * 60 * 1000),
-              },
-            },
-          },
           _count: {
-            select: { accessEvents: true },
+            select: { accessUsers: true },
           },
         },
       },
@@ -77,15 +52,15 @@ async function getLoaderData({ userId }: { userId: User["id"] }) {
     },
   });
 
-  const accessStats = groupBy.reduce(
-    (acc: { [key: number]: { grant?: number; deny?: number } }, v) => {
+  const pointsStats = groupBy.reduce(
+    (acc: { [key: number]: { grant: number; deny: number } }, v) => {
       const {
         accessPointId,
         access,
         _count: { _all: count },
       } = v;
       if (!acc[accessPointId]) {
-        acc[accessPointId] = {};
+        acc[accessPointId] = { grant: 0, deny: 0 };
       }
       if (access === "grant" || access === "deny") {
         acc[accessPointId][access] = count;
@@ -95,7 +70,32 @@ async function getLoaderData({ userId }: { userId: User["id"] }) {
     {}
   );
 
-  return { accessHubs, groupBy, accessStats };
+  const accessHubsWithStats = accessHubs.map((v) => {
+    const accessPointsWithStats = v.accessPoints.map((p) => {
+      return {
+        ...p,
+        _count: {
+          ...p._count,
+          ...(pointsStats[p.id] ?? { grant: 0, deny: 0 }),
+        },
+      };
+    });
+    return {
+      ...v,
+      accessPoints: accessPointsWithStats,
+      _count: accessPointsWithStats.reduce(
+        (acc, v) => {
+          return {
+            grant: acc.grant + v._count.grant,
+            deny: acc.deny + v._count.deny,
+          };
+        },
+        { grant: 0, deny: 0 }
+      ),
+    };
+  });
+
+  return { accessHubs, accessHubsWithStats, groupBy, pointsStats };
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -118,7 +118,8 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 }
 
 export default function RouteComponent() {
-  const { accessHubs, groupBy, accessStats } = useLoaderData<LoaderData>();
+  const { accessHubsWithStats, accessHubs, groupBy, pointsStats } =
+    useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
   const [isPolling, setIsPolling] = React.useState(false);
   const location = useLocation();
@@ -142,8 +143,9 @@ export default function RouteComponent() {
         }
       />
       <main>
-        <pre>{JSON.stringify(accessStats, null, 2)}</pre>
-        <pre>{JSON.stringify(groupBy, null, 2)}</pre>
+        <pre>{JSON.stringify(accessHubsWithStats, null, 2)}</pre>
+        <pre>{JSON.stringify(pointsStats, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(groupBy, null, 2)}</pre> */}
         <pre>{JSON.stringify(accessHubs, null, 2)}</pre>
         {/* <Table
           headers={
