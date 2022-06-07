@@ -62,11 +62,40 @@ async function getLoaderData({ userId }: { userId: User["id"] }) {
     orderBy: [{ accessPointId: "asc" }],
     _count: {
       _all: true,
-      access: true,
+    },
+    where: {
+      at: {
+        gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      },
+      accessPoint: {
+        accessHub: {
+          user: {
+            id: userId,
+          },
+        },
+      },
     },
   });
 
-  return { accessHubs, groupBy };
+  const accessStats = groupBy.reduce(
+    (acc: { [key: number]: { grant?: number; deny?: number } }, v) => {
+      const {
+        accessPointId,
+        access,
+        _count: { _all: count },
+      } = v;
+      if (!acc[accessPointId]) {
+        acc[accessPointId] = {};
+      }
+      if (access === "grant" || access === "deny") {
+        acc[accessPointId][access] = count;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  return { accessHubs, groupBy, accessStats };
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -89,7 +118,7 @@ function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
 }
 
 export default function RouteComponent() {
-  const { accessHubs, groupBy } = useLoaderData<LoaderData>();
+  const { accessHubs, groupBy, accessStats } = useLoaderData<LoaderData>();
   const poll = useFetcher<LoaderData>();
   const [isPolling, setIsPolling] = React.useState(false);
   const location = useLocation();
@@ -113,6 +142,7 @@ export default function RouteComponent() {
         }
       />
       <main>
+        <pre>{JSON.stringify(accessStats, null, 2)}</pre>
         <pre>{JSON.stringify(groupBy, null, 2)}</pre>
         <pre>{JSON.stringify(accessHubs, null, 2)}</pre>
         {/* <Table
