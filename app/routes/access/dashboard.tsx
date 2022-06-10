@@ -106,7 +106,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>(data);
 };
 
-const connectionStatusColors: {[Props in ReturnType<typeof connectionStatus>]: string; } = {
+const connectionStatusColors: {[Props in ReturnType<typeof connectionStatus>]: Parameters<typeof Badge>[0]['color']; } = {
   Dying: "yellow",
   Live: "green",
   Dead: "red",
