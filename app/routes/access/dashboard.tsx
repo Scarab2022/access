@@ -106,14 +106,14 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json<LoaderData>(data);
 };
 
-const connectionStatusColors = {
+const connectionStatusColors: {[Props in ReturnType<typeof connectionStatus>]: string; } = {
   Dying: "yellow",
   Live: "green",
   Dead: "red",
-} as const;
+};
 
 function connectionStatus(heartbeatAt: AccessHub["heartbeatAt"]) {
-  // as const so infer is string literal not string
+  // as const so infer is string literal not string in getLoaderData().
   if (heartbeatAt) {
     const deltaMs = Date.now() - new Date(heartbeatAt).getTime();
     if (deltaMs < 5 * 1000) {
