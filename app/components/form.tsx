@@ -6,6 +6,7 @@ import { Button } from "./button";
 
 function Form({ className, children, ...rest }: FormProps) {
   return (
+    // Simple stacked: https://tailwindui.com/components/application-ui/forms/form-layouts
     <RemixForm
       className={classNames(className, "space-y-8 divide-y divide-gray-200")}
       {...rest}
