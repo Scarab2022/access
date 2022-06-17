@@ -1,10 +1,5 @@
-import type {
-  ActionFunction,
-  LoaderFunction} from "@remix-run/node";
-import {
-  json,
-  redirect,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useActionData, useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { requireUserIdForRole } from "~/session.server";
@@ -80,47 +75,43 @@ export default function RouteComponent() {
       <PageHeader />
       <main>
         <Form method="post" className="mx-auto max-w-sm" replace>
+          <Form.Header
+            title="Access Hub Settings"
+            errors={actionData?.formErrors?.formErrors}
+          />
           <Form.Content>
-            <Form.Section>
-              <Form.SectionHeader
-                title="Access Hub Settings"
-                errors={actionData?.formErrors?.formErrors}
-              />
-            <Form.SectionContent>
-              <Form.Field
+            <Form.Field
+              id="name"
+              label="Name"
+              errors={actionData?.formErrors?.fieldErrors?.name}
+            >
+              <input
+                type="text"
+                name="name"
                 id="name"
-                label="Name"
-                errors={actionData?.formErrors?.fieldErrors?.name}
-              >
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.name
-                      : accessHub.name
-                  }
-                />
-              </Form.Field>
-              <Form.Field
+                defaultValue={
+                  actionData?.fieldValues
+                    ? actionData.fieldValues.name
+                    : accessHub.name
+                }
+              />
+            </Form.Field>
+            <Form.Field
+              id="description"
+              label="Description"
+              errors={actionData?.formErrors?.fieldErrors?.description}
+            >
+              <textarea
+                name="description"
                 id="description"
-                label="Description"
-                errors={actionData?.formErrors?.fieldErrors?.description}
-              >
-                <textarea
-                  name="description"
-                  id="description"
-                  rows={3}
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.description
-                      : accessHub.description
-                  }
-                />
-              </Form.Field>
-            </Form.SectionContent>
-            </Form.Section>
+                rows={3}
+                defaultValue={
+                  actionData?.fieldValues
+                    ? actionData.fieldValues.description
+                    : accessHub.description
+                }
+              />
+            </Form.Field>
           </Form.Content>
           <Form.Footer>
             <Form.CancelButton />
