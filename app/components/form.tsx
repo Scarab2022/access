@@ -1,14 +1,23 @@
 import { Form as RemixForm, useNavigate } from "@remix-run/react";
 import type { FormProps } from "@remix-run/react/components";
+import { stubFalse } from "lodash";
 import React from "react";
 import { classNames } from "~/utils";
 import { Button } from "./button";
 
-function Form({ className, children, ...rest }: FormProps) {
+function Form({
+  stacked = false,
+  className,
+  children,
+  ...rest
+}: FormProps & { stacked?: boolean }) {
   return (
     // Simple stacked: https://tailwindui.com/components/application-ui/forms/form-layouts
     <RemixForm
-      className={classNames(className, "space-y-8 divide-y divide-gray-200")}
+      className={classNames(
+        className,
+        stacked && "space-y-8 divide-y divide-gray-200"
+      )}
       {...rest}
     >
       {children}
@@ -17,13 +26,17 @@ function Form({ className, children, ...rest }: FormProps) {
 }
 
 Form.Content = function FormContent({
+  stacked = false,
   className,
   children,
   ...rest
-}: JSX.IntrinsicElements["div"]) {
+}: JSX.IntrinsicElements["div"] & { stacked?: boolean }) {
   return (
     <div
-      className={classNames(className, "space-y-8 divide-y divide-gray-200")}
+      className={classNames(
+        className,
+        stacked && "space-y-8 divide-y divide-gray-200"
+      )}
       {...rest}
     >
       {children}
@@ -264,12 +277,13 @@ Form.List = function FormList({
 };
 
 Form.Footer = function FormFooter({
+  stacked = false,
   className,
   children,
   ...rest
-}: JSX.IntrinsicElements["div"]) {
+}: JSX.IntrinsicElements["div"] & {stacked?: boolean}) {
   return (
-    <div className={classNames(className, "flex justify-end pt-5")} {...rest}>
+    <div className={classNames(className, "flex justify-end", stacked ? "pt-5" : "pt-6")} {...rest}>
       {children}
     </div>
   );
