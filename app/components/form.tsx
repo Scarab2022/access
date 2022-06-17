@@ -1,6 +1,5 @@
 import { Form as RemixForm, useNavigate } from "@remix-run/react";
 import type { FormProps } from "@remix-run/react/components";
-import { stubFalse } from "lodash";
 import React from "react";
 import { classNames } from "~/utils";
 import { Button } from "./button";
@@ -25,6 +24,25 @@ function Form({
   );
 }
 
+Form.Header = function FormHeader({
+  title,
+  description,
+  errors,
+  children,
+  ...rest
+}: { description?: string; errors?: string[] } & JSX.IntrinsicElements["div"]) {
+  return (
+    <div {...rest}>
+      {title ? <Form.H3>{title}</Form.H3> : null}
+      {description ? (
+        <p className={"mt-1 text-sm text-gray-500"}>{description}</p>
+      ) : null}
+      {children}
+      {errors && errors.length > 0 ? <Form.Errors errors={errors} /> : null}
+    </div>
+  );
+};
+
 Form.Content = function FormContent({
   stacked = false,
   className,
@@ -35,7 +53,9 @@ Form.Content = function FormContent({
     <div
       className={classNames(
         className,
-        stacked && "space-y-8 divide-y divide-gray-200"
+        stacked
+          ? "space-y-8 divide-y divide-gray-200"
+          : "mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
       )}
       {...rest}
     >
@@ -281,9 +301,16 @@ Form.Footer = function FormFooter({
   className,
   children,
   ...rest
-}: JSX.IntrinsicElements["div"] & {stacked?: boolean}) {
+}: JSX.IntrinsicElements["div"] & { stacked?: boolean }) {
   return (
-    <div className={classNames(className, "flex justify-end", stacked ? "pt-5" : "pt-6")} {...rest}>
+    <div
+      className={classNames(
+        className,
+        "flex justify-end",
+        stacked ? "pt-5" : "pt-6"
+      )}
+      {...rest}
+    >
       {children}
     </div>
   );
