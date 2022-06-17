@@ -86,7 +86,6 @@ export default function RouteComponent() {
                 title="Access Hub Settings"
                 errors={actionData?.formErrors?.formErrors}
               />
-            </Form.Section>
             <Form.SectionContent>
               <Form.Field
                 id="name"
@@ -121,6 +120,7 @@ export default function RouteComponent() {
                 />
               </Form.Field>
             </Form.SectionContent>
+            </Form.Section>
           </Form.Content>
           <Form.Footer>
             <Form.CancelButton />
