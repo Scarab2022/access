@@ -317,11 +317,16 @@ Form.Footer = function FormFooter({
 };
 
 Form.SubmitButton = function FormSubmitButton({
+  wide = false,
   className,
   ...rest
-}: Parameters<typeof Button>[0]) {
+}: Parameters<typeof Button>[0] & { wide?: boolean }) {
   return (
-    <Button type="submit" className={classNames(className, "ml-3")} {...rest} />
+    <Button
+      type="submit"
+      className={classNames(className, wide ? "grow justify-center" : "ml-3")}
+      {...rest}
+    />
   );
 };
 
