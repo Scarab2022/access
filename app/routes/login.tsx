@@ -28,7 +28,10 @@ const FieldValues = z
       .transform((v) => v.toLowerCase()),
     password: z.string().min(8).max(50),
     redirectTo: z.string(),
-    remember: z.string().optional().transform((v) => v === "on"),
+    remember: z
+      .string()
+      .optional()
+      .transform((v) => v === "on"),
   })
   .strict();
 
@@ -92,8 +95,6 @@ export default function LoginPage() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
 
-  console.log({ actionData });
-
   React.useEffect(() => {
     if (actionData?.formErrors?.fieldErrors?.email) {
       emailRef.current?.focus();
@@ -108,26 +109,23 @@ export default function LoginPage() {
   // <body class="h-full">
   return (
     <div className="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Log in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{" "}
-          <Link
-            to={{
-              pathname: "/join",
-              search: searchParams.toString(),
-            }}
-            className="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            join here
-          </Link>
-        </p>
-      </div>
-
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <Form method="post" className="py-8 px-4 sm:px-10" noValidate replace>
+          <Form.Header className="align-center flex flex-col">
+            <Form.H3 prominent>Log into your account</Form.H3>
+            <Form.P prominent>
+              Or{" "}
+              <Link
+                to={{
+                  pathname: "/join",
+                  search: searchParams.toString(),
+                }}
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                join here
+              </Link>
+            </Form.P>
+          </Form.Header>
           <Form.Content>
             <Form.Field
               id="email"
@@ -139,7 +137,7 @@ export default function LoginPage() {
                 type="email"
                 name="email"
                 id="email"
-                required
+                // required
                 autoFocus={true}
                 autoComplete="email"
               />
@@ -177,14 +175,14 @@ export default function LoginPage() {
               </div>
 
               {/* <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  {" "}
-                  Forgot your password?{" "}
-                </a>
-              </div> */}
+      <a
+        href="#"
+        className="font-medium text-indigo-600 hover:text-indigo-500"
+      >
+        {" "}
+        Forgot your password?{" "}
+      </a>
+    </div> */}
             </Form.Group>
             <input type="hidden" name="redirectTo" value={redirectTo} />
           </Form.Content>
