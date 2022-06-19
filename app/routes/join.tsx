@@ -4,13 +4,25 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import { Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
-
 import { getUserId, createUserSession } from "~/session.server";
-
 import { createUser, getUserByEmail } from "~/models/user.server";
-import { validateEmail } from "~/utils";
+import { z, ZodError } from "zod";
+import { Form } from "~/components/form";
+
+const FieldValues = z
+  .object({
+    email: z
+      .string()
+      .min(1)
+      .max(50)
+      .email()
+      .transform((v) => v.toLowerCase()),
+    password: z.string().min(8).max(50),
+    redirectTo: z.string(),
+  })
+  .strict();
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -18,50 +30,39 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json({});
 };
 
-interface ActionData {
-  errors: {
-    email?: string;
-    password?: string;
-  };
-}
+type ActionData = {
+  formErrors?: ZodError["formErrors"];
+};
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const redirectTo = formData.get("redirectTo");
-
-  if (!validateEmail(email)) {
+  // WARNING: Object.fromEntries(formData): if formData.entries() has 2 entries with the same key, only 1 is taken.
+  const fieldValues = Object.fromEntries(await request.formData());
+  const parseResult = FieldValues.safeParse(fieldValues);
+  if (!parseResult.success) {
     return json<ActionData>(
-      { errors: { email: "Email is invalid" } },
+      {
+        formErrors: parseResult.error.formErrors,
+      },
       { status: 400 }
     );
   }
-
-  if (typeof password !== "string") {
-    return json<ActionData>(
-      { errors: { password: "Password is required" } },
-      { status: 400 }
-    );
-  }
-
-  if (password.length < 8) {
-    return json<ActionData>(
-      { errors: { password: "Password is too short" } },
-      { status: 400 }
-    );
-  }
-
+  const { email, password, redirectTo } = parseResult.data;
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return json<ActionData>(
-      { errors: { email: "A user already exists with this email" } },
+      {
+        formErrors: {
+          formErrors: [],
+          fieldErrors: {
+            email: ["A user already exists with this email"],
+          },
+        },
+      },
       { status: 400 }
     );
   }
 
   const user = await createUser(email, password, "customer");
-
   return createUserSession({
     request,
     userId: user.id,
@@ -84,9 +85,9 @@ export default function Join() {
   const passwordRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
-    if (actionData?.errors?.email) {
+    if (actionData?.formErrors?.fieldErrors?.email) {
       emailRef.current?.focus();
-    } else if (actionData?.errors?.password) {
+    } else if (actionData?.formErrors?.fieldErrors?.password) {
       passwordRef.current?.focus();
     }
   }, [actionData]);
@@ -98,91 +99,59 @@ export default function Join() {
   return (
     <div className="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign up for an account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{" "}
-          <Link
-            to={{
-              pathname: "/login",
-              search: searchParams.toString(),
-            }}
-            className="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            log in here
-          </Link>
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="py-8 px-4 sm:px-10">
-          <Form method="post" className="space-y-6" noValidate>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+        <Form method="post" className="py-8 px-4 sm:px-10" noValidate replace>
+          <Form.Header className="align-center flex flex-col">
+            <Form.H3 prominent>Sign up for an account</Form.H3>
+            <Form.P prominent>
+              Or{" "}
+              <Link
+                to={{
+                  pathname: "/login",
+                  search: searchParams.toString(),
+                }}
+                className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Email address
-              </label>
-              <div className="mt-1">
-                <input
-                  ref={emailRef}
-                  id="email"
-                  required
-                  autoFocus={true}
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  aria-invalid={actionData?.errors?.email ? true : undefined}
-                  aria-describedby="email-error"
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                />
-                {actionData?.errors?.email && (
-                  <div className="pt-1 text-red-700" id="email-error">
-                    {actionData.errors.email}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  ref={passwordRef}
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  aria-invalid={actionData?.errors?.password ? true : undefined}
-                  aria-describedby="password-error"
-                  required
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                />
-                {actionData?.errors?.password && (
-                  <div className="pt-1 text-red-700" id="password-error">
-                    {actionData.errors.password}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <input type="hidden" name="redirectTo" value={redirectTo} />
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Sign up
-              </button>
-            </div>
-          </Form>
-        </div>
+                log in here
+              </Link>
+            </Form.P>
+          </Form.Header>
+          <Form.Content>
+            <Form.Field
+              id="email"
+              label="Email"
+              errors={actionData?.formErrors?.fieldErrors?.email}
+            >
+              <input
+                ref={emailRef}
+                type="email"
+                name="email"
+                id="email"
+                // required
+                autoFocus={true}
+                autoComplete="email"
+              />
+            </Form.Field>
+            <Form.Field
+              id="password"
+              label="Password"
+              errors={actionData?.formErrors?.fieldErrors?.password}
+            >
+              <input
+                ref={passwordRef}
+                type="password"
+                name="password"
+                id="password"
+                required
+                autoFocus={true}
+                autoComplete="current-password"
+              />
+            </Form.Field>
+            <input type="hidden" name="redirectTo" value={redirectTo} />
+          </Form.Content>
+          <Form.Footer>
+            <Form.SubmitButton wide>Sign up</Form.SubmitButton>
+          </Form.Footer>
+        </Form>
       </div>
     </div>
   );
