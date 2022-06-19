@@ -24,13 +24,58 @@ function Form({
   );
 }
 
+Form.H3 = function FormH3({
+  prominent = false,
+  className,
+  children,
+  ...rest
+}: { prominent?: boolean } & JSX.IntrinsicElements["h3"]) {
+  return (
+    <h3
+      className={classNames(
+        className,
+        prominent
+          ? "text-center text-3xl font-extrabold"
+          : "text-lg font-medium leading-6",
+        "text-gray-900"
+      )}
+      {...rest}
+    >
+      {children}
+    </h3>
+  );
+};
+
+Form.P = function FormP({
+  prominent = false,
+  className,
+  children,
+  ...rest
+}: { prominent?: boolean } & JSX.IntrinsicElements["p"]) {
+  return (
+    <p
+      className={classNames(
+        className,
+        prominent ? "mt-2 text-center text-gray-600" : "mt-1 text-gray-500",
+        "text-sm "
+      )}
+      {...rest}
+    >
+      {children}
+    </p>
+  );
+};
+
 Form.Header = function FormHeader({
   title,
   description,
   errors,
   children,
   ...rest
-}: { description?: string; errors?: string[] } & JSX.IntrinsicElements["div"]) {
+}: {
+  description?: React.ReactNode;
+  errors?: string[];
+} & JSX.IntrinsicElements["div"]) {
   return (
     <div {...rest}>
       {title ? <Form.H3>{title}</Form.H3> : null}
@@ -92,24 +137,6 @@ Form.SectionHeader = function FormSectionHeader({
       {errors && errors.length > 0 ? <Form.Errors errors={errors} /> : null}
       {children}
     </div>
-  );
-};
-
-Form.H3 = function FormH3({
-  className,
-  children,
-  ...rest
-}: JSX.IntrinsicElements["h3"]) {
-  return (
-    <h3
-      className={classNames(
-        className,
-        "text-lg font-medium leading-6 text-gray-900"
-      )}
-      {...rest}
-    >
-      {children}
-    </h3>
   );
 };
 
