@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const parseResult = FieldValues.safeParse(fieldValues);
   if (!parseResult.success) {
     return json<ActionData>(
-      { formErrors: parseResult.error.formErrors, fieldValues },
+      { formErrors: parseResult.error.formErrors },
       { status: 400 }
     );
   }
