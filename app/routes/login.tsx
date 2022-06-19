@@ -109,7 +109,7 @@ export default function LoginPage() {
   // <body class="h-full">
   return (
     <div className="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Form method="post" className="py-8 px-4 sm:px-10" noValidate replace>
           <Form.Header className="align-center flex flex-col">
             <Form.H3 prominent>Log into your account</Form.H3>
