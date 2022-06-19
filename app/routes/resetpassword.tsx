@@ -15,13 +15,12 @@ const SearchParams = z
 
 const FieldValues = z
   .object({
-    password: z.string().min(6).max(100),
+    password: z.string().min(8).max(50),
   })
   .strict();
 
 type ActionData = {
   formErrors?: ZodError["formErrors"];
-  fieldValues?: any;
 };
 
 export const action: ActionFunction = async ({
@@ -40,7 +39,7 @@ export const action: ActionFunction = async ({
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
   if (!parseResult.success) {
-    return { formErrors: parseResult.error.formErrors, fieldValues };
+    return { formErrors: parseResult.error.formErrors };
   }
 
   await resetPassword({ ...searchParamsParseResult.data, ...parseResult.data });
@@ -59,31 +58,18 @@ export default function RouteComponent() {
         action={`${location.pathname}${location.search}`}
         className="mt-8 px-4 sm:mx-auto sm:w-full sm:max-w-md sm:px-10"
       >
+        <Form.Header
+          title="Reset Password"
+          errors={actionData?.formErrors?.formErrors}
+        />
         <Form.Content>
-          <Form.Section>
-            <Form.SectionHeader
-              title="Reset Password"
-              errors={actionData?.formErrors?.formErrors}
-            />
-            <Form.SectionContent>
-              <Form.Field
-                id="password"
-                label="Password"
-                errors={actionData?.formErrors?.fieldErrors?.password}
-              >
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.password
-                      : ""
-                  }
-                />
-              </Form.Field>
-            </Form.SectionContent>
-          </Form.Section>
+          <Form.Field
+            id="password"
+            label="Password"
+            errors={actionData?.formErrors?.fieldErrors?.password}
+          >
+            <input type="password" name="password" id="password" />
+          </Form.Field>
         </Form.Content>
         <Form.Footer>
           <Form.CancelButton />

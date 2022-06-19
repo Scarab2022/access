@@ -39,7 +39,6 @@ const FieldValues = z
 
 type ActionData = {
   formErrors?: ZodError["formErrors"];
-  fieldValues?: any;
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -51,11 +50,18 @@ export const action: ActionFunction = async ({ request, params }) => {
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
   if (!parseResult.success) {
-    return { formErrors: parseResult.error.formErrors, fieldValues };
+    return json<ActionData>(
+      { formErrors: parseResult.error.formErrors, fieldValues },
+      { status: 400 }
+    );
   }
 
   // TODO: Ensure user owns access point before updating.  Put in transaction?
-  getAccessPoint({ id: Number(params.accessPointId), accessHubId: params.accessHubId, userId });
+  getAccessPoint({
+    id: Number(params.accessPointId),
+    accessHubId: params.accessHubId,
+    userId,
+  });
   await prisma.accessPoint.update({
     where: { id: Number(params.accessPointId) },
     data: {
@@ -64,7 +70,9 @@ export const action: ActionFunction = async ({ request, params }) => {
     },
   });
 
-  return redirect(`/access/hubs/${params.accessHubId}/points/${params.accessPointId}`);
+  return redirect(
+    `/access/hubs/${params.accessHubId}/points/${params.accessPointId}`
+  );
 };
 
 export default function RouteComponent() {
@@ -75,47 +83,35 @@ export default function RouteComponent() {
       <PageHeader />
       <main>
         <Form method="post" className="mx-auto max-w-sm" replace>
+          <Form.Header
+            title="Access Point Settings"
+            errors={actionData?.formErrors?.formErrors}
+          />
           <Form.Content>
-            <Form.Section>
-              <Form.SectionHeader
-                title="Access Point Settings"
-                errors={actionData?.formErrors?.formErrors}
-              />
-            </Form.Section>
-            <Form.SectionContent>
-              <Form.Field
+            <Form.Field
+              id="name"
+              label="Name"
+              errors={actionData?.formErrors?.fieldErrors?.name}
+            >
+              <input
+                type="text"
+                name="name"
                 id="name"
-                label="Name"
-                errors={actionData?.formErrors?.fieldErrors?.name}
-              >
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.name
-                      : accessPoint.name
-                  }
-                />
-              </Form.Field>
-              <Form.Field
+                defaultValue={accessPoint.name}
+              />
+            </Form.Field>
+            <Form.Field
+              id="description"
+              label="Description"
+              errors={actionData?.formErrors?.fieldErrors?.description}
+            >
+              <textarea
+                name="description"
                 id="description"
-                label="Description"
-                errors={actionData?.formErrors?.fieldErrors?.description}
-              >
-                <textarea
-                  name="description"
-                  id="description"
-                  rows={3}
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.description
-                      : accessPoint.description
-                  }
-                />
-              </Form.Field>
-            </Form.SectionContent>
+                rows={3}
+                defaultValue={accessPoint.description}
+              />
+            </Form.Field>
           </Form.Content>
           <Form.Footer>
             <Form.CancelButton />

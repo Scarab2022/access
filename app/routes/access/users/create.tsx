@@ -20,7 +20,6 @@ const FieldValues = z
 
 type ActionData = {
   formErrors?: ZodError["formErrors"];
-  fieldValues?: any;
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -30,10 +29,12 @@ export const action: ActionFunction = async ({ request }) => {
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
   if (!parseResult.success) {
-    return json<ActionData>({
-      formErrors: parseResult.error.formErrors,
-      fieldValues,
-    });
+    return json<ActionData>(
+      {
+        formErrors: parseResult.error.formErrors,
+      },
+      { status: 400 }
+    );
   }
 
   const { name, description, code } = parseResult.data;
@@ -54,58 +55,33 @@ export default function RouteComponent() {
       <PageHeader />
       <main>
         <Form method="post" className="mx-auto max-w-sm" replace>
-          <Form.Section>
-            <Form.SectionHeader
-              title="Create Access User"
-              errors={actionData?.formErrors?.formErrors}
-            />
-            <Form.SectionContent>
-              <Form.Field
-                id="name"
-                label="Name"
-                errors={actionData?.formErrors?.fieldErrors?.name}
-              >
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  defaultValue={
-                    actionData?.fieldValues ? actionData.fieldValues.name : ""
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="description"
-                label="Description"
-                errors={actionData?.formErrors?.fieldErrors?.description}
-              >
-                <textarea
-                  name="description"
-                  id="description"
-                  rows={3}
-                  defaultValue={
-                    actionData?.fieldValues
-                      ? actionData.fieldValues.description
-                      : ""
-                  }
-                />
-              </Form.Field>
-              <Form.Field
-                id="code"
-                label="Code"
-                errors={actionData?.formErrors?.fieldErrors?.code}
-              >
-                <input
-                  type="text"
-                  name="code"
-                  id="code"
-                  defaultValue={
-                    actionData?.fieldValues ? actionData.fieldValues.code : ""
-                  }
-                />
-              </Form.Field>
-            </Form.SectionContent>
-          </Form.Section>
+          <Form.Header
+            title="Create Access User"
+            errors={actionData?.formErrors?.formErrors}
+          />
+          <Form.Content>
+            <Form.Field
+              id="name"
+              label="Name"
+              errors={actionData?.formErrors?.fieldErrors?.name}
+            >
+              <input type="text" name="name" id="name" />
+            </Form.Field>
+            <Form.Field
+              id="description"
+              label="Description"
+              errors={actionData?.formErrors?.fieldErrors?.description}
+            >
+              <textarea name="description" id="description" rows={3} />
+            </Form.Field>
+            <Form.Field
+              id="code"
+              label="Code"
+              errors={actionData?.formErrors?.fieldErrors?.code}
+            >
+              <input type="text" name="code" id="code" />
+            </Form.Field>
+          </Form.Content>
           <Form.Footer>
             <Form.CancelButton />
             <Form.SubmitButton>Create</Form.SubmitButton>

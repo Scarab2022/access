@@ -316,7 +316,8 @@ Form.List = function FormList({
     <Form.Group
       className={classNames(
         className,
-        "-mb-8 divide-y divide-gray-200 border-t border-gray-200"
+        // "-mb-8 divide-y divide-gray-200 border-t border-gray-200"
+        "divide-y divide-gray-200 border-t border-gray-200"
       )}
       {...rest}
     />

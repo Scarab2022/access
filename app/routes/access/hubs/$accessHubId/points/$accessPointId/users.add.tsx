@@ -95,35 +95,31 @@ export default function RouteComponent() {
       <PageHeader />
       <main>
         <Form replace method="post" className="mx-auto max-w-sm">
+          <Form.Header title="Add Users" />
           <Form.Content>
-            <Form.Section>
-              <Form.SectionHeader title="Add Users" />
-              <Form.SectionContent>
-                <Form.List>
-                  {accessUsers.map((i, idx) => {
-                    const idName = `accessUser-${idx}`;
-                    const hiddenIdName = `${idName}-id`;
-                    return (
-                      <Checkbox.ListItem
-                        key={i.id}
-                        labelProps={{
-                          htmlFor: idName,
-                          children: i.name,
-                        }}
-                        checkboxProps={{ id: idName, name: idName }}
-                      >
-                        <input
-                          id={hiddenIdName}
-                          name={hiddenIdName}
-                          type="hidden"
-                          value={i.id}
-                        />
-                      </Checkbox.ListItem>
-                    );
-                  })}
-                </Form.List>
-              </Form.SectionContent>
-            </Form.Section>
+            <Form.List>
+              {accessUsers.map((i, idx) => {
+                const idName = `accessUser-${idx}`;
+                const hiddenIdName = `${idName}-id`;
+                return (
+                  <Checkbox.ListItem
+                    key={i.id}
+                    labelProps={{
+                      htmlFor: idName,
+                      children: i.name,
+                    }}
+                    checkboxProps={{ id: idName, name: idName }}
+                  >
+                    <input
+                      id={hiddenIdName}
+                      name={hiddenIdName}
+                      type="hidden"
+                      value={i.id}
+                    />
+                  </Checkbox.ListItem>
+                );
+              })}
+            </Form.List>
           </Form.Content>
           <Form.Footer>
             <Form.CancelButton />

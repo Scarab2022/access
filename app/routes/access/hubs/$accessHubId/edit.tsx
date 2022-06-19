@@ -38,13 +38,12 @@ const FieldValues = z.object({
 
 type ActionData = {
   formErrors?: ZodError["formErrors"];
-  fieldValues?: any;
 };
 
 export const action: ActionFunction = async ({
   request,
   params: { accessHubId },
-}): Promise<Response | ActionData> => {
+}) => {
   const userId = await requireUserIdForRole(request, "customer");
   invariant(accessHubId, "accessHubId not found");
 
@@ -52,7 +51,10 @@ export const action: ActionFunction = async ({
   const fieldValues = Object.fromEntries(await request.formData());
   const parseResult = FieldValues.safeParse(fieldValues);
   if (!parseResult.success) {
-    return { formErrors: parseResult.error.formErrors, fieldValues };
+    return json<ActionData>(
+      { formErrors: parseResult.error.formErrors },
+      { status: 400 }
+    );
   }
 
   // TODO: Ensure user owns access hub before updating.  Put in transaction?
@@ -89,11 +91,7 @@ export default function RouteComponent() {
                 type="text"
                 name="name"
                 id="name"
-                defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.name
-                    : accessHub.name
-                }
+                defaultValue={accessHub.name}
               />
             </Form.Field>
             <Form.Field
@@ -105,11 +103,7 @@ export default function RouteComponent() {
                 name="description"
                 id="description"
                 rows={3}
-                defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.description
-                    : accessHub.description
-                }
+                defaultValue={accessHub.description}
               />
             </Form.Field>
           </Form.Content>

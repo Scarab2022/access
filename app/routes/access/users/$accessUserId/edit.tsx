@@ -153,11 +153,7 @@ export default function RouteComponent() {
                 type="text"
                 name="name"
                 id="name"
-                defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.name
-                    : accessUser.name
-                }
+                defaultValue={accessUser.name}
               />
             </Form.Field>
             <Form.Field
@@ -169,11 +165,7 @@ export default function RouteComponent() {
                 name="description"
                 id="description"
                 rows={3}
-                defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.description
-                    : accessUser.description
-                }
+                defaultValue={accessUser.description}
               />
             </Form.Field>
             <Form.Field
@@ -185,11 +177,7 @@ export default function RouteComponent() {
                 type="text"
                 name="code"
                 id="code"
-                defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.code
-                    : accessUser.code
-                }
+                defaultValue={accessUser.code}
               />
             </Form.Field>
             <Form.Field
@@ -202,9 +190,7 @@ export default function RouteComponent() {
                 name="activateCodeAt"
                 id="activateCodeAt"
                 defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.activatedCodeAt
-                    : accessUser.activateCodeAt
+                  accessUser.activateCodeAt
                     ? formatDatetimeLocal(new Date(accessUser.activateCodeAt))
                     : ""
                 }
@@ -220,9 +206,7 @@ export default function RouteComponent() {
                 name="expireCodeAt"
                 id="expireCodeAt"
                 defaultValue={
-                  actionData?.fieldValues
-                    ? actionData.fieldValues.activatedCodeAt
-                    : accessUser.expireCodeAt
+                  accessUser.expireCodeAt
                     ? formatDatetimeLocal(new Date(accessUser.expireCodeAt))
                     : ""
                 }
