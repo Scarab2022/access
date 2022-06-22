@@ -5,9 +5,15 @@ import { MenuIcon, XIcon, UserIcon } from "@heroicons/react/outline";
 import logoHref from "~/assets/logo.svg";
 import { classNames, useUser } from "~/utils";
 
-type Navigation = Array<{name: string; href: string}>;
+type Navigation = Array<{ name: string; href: string }>;
 
-export function Navbar({navigation, userNavigation}: {navigation: Navigation; userNavigation: Navigation}) {
+export function Navbar({
+  navigation,
+  userNavigation,
+}: {
+  navigation: Navigation;
+  userNavigation: Navigation;
+}) {
   const user = useUser();
   const submit = useSubmit();
 
@@ -43,9 +49,12 @@ export function Navbar({navigation, userNavigation}: {navigation: Navigation; us
                 ))}
               </div>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:items-center">
+            <div className="hidden sm:flex sm:items-center sm:gap-2">
               {/* Profile dropdown */}
-              <Menu as="div" className="relative ml-3">
+              <div className="text-sm font-medium text-gray-500">
+                {user.email}
+              </div>
+              <Menu as="div" className="relative">
                 <div>
                   <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     <span className="sr-only">Open user menu</span>

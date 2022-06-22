@@ -17,11 +17,10 @@ export const handle = {
   ),
 };
 
-export const userNavigation = [
+const userNavigation = [
   { name: "Your Profile", href: "#" },
   { name: "Settings", href: "#" },
 ];
-
 export const navigation = [
   { name: "Dashboard", href: "dashboard" },
   { name: "Users", href: "users" },
