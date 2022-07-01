@@ -1,0 +1,12 @@
+// import clsx from 'clsx'
+
+import { classNames } from "~/utils";
+
+export function Container({ className, ...props }: JSX.IntrinsicElements["div"]) {
+  return (
+    <div
+      className={classNames('mx-auto max-w-7xl px-4 sm:px-6 lg:px-8', className)}
+      {...props}
+    />
+  )
+}

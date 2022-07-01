@@ -6,6 +6,7 @@ import {
 } from "~/components/boundaries";
 import { HomeIcon } from "@heroicons/react/solid";
 import { Navbar } from "~/components/navbar";
+import { Container } from "~/components/container";
 
 export const handle = {
   breadcrumb: (match: ReturnType<typeof useMatches>[number]) => (
@@ -31,10 +32,10 @@ function Layout({ children }: { children: React.ReactNode }) {
   // With page heading and stacked list
   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   return (
-    <div className="mx-auto min-h-full max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+    <Container className="min-h-full pb-8">
       <Navbar navigation={navigation} userNavigation={userNavigation} />
       {children}
-    </div>
+    </Container>
   );
 }
 
