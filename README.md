@@ -44,6 +44,7 @@
 - npm install lodash
 - npm install -D @types/lodash
 - npm install zod
+- npm install clsx
 
 # Remix Blues Stack
 
