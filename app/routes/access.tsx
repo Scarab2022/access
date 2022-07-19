@@ -5,7 +5,7 @@ import {
   GenericErrorBoundary,
 } from "~/components/boundaries";
 import { HomeIcon } from "@heroicons/react/solid";
-import { Header } from "~/components/Header";
+import { Nav } from "~/components/Nav";
 import { Container } from "~/components/container";
 
 export const handle = {
@@ -33,7 +33,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   // https://tailwindui.com/components/application-ui/page-examples/detail-screens
   return (
     <Container className="min-h-full pb-8">
-      <Header navigation={navigation} userNavigation={userNavigation} />
+      <Nav navigation={navigation} userNavigation={userNavigation} />
       {children}
     </Container>
   );
