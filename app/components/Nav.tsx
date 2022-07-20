@@ -153,6 +153,7 @@ export function Nav({
   // Simple
   // https://tailwindui.com/components/application-ui/navigation/navbars
   // Simplified based on https://tailwindui.com/templates/salient
+  // https://play.tailwindcss.com/PknxqWwLcV
   return (
     <Disclosure
       as="nav"
