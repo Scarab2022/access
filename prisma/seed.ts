@@ -203,13 +203,23 @@ async function seedAccessHub({
   return { accessHub };
 }
 
+
+function* atGenerator(): Generator<Date, Date> {
+  // Since no return, TS will use return type of void which makes next() more awkward so specify TReturn as Date.
+  let at = new Date();
+
+  while (true) {
+    yield at;
+    at.setTime(at.getTime() - 90 * 60 * 1000);
+  }
+}
+
 async function seedAccessHubEvents({
   accessHub,
 }: Awaited<ReturnType<typeof seedAccessHub>>) {
-  let at = new Date();
+  const at = atGenerator();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const _ of Array(125).keys()) {
-    at.setTime(at.getTime() - 90 * 60 * 1000);
     const accessUser =
       accessHub.user.accessUsers[
         Math.floor(Math.random() * accessHub.user.accessUsers.length)
@@ -221,7 +231,7 @@ async function seedAccessHubEvents({
     if (accessUser.accessPoints.some((ap) => ap.id === accessPoint.id)) {
       await prisma.accessEvent.create({
         data: {
-          at,
+          at: at.next().value,
           access: "grant",
           code: accessUser.code,
           accessUserId: accessUser.id,
@@ -231,7 +241,7 @@ async function seedAccessHubEvents({
     } else {
       await prisma.accessEvent.create({
         data: {
-          at,
+          at: at.next().value,
           access: "deny",
           code: accessUser.code,
           accessPointId: accessPoint.id,
