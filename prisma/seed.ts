@@ -203,9 +203,7 @@ async function seedAccessHub({
   return { accessHub };
 }
 
-
-function* atGenerator(): Generator<Date, Date> {
-  // Since no return, TS will use return type of void which makes next() more awkward so specify TReturn as Date.
+function* atGenerator(): Generator<Date, never> {
   let at = new Date();
 
   while (true) {
