@@ -15,7 +15,7 @@ type LoaderData = {
 };
 
 function getAccessHub(id: AccessHub["id"], customerId: User["id"]) {
-  return prisma.accessHub.findFirst({
+  return prisma.accessHub.findFirstOrThrow({
     where: {
       id,
       user: { id: customerId },
@@ -23,7 +23,6 @@ function getAccessHub(id: AccessHub["id"], customerId: User["id"]) {
     include: {
       accessPoints: { orderBy: { position: "asc" } },
     },
-    rejectOnNotFound: true,
   });
 }
 

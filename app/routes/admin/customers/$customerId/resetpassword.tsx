@@ -16,9 +16,8 @@ type LoaderData = {
 };
 
 function getCustomer(id: User["id"]) {
-  return prisma.user.findUnique({
+  return prisma.user.findUniqueOrThrow({
     where: { id },
-    rejectOnNotFound: true,
   });
 }
 

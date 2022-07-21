@@ -11,9 +11,8 @@ export function getAccessHub({
   id: AccessHub["id"];
   userId: User["id"];
 }) {
-  return prisma.accessHub.findFirst({
+  return prisma.accessHub.findFirstOrThrow({
     where: { id, user: { id: userId } },
-    rejectOnNotFound: true,
   });
 }
 
@@ -24,13 +23,12 @@ export function getAccessHubWithPoints({
   id: AccessHub["id"];
   userId: User["id"];
 }) {
-  return prisma.accessHub.findFirst({
+  return prisma.accessHub.findFirstOrThrow({
     where: { id, user: { id: userId } },
     include: {
       accessPoints: {
         orderBy: { position: "asc" },
       },
     },
-    rejectOnNotFound: true,
   });
 }

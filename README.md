@@ -2,7 +2,7 @@
 
 ## Setup
 
-- node >= 14
+- node >= 14.17.x
 - git clone https://github.com/Scarab2022/access.git
 - .env file in root. See .env.example
 - npm install

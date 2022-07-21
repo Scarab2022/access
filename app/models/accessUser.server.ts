@@ -11,9 +11,8 @@ export function getAccessUser({
 }: Pick<AccessUser, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.accessUser.findFirst({
+  return prisma.accessUser.findFirstOrThrow({
     where: { id, deletedAt: new Date(0), user: { id: userId } },
-    rejectOnNotFound: true,
   });
 }
 
@@ -24,7 +23,7 @@ export function getAccessUserWithPoints({
 }: Pick<AccessUser, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.accessUser.findFirst({
+  return prisma.accessUser.findFirstOrThrow({
     where: { id, deletedAt: new Date(0), user: { id: userId } },
     include: {
       accessPoints: {
@@ -32,7 +31,6 @@ export function getAccessUserWithPoints({
         include: { accessHub: true },
       },
     },
-    rejectOnNotFound: true,
   });
 }
 

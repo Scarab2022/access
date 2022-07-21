@@ -12,9 +12,8 @@ export function getAccessPoint({
   userId: User["id"];
 }) {
   console.log({ id, accessHubId, userId });
-  return prisma.accessPoint.findFirst({
+  return prisma.accessPoint.findFirstOrThrow({
     where: { id, accessHubId, accessHub: { user: { id: userId } } },
-    rejectOnNotFound: true,
   });
 }
 
@@ -24,7 +23,7 @@ export function getAccessPointWithHubAndUsers({
 }: Pick<AccessPoint, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.accessPoint.findFirst({
+  return prisma.accessPoint.findFirstOrThrow({
     where: {
       id,
       accessHub: { user: { id: userId } },
@@ -33,7 +32,6 @@ export function getAccessPointWithHubAndUsers({
       accessHub: true,
       accessUsers: { orderBy: { name: "asc" } },
     },
-    rejectOnNotFound: true,
   });
 }
 

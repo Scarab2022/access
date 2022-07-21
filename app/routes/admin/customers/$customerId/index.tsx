@@ -14,7 +14,7 @@ type LoaderData = {
 };
 
 function getCustomer(id: User["id"]) {
-  return prisma.user.findFirst({
+  return prisma.user.findFirstOrThrow({
     where: { id },
     include: {
       accessUsers: {
@@ -23,7 +23,6 @@ function getCustomer(id: User["id"]) {
       },
       accessHubs: { orderBy: { name: "asc" } },
     },
-    rejectOnNotFound: true,
   });
 }
 

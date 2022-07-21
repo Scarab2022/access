@@ -22,7 +22,7 @@ function getAccessHub({
 }: Pick<AccessHub, "id"> & {
   userId: User["id"];
 }) {
-  return prisma.accessHub.findFirst({
+  return prisma.accessHub.findFirstOrThrow({
     where: { id, user: { id: userId } },
     include: {
       accessPoints: {
@@ -32,7 +32,6 @@ function getAccessHub({
         orderBy: { position: "asc" },
       },
     },
-    rejectOnNotFound: true,
   });
 }
 
