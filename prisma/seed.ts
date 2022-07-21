@@ -203,7 +203,7 @@ async function seedAccessHub({
   return { accessHub };
 }
 
-function* atGenerator(): Generator<Date, never> {
+function* atGenerator(): Generator<Date, never, never> {
   let at = new Date();
 
   while (true) {
